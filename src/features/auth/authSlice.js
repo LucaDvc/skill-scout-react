@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
-// Get user from localstorage
 const user = JSON.parse(localStorage.getItem('user'));
+const accessToken = localStorage.getItem('accessToken');
+const refreshToken = localStorage.getItem('refreshToken');
 
 const initialState = {
   user: user ? user : null,
+  accessToken: accessToken ? accessToken : null,
+  refreshToken: refreshToken ? refreshToken : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -38,12 +41,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   try {
     return await authService.login(user);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.error) ||
-      error.message ||
-      error.toString();
-
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue('Invalid credentials');
   }
 });
 
@@ -129,7 +127,10 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.tokens.access;
+        const refreshToken = localStorage.getItem('refreshToken');
+        state.refreshToken = refreshToken ? refreshToken : null;
       })
       .addCase(login.rejected, (state, action) => {
         state.isError = true;
