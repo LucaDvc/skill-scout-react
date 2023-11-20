@@ -20,9 +20,10 @@ import {
   StyledInputBase,
 } from './styled/styledSearchComponents';
 import { useTheme } from '@emotion/react';
+import { useSelector } from 'react-redux';
 
 export default function Navbar() {
-  const user = null; // set state
+  const { user } = useSelector((state) => state.auth);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -154,7 +155,7 @@ export default function Navbar() {
 
         {!isMobile &&
           (user ? (
-            <Avatar src={user.picture} alt={user.first_name} />
+            <Avatar src={user.picture} alt={user.first_name} sx={{ mx: 1 }} />
           ) : (
             <Box sx={{ mx: 1 }}>
               <Link

@@ -11,13 +11,14 @@ import Register from './pages/Register';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Catalog />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        {/* <Route path='/new-ticket' element={<PrivateRoute />}>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Catalog />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          {/* <Route path='/new-ticket' element={<PrivateRoute />}>
         <Route path='/new-ticket' element={<NewTicket />} />
       </Route>
       <Route path='/tickets' element={<PrivateRoute />}>
@@ -26,8 +27,9 @@ function App() {
       <Route path='/ticket/:ticketId' element={<PrivateRoute />}>
         <Route path='/ticket/:ticketId' element={<Ticket />} />
       </Route> */}
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
