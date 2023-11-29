@@ -41,13 +41,53 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   try {
     return await authService.login(user);
   } catch (error) {
-    return thunkAPI.rejectWithValue('Invalid credentials');
+    let message = 'Invalid credentials';
+    if (error.response && error.response.data && error.response.data.error) {
+      message = error.response.data.error;
+    }
+
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   await authService.logout();
 });
+
+export const resendConfirmationEmail = createAsyncThunk(
+  'auth/resendEmail',
+  async (email, thunkAPI) => {
+    try {
+      return await authService.resendConfirmationEmail(email);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      console.log(error);
+      console.log(message);
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const confirmEmail = createAsyncThunk(
+  'auth/confirmEmail',
+  async (token, thunkAPI) => {
+    try {
+      return await authService.confirmEmail(token);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const clearErrors = () => ({
   type: 'auth/clearErrors',
@@ -140,6 +180,32 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+        state.accessToken = null;
+        state.refreshToken = null;
+      })
+      .addCase(resendConfirmationEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resendConfirmationEmail.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(resendConfirmationEmail.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload;
+      })
+      .addCase(confirmEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(confirmEmail.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(confirmEmail.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload;
       });
   },
 });

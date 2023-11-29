@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Catalog from './pages/Catalog';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import NotifyConfirmEmail from './pages/NotifyConfirmEmail';
+import ConfirmEmail from './pages/ConfirmEmail';
 
 function App() {
   return (
@@ -18,9 +20,12 @@ function App() {
           <Route path='/' element={<Catalog />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          {/* <Route path='/new-ticket' element={<PrivateRoute />}>
-        <Route path='/new-ticket' element={<NewTicket />} />
-      </Route>
+          <Route
+            path='/notify-confirm-email'
+            element={<NotifyConfirmEmail />}
+          />
+          <Route path='/confirm-email' element={<ConfirmEmail />} />
+          {/* 
       <Route path='/tickets' element={<PrivateRoute />}>
         <Route path='/tickets' element={<Tickets />} />
       </Route>

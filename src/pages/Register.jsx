@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -46,8 +45,7 @@ function Register() {
   useEffect(() => {
     if (isSuccess) {
       dispatch(reset());
-      // TODO: Redirect to email confirmation or profile
-      navigate('/');
+      navigate('/notify-confirm-email', { state: { from: 'register' } });
     }
   }, [isSuccess, isError, dispatch, navigate]);
 
@@ -60,13 +58,12 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
     const userData = {
-      email: data.get('email'),
-      password1: data.get('password1'),
-      password2: data.get('password2'),
-      first_name: data.get('firstName'),
-      last_name: data.get('lastName'),
+      email: email,
+      password1: password1,
+      password2: password2,
+      first_name: firstName,
+      last_name: lastName,
     };
     console.log(userData);
 
@@ -82,7 +79,6 @@ function Register() {
     <>
       {isLoading && <Spinner />}
       <Container component='main' maxWidth='xs'>
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,

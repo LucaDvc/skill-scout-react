@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -20,7 +19,7 @@ import {
   reset,
 } from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
-import { Alert } from '@mui/material';
+import { Alert, Divider } from '@mui/material';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -67,7 +66,6 @@ function Login() {
     <>
       {isLoading && <Spinner />}
       <Container component='main' maxWidth='xs'>
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -88,6 +86,17 @@ function Login() {
               <Alert
                 severity='error'
                 onClose={() => dispatch(clearGeneralErrorMessage())}
+                action={
+                  message === 'Email not confirmed' ? (
+                    <Button
+                      color='inherit'
+                      size='small'
+                      onClick={() => navigate('/notify-confirm-email')}
+                    >
+                      Resend Email
+                    </Button>
+                  ) : null
+                }
               >
                 {message}
               </Alert>
@@ -138,15 +147,23 @@ function Login() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
+            <Divider sx={{ my: 2 }} />
+            <Grid container justifyContent='space-between'>
+              <Grid item>
                 <Link href='/forgot-password' variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
+                <Link href='/notify-confirm-email' variant='body2'>
+                  Confirm your email
+                </Link>
+              </Grid>
+            </Grid>
+            <Grid container justifyContent='center' sx={{ my: 2 }}>
+              <Grid item>
                 <Link href='/register' variant='body2'>
-                  {"Don't have an account? Sign Up"}
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
