@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { ThemeProvider } from '@mui/material/styles';
 import darkBlueTheme from './themes/darkBlueTheme';
+import { CssBaseline } from '@mui/material';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -15,6 +16,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={darkBlueTheme}>
+        <CssBaseline />
         <App />
       </ThemeProvider>
     </Provider>
