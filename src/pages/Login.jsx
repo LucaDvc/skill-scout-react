@@ -57,7 +57,6 @@ function Login() {
       password: password,
       rememberMe: rememberMe,
     };
-    console.log(userData);
 
     dispatch(login(userData));
   };
@@ -91,7 +90,10 @@ function Login() {
                     <Button
                       color='inherit'
                       size='small'
-                      onClick={() => navigate('/notify-confirm-email')}
+                      onClick={() => {
+                        navigate('/notify-confirm-email');
+                        dispatch(reset());
+                      }}
                     >
                       Resend Email
                     </Button>

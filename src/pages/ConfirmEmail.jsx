@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { confirmEmail, reset } from '../features/auth/authSlice';
+import {
+  confirmEmail,
+  resendConfirmationEmail,
+  reset,
+} from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
-import { Container, Link, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 function ConfirmEmail() {
   const [searchParams] = useSearchParams();
-  const [pageMessage, setPageMessage] = useState(
-    'Invalid or expired token. Please request another confirmation email.'
-  );
+  const [email, setEmail] = useState('');
+  const [confirmationState, setConfirmationState] = useState('pending'); // 'pending', 'success', 'error'
+  const [resendEmailSuccess, setResendEmailSuccess] = useState(false);
 
   const { isSuccess, isError, isLoading, message } = useSelector(
     (state) => state.auth
@@ -20,31 +32,121 @@ function ConfirmEmail() {
     const token = searchParams.get('token');
     if (token) {
       dispatch(confirmEmail(token));
+    } else {
+      setConfirmationState('error');
     }
   }, [searchParams, dispatch]);
 
   useEffect(() => {
     if (isSuccess) {
-      setPageMessage('Email confirmed successfully. You can now login.');
-      dispatch(reset());
+      if (confirmationState === 'pending') {
+        // This means the email confirmation was successful
+        setConfirmationState('success');
+        setResendEmailSuccess(false);
+      } else if (confirmationState === 'error') {
+        // This means the resend email was successful
+        setResendEmailSuccess(true);
+      }
+    } else if (isError) {
+      setConfirmationState('error');
+      setResendEmailSuccess(false); // Reset this to false on error
     }
-  }, [isSuccess, dispatch]);
+  }, [isSuccess, isError, confirmationState]);
 
   useEffect(() => {
-    if (isError && message) {
-      setPageMessage(message);
+    return () => {
       dispatch(reset());
+    };
+  }, [dispatch]);
+
+  const resendEmail = (e) => {
+    e.preventDefault();
+    if (email) {
+      dispatch(reset());
+      dispatch(resendConfirmationEmail(email))
+        .unwrap()
+        .then(() => {
+          // Handle success for resend email action
+          setResendEmailSuccess(true);
+          setConfirmationState('error');
+        })
+        .catch(() => {
+          setResendEmailSuccess(false);
+        });
     }
-  }, [isError, message]);
+  };
 
   if (isLoading) {
     return <Spinner />;
   }
 
   return (
-    <Container component='main' maxWidth='xl'>
-      <Typography variant='h3'>Email Confirmation</Typography>
-      <Typography variant='h5'>{pageMessage}</Typography>
+    <Container component='main' maxWidth='md'>
+      <Box
+        sx={{
+          mt: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {confirmationState === 'error' && (
+          <>
+            <Typography variant='h3' gutterBottom>
+              Email Confirmation
+            </Typography>
+            <Box component='form' onSubmit={resendEmail} sx={{ mt: 1 }}>
+              <Alert
+                severity={
+                  resendEmailSuccess || confirmationState === 'success'
+                    ? 'success'
+                    : 'error'
+                }
+                sx={{ width: '100%', mb: 2 }}
+              >
+                {resendEmailSuccess
+                  ? 'A new confirmation email has been sent.'
+                  : message ||
+                    'Invalid or expired token. Please enter your email to resend the confirmation email.'}
+              </Alert>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoFocus
+              />
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Resend Confirmation Email
+              </Button>
+            </Box>
+          </>
+        )}
+        {confirmationState === 'success' && (
+          <>
+            <Typography variant='h3' gutterBottom>
+              Email Confirmation
+            </Typography>
+            <Typography variant='h5' gutterBottom>
+              Your email has been confirmed successfully. You can now{' '}
+              <Link href='/login' variant='h5'>
+                sign in
+              </Link>
+              .
+            </Typography>
+          </>
+        )}
+      </Box>
     </Container>
   );
 }

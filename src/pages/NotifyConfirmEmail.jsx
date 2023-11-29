@@ -34,11 +34,14 @@ function NotifyConfirmEmail() {
   useEffect(() => {
     accessToken ? setConfirmed(true) : setConfirmed(false);
 
-    if (accessToken && user) {
-      setConfirmed(true);
+    if (user) {
+      setEmail(user.email);
       setShowForm(false);
       setIsUserCheckComplete(true);
-    } else if (!user) {
+      if (fromPage !== 'register') {
+        dispatch(resendConfirmationEmail(user.email));
+      }
+    } else {
       setShowForm(true);
       setIsUserCheckComplete(true);
     }
@@ -153,7 +156,7 @@ function NotifyConfirmEmail() {
           </Typography>
           <Typography variant='h6'>
             Didn't receive an email?{' '}
-            <Link variant='h6' onClick={resendEmail}>
+            <Link variant='h6' onClick={resendEmail} sx={{ cursor: 'pointer' }}>
               Click here
             </Link>{' '}
             to resend it.
