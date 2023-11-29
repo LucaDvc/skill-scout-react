@@ -21,9 +21,11 @@ import {
 } from './styled/styledSearchComponents';
 import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
+import AccountMenu from './AccountMenu';
+import LogoutDialog from './LogoutDialog';
 
 export default function Navbar() {
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -31,6 +33,22 @@ export default function Navbar() {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const handleLogoutOpen = () => {
+    setLogoutOpen(true);
+  };
+  const handleLogoutClose = () => {
+    setLogoutOpen(false);
   };
 
   const drawer = (
@@ -154,8 +172,20 @@ export default function Navbar() {
         </Search>
 
         {!isMobile &&
-          (user ? (
-            <Avatar src={user.picture} alt={user.first_name} sx={{ mx: 1 }} />
+          (accessToken ? (
+            <>
+              <Avatar
+                src={user.picture}
+                alt={user.first_name}
+                onClick={handleMenuClick}
+                sx={{ cursor: 'pointer', mx: 1 }}
+              />
+              <AccountMenu
+                anchorEl={anchorEl}
+                handleClose={handleClose}
+                logoutClick={handleLogoutOpen}
+              />
+            </>
           ) : (
             <Box sx={{ mx: 1 }}>
               <Link
@@ -179,6 +209,8 @@ export default function Navbar() {
               </Link>
             </Box>
           ))}
+
+        <LogoutDialog open={logoutOpen} handleClose={handleLogoutClose} />
       </Toolbar>
     </AppBar>
   );
