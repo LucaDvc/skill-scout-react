@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -10,8 +10,23 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotifyConfirmEmail from './pages/NotifyConfirmEmail';
 import ConfirmEmail from './pages/ConfirmEmail';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAccessToken } from './features/auth/authSlice';
 
 function App() {
+  const dispatch = useDispatch();
+  const { accessToken, refreshToken } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      if (!accessToken && refreshToken) {
+        // If there's no accessToken but we have refreshToken in local storage, try to refresh it
+        dispatch(refreshAccessToken());
+      }
+    };
+
+    checkAuthStatus();
+  }, [dispatch, accessToken, refreshToken]);
   return (
     <>
       <BrowserRouter>

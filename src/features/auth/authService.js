@@ -16,6 +16,8 @@ const register = async (userData) => {
 // Logout user
 const logout = () => {
   localStorage.removeItem('user');
+  localStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('accessToken');
 };
 
 // Login user
@@ -24,7 +26,7 @@ const login = async (userData) => {
   const response = await axios.post(`${API_URL}/login/`, { email, password });
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data.user));
-    localStorage.setItem('accessToken', response.data.tokens.access);
+    sessionStorage.setItem('accessToken', response.data.tokens.access);
 
     if (rememberMe) {
       localStorage.setItem('refreshToken', response.data.tokens.refresh);
@@ -44,6 +46,13 @@ const resendConfirmationEmail = async (email) => {
 
 const confirmEmail = async (token) => {
   const response = await axios.get(`${API_URL}/confirm-email/${token}/`);
+  return response.data;
+};
+
+const refreshAccessToken = async (refreshToken) => {
+  const response = await axios.post(`${API_URL}/login/refresh/`, {
+    refresh: refreshToken,
+  });
 
   return response.data;
 };
@@ -54,6 +63,7 @@ const authService = {
   login,
   resendConfirmationEmail,
   confirmEmail,
+  refreshAccessToken,
 };
 
 export default authService;

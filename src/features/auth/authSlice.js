@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const user = JSON.parse(localStorage.getItem('user'));
-const accessToken = localStorage.getItem('accessToken');
 const refreshToken = localStorage.getItem('refreshToken');
+const accessToken = sessionStorage.getItem('accessToken');
 
 const initialState = {
   user: user ? user : null,
@@ -78,6 +78,23 @@ export const confirmEmail = createAsyncThunk(
   async (token, thunkAPI) => {
     try {
       return await authService.confirmEmail(token);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const refreshAccessToken = createAsyncThunk(
+  'auth/refreshAccessToken',
+  async (_, thunkAPI) => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      return await authService.refreshAccessToken(refreshToken);
     } catch (error) {
       let message = error.message || error.toString();
       if (error.response && error.response.data && error.response.data.error) {
@@ -206,6 +223,24 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload;
+      })
+      .addCase(refreshAccessToken.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        sessionStorage.setItem('accessToken', action.payload.access);
+        state.accessToken = action.payload.access;
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.accessToken = null;
+        state.refreshToken = null;
+        state.user = null;
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('accessToken');
       });
   },
 });
