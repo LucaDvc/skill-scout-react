@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import catalogService from './catalogService';
 
 const initialState = {
-  categories: null,
+  categories: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -35,10 +35,15 @@ export const catalogSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getCategories.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(getCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.categories = action.payload;
       })
       .addCase(getCategories.rejected, (state, action) => {
+        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       });

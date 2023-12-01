@@ -1,11 +1,15 @@
 import { Container } from '@mui/material';
 import React from 'react';
+import CategoriesMenu from '../components/CategoriesMenu';
 
 function Catalog() {
   return (
-    <Container component='main' maxWidth='xs'>
-      Catalog
-    </Container>
+    <>
+      <CategoriesMenu />
+      <Container component='main' maxWidth='xs'>
+        Catalog
+      </Container>
+    </>
   );
 }
 
