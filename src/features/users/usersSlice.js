@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authService from './authService';
+import usersService from './usersService';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const refreshToken = localStorage.getItem('refreshToken');
@@ -17,10 +17,10 @@ const initialState = {
 };
 
 export const register = createAsyncThunk(
-  'auth/register',
+  'users/register',
   async (user, thunkAPI) => {
     try {
-      return await authService.register(user);
+      return await usersService.register(user);
     } catch (error) {
       let message = error.message || error.toString();
 
@@ -37,9 +37,9 @@ export const register = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
+export const login = createAsyncThunk('users/login', async (user, thunkAPI) => {
   try {
-    return await authService.login(user);
+    return await usersService.login(user);
   } catch (error) {
     let message = 'Invalid credentials';
     if (error.response && error.response.data && error.response.data.error) {
@@ -50,15 +50,15 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   }
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout();
+export const logout = createAsyncThunk('users/logout', async () => {
+  await usersService.logout();
 });
 
 export const resendConfirmationEmail = createAsyncThunk(
   'auth/resendEmail',
   async (email, thunkAPI) => {
     try {
-      return await authService.resendConfirmationEmail(email);
+      return await usersService.resendConfirmationEmail(email);
     } catch (error) {
       let message = error.message || error.toString();
       if (error.response && error.response.data && error.response.data.error) {
@@ -74,10 +74,10 @@ export const resendConfirmationEmail = createAsyncThunk(
 );
 
 export const confirmEmail = createAsyncThunk(
-  'auth/confirmEmail',
+  'users/confirmEmail',
   async (token, thunkAPI) => {
     try {
-      return await authService.confirmEmail(token);
+      return await usersService.confirmEmail(token);
     } catch (error) {
       let message = error.message || error.toString();
       if (error.response && error.response.data && error.response.data.error) {
@@ -90,11 +90,11 @@ export const confirmEmail = createAsyncThunk(
 );
 
 export const refreshAccessToken = createAsyncThunk(
-  'auth/refreshAccessToken',
+  'users/refreshAccessToken',
   async (_, thunkAPI) => {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
-      return await authService.refreshAccessToken(refreshToken);
+      return await usersService.refreshAccessToken(refreshToken);
     } catch (error) {
       let message = error.message || error.toString();
       if (error.response && error.response.data && error.response.data.error) {
@@ -107,21 +107,21 @@ export const refreshAccessToken = createAsyncThunk(
 );
 
 export const clearErrors = () => ({
-  type: 'auth/clearErrors',
+  type: 'users/clearErrors',
 });
 
 export const clearGeneralErrorMessage = () => ({
-  type: 'auth/clearGeneralErrorMessage',
+  type: 'users/clearGeneralErrorMessage',
 });
 
 // Takes in prop key and index of the error in the prop's error array
 export const clearSpecificErrorMessage = (field, indexToRemove) => ({
-  type: 'auth/clearSpecificErrorMessage',
+  type: 'users/clearSpecificErrorMessage',
   payload: { field, indexToRemove },
 });
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const usersSlice = createSlice({
+  name: 'users',
   initialState,
   reducers: {
     reset: (state) => {
@@ -245,6 +245,6 @@ export const authSlice = createSlice({
   },
 });
 
-export default authSlice.reducer;
+export default usersSlice.reducer;
 
-export const { reset } = authSlice.actions;
+export const { reset } = usersSlice.actions;

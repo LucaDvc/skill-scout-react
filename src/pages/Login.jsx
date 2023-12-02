@@ -17,7 +17,7 @@ import {
   clearGeneralErrorMessage,
   login,
   reset,
-} from '../features/auth/authSlice';
+} from '../features/users/usersSlice';
 import Spinner from '../components/Spinner';
 import { Alert, Divider } from '@mui/material';
 
@@ -30,7 +30,7 @@ function Login() {
   const { email, password, rememberMe } = formData;
 
   const { isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
+    (state) => state.users
   );
   const dispatch = useDispatch();
 

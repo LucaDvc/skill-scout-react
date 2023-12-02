@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { resendConfirmationEmail, reset } from '../features/auth/authSlice';
+import { resendConfirmationEmail, reset } from '../features/users/usersSlice';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import { useLocation } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ function NotifyConfirmEmail() {
   const fromPage = location.state?.from;
 
   const { user, isSuccess, isError, isLoading, accessToken, message } =
-    useSelector((state) => state.auth);
+    useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {

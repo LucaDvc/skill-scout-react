@@ -5,7 +5,7 @@ import {
   confirmEmail,
   resendConfirmationEmail,
   reset,
-} from '../features/auth/authSlice';
+} from '../features/users/usersSlice';
 import Spinner from '../components/Spinner';
 import {
   Alert,
@@ -24,7 +24,7 @@ function ConfirmEmail() {
   const [resendEmailSuccess, setResendEmailSuccess] = useState(false);
 
   const { isSuccess, isError, isLoading, message } = useSelector(
-    (state) => state.auth
+    (state) => state.users
   );
   const dispatch = useDispatch();
 

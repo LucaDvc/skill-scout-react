@@ -18,7 +18,7 @@ import {
   clearSpecificErrorMessage,
   register,
   reset,
-} from '../features/auth/authSlice';
+} from '../features/users/usersSlice';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,7 +36,7 @@ function Register() {
   const { email, password1, password2, firstName, lastName } = formData;
 
   const { isError, isSuccess, isLoading, message, errors } = useSelector(
-    (state) => state.auth
+    (state) => state.users
   );
   const dispatch = useDispatch();
 

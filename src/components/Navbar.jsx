@@ -25,7 +25,7 @@ import AccountMenu from './AccountMenu';
 import LogoutDialog from './LogoutDialog';
 
 export default function Navbar() {
-  const { user, accessToken } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.users);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

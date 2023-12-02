@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { logout } from '../features/auth/authSlice';
+import { logout } from '../features/users/usersSlice';
 
 function LogoutDialog({ open, handleClose }) {
   const dispatch = useDispatch();

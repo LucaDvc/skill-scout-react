@@ -11,11 +11,12 @@ import Register from './pages/Register';
 import NotifyConfirmEmail from './pages/NotifyConfirmEmail';
 import ConfirmEmail from './pages/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshAccessToken } from './features/auth/authSlice';
+import { refreshAccessToken } from './features/users/usersSlice';
+import ProfileEdit from './components/ProfileEdit';
 
 function App() {
   const dispatch = useDispatch();
-  const { accessToken, refreshToken } = useSelector((state) => state.auth);
+  const { accessToken, refreshToken } = useSelector((state) => state.users);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -40,6 +41,7 @@ function App() {
             element={<NotifyConfirmEmail />}
           />
           <Route path='/confirm-email' element={<ConfirmEmail />} />
+          <Route path='/profile' element={<ProfileEdit />} />
           {/* 
       <Route path='/tickets' element={<PrivateRoute />}>
         <Route path='/tickets' element={<Tickets />} />

@@ -57,7 +57,7 @@ const refreshAccessToken = async (refreshToken) => {
   return response.data;
 };
 
-const authService = {
+const usersService = {
   register,
   logout,
   login,
@@ -66,4 +66,4 @@ const authService = {
   refreshAccessToken,
 };
 
-export default authService;
+export default usersService;
