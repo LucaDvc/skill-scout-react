@@ -57,6 +57,20 @@ const refreshAccessToken = async (refreshToken) => {
   return response.data;
 };
 
+const updateProfile = async (userId, token, profile) => {
+  console.log(profile);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+
+  const response = await axios.put(`${API_URL}/${userId}/`, profile, config);
+
+  return response.data;
+};
+
 const usersService = {
   register,
   logout,
@@ -64,6 +78,7 @@ const usersService = {
   resendConfirmationEmail,
   confirmEmail,
   refreshAccessToken,
+  updateProfile,
 };
 
 export default usersService;

@@ -106,6 +106,25 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  'users/updateProfile',
+  async (profile, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      const userId = thunkAPI.getState().users.user.id;
+      return await usersService.updateProfile(userId, token, profile);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+      console.log(error.response.data);
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const clearErrors = () => ({
   type: 'users/clearErrors',
 });
@@ -241,6 +260,19 @@ export const usersSlice = createSlice({
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
         sessionStorage.removeItem('accessToken');
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
