@@ -58,7 +58,6 @@ const refreshAccessToken = async (refreshToken) => {
 };
 
 const updateProfile = async (userId, token, profile) => {
-  console.log(profile);
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -71,6 +70,22 @@ const updateProfile = async (userId, token, profile) => {
   return response.data;
 };
 
+const sendForgotPasswordEmail = async (email) => {
+  const response = await axios.post(`${API_URL}/request-reset-email/`, {
+    email,
+  });
+  return response.data;
+};
+
+const resetPassword = async (token, uidb64, password) => {
+  const response = await axios.patch(`${API_URL}/reset-password/`, {
+    token,
+    uidb64,
+    password,
+  });
+  return response.data;
+};
+
 const usersService = {
   register,
   logout,
@@ -79,6 +94,8 @@ const usersService = {
   confirmEmail,
   refreshAccessToken,
   updateProfile,
+  sendForgotPasswordEmail,
+  resetPassword,
 };
 
 export default usersService;

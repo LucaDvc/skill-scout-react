@@ -13,6 +13,8 @@ import ConfirmEmail from './pages/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from './features/users/usersSlice';
 import ProfileEdit from './components/ProfileEdit';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ function App() {
           />
           <Route path='/confirm-email' element={<ConfirmEmail />} />
           <Route path='/profile' element={<ProfileEdit />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
           {/* 
       <Route path='/tickets' element={<PrivateRoute />}>
         <Route path='/tickets' element={<Tickets />} />

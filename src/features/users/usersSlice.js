@@ -65,9 +65,6 @@ export const resendConfirmationEmail = createAsyncThunk(
         message = error.response.data.error;
       }
 
-      console.log(error);
-      console.log(message);
-
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -118,7 +115,47 @@ export const updateUserProfile = createAsyncThunk(
       if (error.response && error.response.data && error.response.data.error) {
         message = error.response.data.error;
       }
-      console.log(error.response.data);
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const sendForgotPasswordEmail = createAsyncThunk(
+  'users/forgotPassMail',
+  async (email, thunkAPI) => {
+    try {
+      return await usersService.sendForgotPasswordEmail(email);
+    } catch (error) {
+      let message = error.message || error.toString();
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'users/resetPassword',
+  async ({ token, uidb64, password }, thunkAPI) => {
+    try {
+      return await usersService.resetPassword(token, uidb64, password);
+    } catch (error) {
+      let message = error.message || error.toString();
+
+      if (
+        error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object'
+      ) {
+        message = error.response.data;
+      }
+
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
 
       return thunkAPI.rejectWithValue(message);
     }
@@ -273,6 +310,36 @@ export const usersSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(sendForgotPasswordEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendForgotPasswordEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.success;
+      })
+      .addCase(sendForgotPasswordEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload.message;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        if (action.payload && typeof action.payload === 'object') {
+          state.errors = action.payload;
+        } else {
+          state.message = action.payload;
+        }
       });
   },
 });

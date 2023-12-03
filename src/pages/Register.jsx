@@ -70,6 +70,7 @@ function Register() {
     if (userData.password1 !== userData.password2) {
       setIsFormInvalid(true);
       setFormErrorMessage('Passwords do not match');
+      return;
     }
 
     dispatch(register(userData));

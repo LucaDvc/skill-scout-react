@@ -36,7 +36,6 @@ const CityField = ({ city, setCity }) => {
             handleChange(newInputValue);
           }}
           fullWidth
-          sx={{ m: '0' }}
           options={suggestions.map((suggestion) => suggestion.description)}
           loading={loading}
           renderInput={(params) => (
@@ -47,7 +46,7 @@ const CityField = ({ city, setCity }) => {
               })}
               variant='outlined'
               fullWidth
-              margin='0'
+              margin='none'
             />
           )}
           renderOption={(props, option) => {
