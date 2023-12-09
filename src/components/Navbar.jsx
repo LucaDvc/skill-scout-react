@@ -8,6 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import {
   Avatar,
   Button,
+  Container,
   Divider,
   Drawer,
   IconButton,
@@ -23,6 +24,8 @@ import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import AccountMenu from './AccountMenu';
 import LogoutDialog from './LogoutDialog';
+import logo from '../resources/logo.png';
+import logo2 from '../resources/2.png';
 
 export default function Navbar() {
   const { user, accessToken } = useSelector((state) => state.users);
@@ -59,9 +62,7 @@ export default function Navbar() {
         width: 250, // Adjust the width as needed
       }}
     >
-      <Typography variant='h6' sx={{ my: 2 }}>
-        Logo
-      </Typography>
+      <Avatar src={logo} />
       <Divider />
       {user ? (
         <Avatar src={user.picture} alt={user.first_name} />
@@ -135,28 +136,60 @@ export default function Navbar() {
           </>
         ) : (
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Link
+                to='/'
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Avatar src={logo2} sx={{ width: 75, height: 75 }} />
+                <Typography color='inherit' variant='h5' ml={1}>
+                  Skill Scout
+                </Typography>
+              </Link>
+            </Box>
             <Link
               to='/'
-              style={{ textDecoration: 'none', color: 'inherit', flexGrow: 1 }}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                margin: 8,
+              }}
             >
-              <Typography variant='h6' component='div'>
-                Logo
+              <Typography color='inherit' variant='button'>
+                Catalog
               </Typography>
-            </Link>
-            <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Button color='inherit'>Catalog</Button>
             </Link>
             <Link
               to='/learning'
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                margin: 8,
+                '&:hover': {
+                  color: 'primary.dark',
+                },
+              }}
             >
-              <Button color='inherit'>Learning</Button>
+              <Typography color='inherit' variant='button'>
+                Learning
+              </Typography>
             </Link>
             <Link
               to='/teaching'
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                margin: 8,
+              }}
             >
-              <Button color='inherit'>Teaching</Button>
+              <Typography color='inherit' variant='button'>
+                Teaching
+              </Typography>
             </Link>
           </Box>
         )}
