@@ -25,7 +25,6 @@ import { useSelector } from 'react-redux';
 import AccountMenu from './AccountMenu';
 import LogoutDialog from './LogoutDialog';
 import logo from '../resources/logo.png';
-import logo2 from '../resources/2.png';
 
 export default function Navbar() {
   const { user, accessToken } = useSelector((state) => state.users);
@@ -146,7 +145,7 @@ export default function Navbar() {
                   alignItems: 'center',
                 }}
               >
-                <Avatar src={logo2} sx={{ width: 75, height: 75 }} />
+                <Avatar src={logo} sx={{ width: 75, height: 75 }} />
                 <Typography color='inherit' variant='h5' ml={1}>
                   Skill Scout
                 </Typography>
