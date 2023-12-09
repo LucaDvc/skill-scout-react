@@ -2,14 +2,23 @@ import axios from 'axios';
 
 const API_URL = '/api/catalog';
 
-// Get category list
-const getCategories = async () => {
-  const response = await axios.get(`${API_URL}/categories/`);
+const getHighestRatedCourses = async () => {
+  const response = await axios.get(
+    `${API_URL}/courses/?page=1&ordering=-avg_rating`
+  );
+  return response.data;
+};
+
+const getPopularCourses = async () => {
+  const response = await axios.get(
+    `${API_URL}/courses/?page=1&ordering=-enrolled_learners`
+  );
   return response.data;
 };
 
 const catalogService = {
-  getCategories,
+  getHighestRatedCourses,
+  getPopularCourses,
 };
 
 export default catalogService;
