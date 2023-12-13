@@ -1,80 +1,63 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Alert,
   Box,
-  Container,
   Divider,
   IconButton,
   Snackbar,
+  Tab,
   Tabs,
   Typography,
 } from '@mui/material';
-import Tab from '@mui/material/Tab';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import React, { useEffect, useState } from 'react';
-import CategoriesMenu from '../components/catalog/CategoriesMenu';
-import CoursesGrid from '../components/catalog/CoursesGrid';
+import CoursesGrid from './CoursesGrid';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getHighestRatedCourses,
   getPopularCourses,
   reset,
-} from '../features/catalog/catalogSlice';
-import { getCategories } from '../features/category/categorySlice';
-import RecommendedCoursesTabs from '../components/catalog/RecommendedCoursesTabs';
-import TopCategoriesCoursesTabs from '../components/catalog/TopCategoriesCoursesTabs';
+} from '../../features/catalog/catalogSlice';
 
-function Catalog() {
+function RecommendedCoursesTabs() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
+
+  const highestRatedSearchUrl = '/catalog/search?ordering=-avg_rating';
+  const popularSearchUrl = '/catalog/search?ordering=-enrolled_learners';
+  const [viewMoreUrl, setViewMoreUrl] = useState(highestRatedSearchUrl);
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // redux
-  const {
-    highestRatedCourses,
-    popularCourses,
-    isError: catalogError,
-    isSuccess: catalogSuccess,
-    isLoading: catalogLoading,
-  } = useSelector((state) => state.catalog);
-
-  const {
-    categories,
-    isLoading: categoryLoading,
-    isError: categoryError,
-  } = useSelector((state) => state.category);
-
+  const { highestRatedCourses, popularCourses, isError, isSuccess, isLoading } =
+    useSelector((state) => state.catalog.recommendedCourses);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (catalogSuccess && selectedTab === 0) {
+    if (isSuccess && selectedTab === 0) {
       setCoursesToDisplay(highestRatedCourses);
     }
-  }, [highestRatedCourses, catalogSuccess, selectedTab]);
+  }, [highestRatedCourses, isSuccess, selectedTab]);
 
   useEffect(() => {
-    if (catalogSuccess && selectedTab === 1) {
+    if (isSuccess && selectedTab === 1) {
       setCoursesToDisplay(popularCourses);
     }
-  }, [popularCourses, catalogSuccess, selectedTab]);
+  }, [popularCourses, isSuccess, selectedTab]);
 
   useEffect(() => {
-    if (catalogError) {
+    if (isError) {
       setOpenSnackbar(true);
       setSnackbarMessage('Failed to retrieve courses');
     }
-
-    if (categoryError) {
-      setOpenSnackbar(true);
-      setSnackbarMessage('Failed to retrieve categories');
-    }
-  }, [catalogError, categoryError]);
+  }, [isError]);
 
   useEffect(() => {
     dispatch(getHighestRatedCourses());
-    dispatch(getCategories());
 
     return () => dispatch(reset());
   }, [dispatch]);
@@ -88,12 +71,14 @@ function Catalog() {
       } else {
         setCoursesToDisplay(popularCourses);
       }
+      setViewMoreUrl(popularSearchUrl);
     } else if (newValue === 0) {
       if (highestRatedCourses.length === 0) {
         dispatch(getHighestRatedCourses());
       } else {
         setCoursesToDisplay(highestRatedCourses);
       }
+      setViewMoreUrl(highestRatedSearchUrl);
     }
   };
 
@@ -115,7 +100,6 @@ function Catalog() {
       dispatch(getPopularCourses());
     }
   };
-
   return (
     <>
       <Snackbar
@@ -126,21 +110,50 @@ function Catalog() {
       >
         <Alert
           onClose={handleCloseSnackbar}
-          severity={categoryError ? 'error' : 'success'}
+          severity={isError ? 'error' : 'success'}
           sx={{ width: '100%' }}
         >
           {snackbarMessage}
         </Alert>
       </Snackbar>
 
-      <CategoriesMenu categories={categories} loading={categoryLoading} />
-
-      <Container component='main' maxWidth='lg'>
-        <RecommendedCoursesTabs />
-        <TopCategoriesCoursesTabs />
-      </Container>
+      <Box sx={{ flexGrow: 1, padding: 2 }}>
+        <Typography variant='h3' gutterBottom>
+          Online courses <ArrowDownwardIcon />
+        </Typography>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          indicatorColor='secondary'
+          textColor='secondary'
+          aria-label='course tabs'
+        >
+          <Tab label='Highest rated courses' />
+          <Tab label='Popular courses' />
+        </Tabs>
+        <Divider />
+        <Box sx={{ width: '100%', marginTop: 2 }}>
+          {isError ? (
+            <Box sx={{ display: 'flex', alignContent: 'center' }}>
+              <IconButton
+                aria-label='reload'
+                color='text.secondary'
+                onClick={reloadCourses}
+              >
+                <ReplayIcon fontSize='large' />
+              </IconButton>
+            </Box>
+          ) : (
+            <CoursesGrid
+              courses={coursesToDisplay}
+              loading={isLoading}
+              viewMoreLink={viewMoreUrl}
+            />
+          )}
+        </Box>
+      </Box>
     </>
   );
 }
 
-export default Catalog;
+export default RecommendedCoursesTabs;

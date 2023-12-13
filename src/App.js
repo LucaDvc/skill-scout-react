@@ -36,6 +36,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Catalog />} />
+          <Route path='/catalog' element={<Catalog />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route
