@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Divider, Link, Skeleton, Typography } from '@mui/material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -14,7 +14,6 @@ const CategoriesMenu = ({ categories, loading }) => {
     setActiveCategory(null);
   };
 
-  //TODO proper category links
   return (
     <>
       <Divider />
@@ -44,7 +43,7 @@ const CategoriesMenu = ({ categories, loading }) => {
               ))
             : categories.map((category) => (
                 <Link
-                  to='/'
+                  href={`/catalog/search?categories=${category.name}`}
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
@@ -90,7 +89,7 @@ const CategoriesMenu = ({ categories, loading }) => {
           >
             {activeCategory.subcategories.map((subCategory) => (
               <Link
-                to='/'
+                href={`/catalog/search?categories=${subCategory.name}`}
                 style={{
                   textDecoration: 'none',
                   display: 'block',
