@@ -42,7 +42,7 @@ function CourseSmallCard({ course }) {
       <CardContent
         sx={{
           paddingBottom: '16px',
-          paddingRight: '100px',
+          paddingRight: '90px',
           minHeight: 140,
         }}
       >
@@ -73,7 +73,10 @@ function CourseSmallCard({ course }) {
         </Link>
 
         <Stack direction='row' spacing={2} alignItems='center' marginTop={8}>
-          <Box sx={{ display: 'flex', alignContent: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant='body1' color='text.secondary' component='span'>
+              {course.average_rating}
+            </Typography>
             <Rating
               name='read-only'
               value={course.average_rating}
@@ -81,8 +84,9 @@ function CourseSmallCard({ course }) {
               readOnly
               size='small'
             />
+
             <Typography variant='body2' color='text.secondary' component='span'>
-              {course.average_rating}
+              {` (${course.reviews_no})`}
             </Typography>
           </Box>
 
@@ -102,7 +106,7 @@ function CourseSmallCard({ course }) {
         </Stack>
 
         <Typography variant='h5' component='div' marginTop={2}>
-          {course.price == 0 ? 'Free' : `$${course.price}`}
+          {course.price === 0 ? 'Free' : `$${course.price}`}
         </Typography>
       </CardContent>
       <CardActions

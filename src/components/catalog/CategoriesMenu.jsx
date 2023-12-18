@@ -27,7 +27,6 @@ const CategoriesMenu = ({ categories, loading }) => {
             width: '100%',
             position: 'static',
           }}
-          disableGutters
         >
           {loading
             ? Array.from({ length: 3 }).map((_, index) => (

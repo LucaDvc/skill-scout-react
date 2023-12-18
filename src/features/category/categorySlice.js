@@ -3,6 +3,7 @@ import categoryService from './categoryService';
 
 const initialState = {
   categories: [],
+  topCategories: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -42,6 +43,9 @@ export const categorySlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.categories = action.payload;
+        state.topCategories = action.payload.filter(
+          (category) => category.top === true
+        );
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.isLoading = false;
