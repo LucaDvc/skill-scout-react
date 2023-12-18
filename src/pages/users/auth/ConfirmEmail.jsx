@@ -5,8 +5,8 @@ import {
   confirmEmail,
   resendConfirmationEmail,
   reset,
-} from '../features/users/usersSlice';
-import Spinner from '../components/Spinner';
+} from '../../../features/users/usersSlice';
+import Spinner from '../../../components/Spinner';
 import {
   Alert,
   Box,

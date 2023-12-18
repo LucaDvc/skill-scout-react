@@ -10,15 +10,15 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from '../components/Copyright';
+import Copyright from '../../../components/Copyright';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   clearGeneralErrorMessage,
   login,
   reset,
-} from '../features/users/usersSlice';
-import Spinner from '../components/Spinner';
+} from '../../../features/users/usersSlice';
+import Spinner from '../../../components/Spinner';
 import { Alert, Divider } from '@mui/material';
 
 function Login() {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '../components/Spinner';
+import Spinner from '../../../components/Spinner';
 import {
   Alert,
   Box,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { reset, sendForgotPasswordEmail } from '../features/users/usersSlice';
+import { reset, sendForgotPasswordEmail } from '../../../features/users/usersSlice';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 
 function ForgotPassword() {

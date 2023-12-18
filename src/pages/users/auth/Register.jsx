@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from '../components/Copyright';
+import Copyright from '../../../components/Copyright';
 import { Alert } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,8 +18,8 @@ import {
   clearSpecificErrorMessage,
   register,
   reset,
-} from '../features/users/usersSlice';
-import Spinner from '../components/Spinner';
+} from '../../../features/users/usersSlice';
+import Spinner from '../../../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {

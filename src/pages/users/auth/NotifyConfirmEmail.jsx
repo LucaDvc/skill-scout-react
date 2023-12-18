@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '../components/Spinner';
+import Spinner from '../../../components/Spinner';
 import {
   Alert,
   Box,
   Button,
   Container,
   Link,
-  Slide,
   Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { resendConfirmationEmail, reset } from '../features/users/usersSlice';
+import {
+  resendConfirmationEmail,
+  reset,
+} from '../../../features/users/usersSlice';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import { useLocation } from 'react-router-dom';
 
@@ -45,7 +47,7 @@ function NotifyConfirmEmail() {
       setShowForm(true);
       setIsUserCheckComplete(true);
     }
-  }, [user, dispatch, accessToken]);
+  }, [user, dispatch, accessToken, fromPage]);
 
   useEffect(() => {
     if ((isError && message) || isSuccess) {
