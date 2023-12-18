@@ -8,13 +8,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import {
   Avatar,
   Button,
-  Container,
   Divider,
   Drawer,
   IconButton,
   useMediaQuery,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Search,
   SearchIconWrapper,
@@ -32,6 +31,8 @@ export default function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -86,7 +87,7 @@ export default function Navbar() {
         </>
       )}
       <Divider />
-      <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to='/catalog' style={{ textDecoration: 'none', color: 'inherit' }}>
         <Button color='inherit' fullWidth>
           Catalog
         </Button>
@@ -152,7 +153,7 @@ export default function Navbar() {
               </Link>
             </Box>
             <Link
-              to='/'
+              to='/catalog'
               style={{
                 textDecoration: 'none',
                 color: 'inherit',
@@ -200,6 +201,11 @@ export default function Navbar() {
           <StyledInputBase
             placeholder='Search...'
             inputProps={{ 'aria-label': 'search' }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                navigate(`catalog/search?search=${event.target.value}&page=1`);
+              }
+            }}
           />
         </Search>
 
