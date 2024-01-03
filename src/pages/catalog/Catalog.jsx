@@ -1,12 +1,12 @@
 import { Alert, Container, Snackbar } from '@mui/material';
 
 import React, { useEffect, useState } from 'react';
-import CategoriesMenu from '../../components/catalog/CategoriesMenu';
+import CategoriesMenu from '../../components/catalog/home/CategoriesMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset } from '../../features/catalog/catalogSlice';
 import { getCategories } from '../../features/category/categorySlice';
-import RecommendedCoursesTabs from '../../components/catalog/RecommendedCoursesTabs';
-import TopCategoriesCoursesTabs from '../../components/catalog/TopCategoriesCoursesTabs';
+import RecommendedCoursesTabs from '../../components/catalog/home/RecommendedCoursesTabs';
+import TopCategoriesCoursesTabs from '../../components/catalog/home/TopCategoriesCoursesTabs';
 
 function Catalog() {
   const [openSnackbar, setOpenSnackbar] = useState(false);

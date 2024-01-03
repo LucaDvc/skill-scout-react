@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import CourseSmallCard from './CourseSmallCard';
-import LoadingSmallCard from './LoadingSmallCard';
+import CourseSmallCard from '../cards/CourseSmallCard';
+import LoadingSmallCard from '../cards/LoadingSmallCard';
 import ViewMoreCard from './ViewMoreCard';
 
 function CoursesGrid({ courses, loading, viewMoreLink }) {

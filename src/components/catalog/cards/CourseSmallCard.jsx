@@ -3,25 +3,18 @@ import {
   Card,
   CardContent,
   Typography,
-  IconButton,
   Box,
   Rating,
   Stack,
-  CardActions,
   CardMedia,
   Link,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import { useNavigate } from 'react-router-dom';
 
 function CourseSmallCard({ course }) {
-  const [isFavorite, setIsFavorite] = React.useState(false);
-
-  // TODO: add/remove to/from favs
-  const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
-  };
+  const navigate = useNavigate();
 
   return (
     <Card
@@ -38,6 +31,7 @@ function CourseSmallCard({ course }) {
           cursor: 'pointer',
         },
       }}
+      onClick={() => navigate(`/catalog/courses/${course.id}`)}
     >
       <CardContent
         sx={{
@@ -105,18 +99,23 @@ function CourseSmallCard({ course }) {
           </Box>
         </Stack>
 
-        <Typography variant='h5' component='div' marginTop={2}>
-          {course.price === 0 ? 'Free' : `$${course.price}`}
+        <Typography
+          variant='h5'
+          component='div'
+          marginTop={2}
+          color={course.price == 0 && 'secondary.dark'}
+        >
+          {course.price == 0 ? 'Free' : `$${course.price}`}
         </Typography>
       </CardContent>
-      <CardActions
+      {/* <CardActions
         disableSpacing
         sx={{ position: 'absolute', top: -8, right: -8, zIndex: 1 }}
       >
         <IconButton aria-label='add to favorites' onClick={handleFavoriteClick}>
           <FavoriteBorderIcon color={isFavorite ? 'primary' : 'action'} />
         </IconButton>
-      </CardActions>
+      </CardActions> */}
       <CardMedia
         component='img'
         image={course.image}

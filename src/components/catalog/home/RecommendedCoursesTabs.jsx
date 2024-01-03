@@ -20,14 +20,14 @@ import {
   getHighestRatedCourses,
   getPopularCourses,
   reset,
-} from '../../features/catalog/catalogSlice';
+} from '../../../features/catalog/catalogSlice';
 
 function RecommendedCoursesTabs() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
 
-  const highestRatedSearchUrl = '/catalog/search?ordering=-avg_rating';
-  const popularSearchUrl = '/catalog/search?ordering=-enrolled_learners';
+  const highestRatedSearchUrl = '/catalog/search?ordering=-avg_rating&page=1';
+  const popularSearchUrl = '/catalog/search?ordering=-enrolled_learners&page=1';
   const [viewMoreUrl, setViewMoreUrl] = useState(highestRatedSearchUrl);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);

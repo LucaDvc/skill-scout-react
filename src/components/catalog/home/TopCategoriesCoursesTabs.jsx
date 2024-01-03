@@ -16,7 +16,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CoursesGrid from './CoursesGrid';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getCoursesByFilter, reset } from '../../features/catalog/catalogSlice';
+import { getCoursesByFilter, reset } from '../../../features/catalog/catalogSlice';
 
 function TopCategoriesCoursesTabs() {
   const VIEW_MORE_ROOT_URL = '/catalog/search?page=1&categories=';
