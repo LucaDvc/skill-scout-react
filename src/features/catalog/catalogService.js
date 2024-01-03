@@ -21,10 +21,16 @@ const getCoursesByFilter = async (params) => {
   return response.data;
 };
 
+const getTags = async () => {
+  const response = await axios.get(`${API_URL}/tags/`);
+  return response.data;
+};
+
 const catalogService = {
   getHighestRatedCourses,
   getPopularCourses,
   getCoursesByFilter,
+  getTags,
 };
 
 export default catalogService;

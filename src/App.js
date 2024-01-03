@@ -5,16 +5,17 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Navbar from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Catalog from './pages/Catalog';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import NotifyConfirmEmail from './pages/NotifyConfirmEmail';
-import ConfirmEmail from './pages/ConfirmEmail';
+import Catalog from './pages/catalog/Catalog';
+import Login from './pages/users/auth/Login';
+import Register from './pages/users/auth/Register';
+import NotifyConfirmEmail from './pages/users/auth/NotifyConfirmEmail';
+import ConfirmEmail from './pages/users/auth/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from './features/users/usersSlice';
 import ProfileEdit from './components/ProfileEdit';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/users/auth/ForgotPassword';
+import ResetPassword from './pages/users/auth/ResetPassword';
+import CatalogSearch from './pages/catalog/CatalogSearch';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Catalog />} />
           <Route path='/catalog' element={<Catalog />} />
+          <Route path='/catalog/search' element={<CatalogSearch />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route

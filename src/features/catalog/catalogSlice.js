@@ -10,7 +10,15 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  tags: {
+    list: [],
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
   filteredCourses: [],
+  resultsCount: 0,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -56,6 +64,19 @@ export const getCoursesByFilter = createAsyncThunk(
   }
 );
 
+export const getTags = createAsyncThunk(
+  'catalog/getTags',
+  async (_, thunkAPI) => {
+    try {
+      return await catalogService.getTags();
+    } catch (error) {
+      let message = error.message || error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const catalogSlice = createSlice({
   name: 'catalog',
   initialState,
@@ -68,6 +89,12 @@ export const catalogSlice = createSlice({
       state.highestRatedCourses = [];
       state.popularCourses = [];
       state.filteredCourses = [];
+    },
+    statusesReset: (state) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = false;
+      state.message = '';
     },
   },
   extraReducers: (builder) => {
@@ -109,15 +136,29 @@ export const catalogSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.filteredCourses = action.payload.results;
+        state.resultsCount = action.payload.count;
       })
       .addCase(getCoursesByFilter.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(getTags.pending, (state) => {
+        state.tags.isLoading = true;
+      })
+      .addCase(getTags.fulfilled, (state, action) => {
+        state.tags.isLoading = false;
+        state.tags.isSuccess = true;
+        state.tags.list = action.payload;
+      })
+      .addCase(getTags.rejected, (state, action) => {
+        state.tags.isLoading = false;
+        state.tags.isError = true;
+        state.tags.message = action.payload;
       });
   },
 });
 
 export default catalogSlice.reducer;
 
-export const { reset } = catalogSlice.actions;
+export const { reset, statusesReset } = catalogSlice.actions;
