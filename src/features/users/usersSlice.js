@@ -162,6 +162,33 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const refreshAuthUser = createAsyncThunk(
+  'users/refreshAuthUser',
+  async (_, thunkAPI) => {
+    try {
+      const userId = thunkAPI.getState().users.user.id;
+      const token = thunkAPI.getState().users.accessToken;
+      return await usersService.getUserById(userId, token);
+    } catch (error) {
+      let message = error.message || error.toString();
+
+      if (
+        error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object'
+      ) {
+        message = error.response.data;
+      }
+
+      if (error.response && error.response.data && error.response.data.error) {
+        message = error.response.data.error;
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const clearErrors = () => ({
   type: 'users/clearErrors',
 });
@@ -340,6 +367,18 @@ export const usersSlice = createSlice({
         } else {
           state.message = action.payload;
         }
+      })
+      .addCase(refreshAuthUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshAuthUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(refreshAuthUser.rejected, (state) => {
+        state.isError = true;
+        state.isLoading = false;
       });
   },
 });

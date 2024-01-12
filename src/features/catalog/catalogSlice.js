@@ -19,9 +19,11 @@ const initialState = {
   },
   filteredCourses: [],
   resultsCount: 0,
+  course: {},
   isError: false,
   isSuccess: false,
   isLoading: false,
+  isWishlistUpdating: false,
   message: '',
 };
 
@@ -71,6 +73,43 @@ export const getTags = createAsyncThunk(
       return await catalogService.getTags();
     } catch (error) {
       let message = error.message || error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getCourseById = createAsyncThunk(
+  'catalog/getCourseById',
+  async (id, thunkAPI) => {
+    try {
+      return await catalogService.getCourseById(id);
+    } catch (error) {
+      let message;
+      if (error.response.status === 404) {
+        message = 'Not found';
+      } else {
+        message = error.message || error.toString();
+      }
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const wishlistCourse = createAsyncThunk(
+  'catalog/wishlistCourse',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await catalogService.wishlistCourse(id, token);
+    } catch (error) {
+      let message;
+      if (error.response.status === 404) {
+        message = 'Not found';
+      } else {
+        message = error.message || error.toString();
+      }
 
       return thunkAPI.rejectWithValue(message);
     }
@@ -155,6 +194,28 @@ export const catalogSlice = createSlice({
         state.tags.isLoading = false;
         state.tags.isError = true;
         state.tags.message = action.payload;
+      })
+      .addCase(getCourseById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCourseById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.course = action.payload;
+      })
+      .addCase(getCourseById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(wishlistCourse.pending, (state) => {
+        state.isWishlistUpdating = true;
+      })
+      .addCase(wishlistCourse.fulfilled, (state) => {
+        state.isWishlistUpdating = false;
+      })
+      .addCase(wishlistCourse.rejected, (state) => {
+        state.isWishlistUpdating = false;
       });
   },
 });

@@ -16,6 +16,7 @@ import ProfileEdit from './components/ProfileEdit';
 import ForgotPassword from './pages/users/auth/ForgotPassword';
 import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';
+import CourseDetails from './pages/catalog/CourseDetails';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,10 @@ function App() {
           <Route path='/' element={<Catalog />} />
           <Route path='/catalog' element={<Catalog />} />
           <Route path='/catalog/search' element={<CatalogSearch />} />
+          <Route
+            path='/catalog/courses/:courseId'
+            element={<CourseDetails />}
+          />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route

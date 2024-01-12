@@ -86,6 +86,22 @@ const resetPassword = async (token, uidb64, password) => {
   return response.data;
 };
 
+const getUserById = async (userId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`${API_URL}/${userId}/`, config);
+
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data));
+  }
+
+  return response.data;
+};
+
 const usersService = {
   register,
   logout,
@@ -96,6 +112,7 @@ const usersService = {
   updateProfile,
   sendForgotPasswordEmail,
   resetPassword,
+  getUserById,
 };
 
 export default usersService;
