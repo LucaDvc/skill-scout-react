@@ -17,6 +17,8 @@ import ForgotPassword from './pages/users/auth/ForgotPassword';
 import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';
 import CourseDetails from './pages/catalog/CourseDetails';
+import MainTeaching from './pages/teaching/MainTeaching';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ function App() {
 
     checkAuthStatus();
   }, [dispatch, accessToken, refreshToken]);
+
   return (
     <>
       <BrowserRouter>
@@ -54,6 +57,9 @@ function App() {
           <Route path='/profile' element={<ProfileEdit />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='' element={<PrivateRoute />}>
+            <Route path='/teaching' element={<MainTeaching />} />
+          </Route>
           {/* 
       <Route path='/tickets' element={<PrivateRoute />}>
         <Route path='/tickets' element={<Tickets />} />
