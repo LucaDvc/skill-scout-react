@@ -11,15 +11,27 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SearchIcon from '@mui/icons-material/Search';
 import TeachingCourseCard from '../../components/teaching/TeachingCourseCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCourses } from '../../features/teaching/teachingSlice';
+import Spinner from '../../components/Spinner';
 
 function TeachingCoursesOverview() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
-  const [courses, setCourses] = useState([]);
+
+  const { courses, isLoading, isError, message } = useSelector(
+    (state) => state.teaching
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCourses());
+  }, [dispatch]);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -84,12 +96,15 @@ function TeachingCoursesOverview() {
           </IconButton>
         </Paper>
       </Box>
-
-      <Box sx={{ marginTop: 4 }}>
-        {courses.map((course) => (
-          <TeachingCourseCard course={course} />
-        ))}
-      </Box>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Box sx={{ marginTop: 4 }}>
+          {courses.map((course) => (
+            <TeachingCourseCard course={course} />
+          ))}
+        </Box>
+      )}
     </Container>
   );
 }
