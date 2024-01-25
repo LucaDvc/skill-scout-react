@@ -11,13 +11,13 @@ import Register from './pages/users/auth/Register';
 import NotifyConfirmEmail from './pages/users/auth/NotifyConfirmEmail';
 import ConfirmEmail from './pages/users/auth/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshAccessToken } from './features/users/usersSlice';
+import { logout, refreshAccessToken } from './features/users/usersSlice';
 import ProfileEdit from './components/ProfileEdit';
 import ForgotPassword from './pages/users/auth/ForgotPassword';
 import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';
 import CourseDetails from './pages/catalog/CourseDetails';
-import MainTeaching from './pages/teaching/MainTeaching';
+import TeachingCoursesOverview from './pages/teaching/TeachingCoursesOverview';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -26,6 +26,10 @@ function App() {
 
   useEffect(() => {
     const checkAuthStatus = async () => {
+      if (!accessToken && !refreshToken) {
+        dispatch(logout());
+      }
+
       if (!accessToken && refreshToken) {
         // If there's no accessToken but we have refreshToken in local storage, try to refresh it
         dispatch(refreshAccessToken());
@@ -58,7 +62,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='' element={<PrivateRoute />}>
-            <Route path='/teaching' element={<MainTeaching />} />
+            <Route path='/teaching' element={<TeachingCoursesOverview />} />
           </Route>
           {/* 
       <Route path='/tickets' element={<PrivateRoute />}>
