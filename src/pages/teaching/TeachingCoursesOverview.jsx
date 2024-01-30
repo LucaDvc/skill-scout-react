@@ -14,16 +14,17 @@ import {
 import React, { useEffect, useState } from 'react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SearchIcon from '@mui/icons-material/Search';
-import TeachingCourseCard from '../../components/teaching/TeachingCourseCard';
+import TeachingCourseCard from '../../components/teaching/cards/TeachingCourseCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourses } from '../../features/teaching/teachingSlice';
+import { getCourses, reset } from '../../features/teaching/teachingSlice';
 import Spinner from '../../components/Spinner';
 
 function TeachingCoursesOverview() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [filteredCourses, setFilteredCourses] = useState([]);
 
-  const { courses, isLoading, isError, message } = useSelector(
+  const { courses, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.teaching
   );
 
@@ -33,13 +34,61 @@ function TeachingCoursesOverview() {
     dispatch(getCourses());
   }, [dispatch]);
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-    // apply filters
+  useEffect(() => {
+    if (isSuccess) {
+      setFilteredCourses(courses);
+      dispatch(reset());
+    }
+  }, [isSuccess, courses]);
+
+  const applyFilters = (filter) => {
+    switch (filter) {
+      case 'all':
+        setFilteredCourses(courses);
+        break;
+      case 'drafted':
+        setFilteredCourses(
+          courses.filter((course) => course.release_date === null)
+        );
+        break;
+      case 'active':
+        setFilteredCourses(courses.filter((course) => course.active));
+        break;
+      case 'inactive':
+        setFilteredCourses(
+          courses.filter(
+            (course) => !course.active && course.release_date !== null
+          )
+        );
+        break;
+    }
   };
 
-  const handleSearch = () => {
-    // apply search
+  useEffect(() => {
+    applyFilters(filter);
+  }, [filter]);
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const handleSearch = (searchVal) => {
+    if (searchVal) {
+      setFilteredCourses(
+        filteredCourses.filter((course) =>
+          course.title
+            .toLowerCase()
+            .trim()
+            .split(' ')
+            .join('')
+            .includes(
+              searchVal.toLowerCase().toLowerCase().trim().split(' ').join('')
+            )
+        )
+      );
+    } else {
+      applyFilters(filter);
+    }
   };
 
   return (
@@ -84,25 +133,29 @@ function TeachingCoursesOverview() {
             sx={{ ml: 1, flex: 1 }}
             placeholder='Search your courses...'
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              handleSearch(event.target.value);
+            }}
           />
-          <IconButton
-            type='button'
-            sx={{ p: '10px' }}
-            aria-label='search'
-            onClick={handleSearch}
-          >
-            <SearchIcon />
-          </IconButton>
+          <SearchIcon />
         </Paper>
       </Box>
       {isLoading ? (
         <Spinner />
       ) : (
         <Box sx={{ marginTop: 4 }}>
-          {courses.map((course) => (
-            <TeachingCourseCard course={course} />
-          ))}
+          {filteredCourses && filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
+              <Box mt={2} key={course.id}>
+                <TeachingCourseCard course={course} />
+              </Box>
+            ))
+          ) : (
+            <Typography variant='h5' gutterBottom mt={2}>
+              No courses found.
+            </Typography>
+          )}
         </Box>
       )}
     </Container>
