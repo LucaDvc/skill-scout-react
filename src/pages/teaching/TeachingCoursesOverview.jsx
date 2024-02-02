@@ -24,9 +24,19 @@ function TeachingCoursesOverview() {
   const [search, setSearch] = useState('');
   const [filteredCourses, setFilteredCourses] = useState([]);
 
-  const { courses, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.teaching
-  );
+  const {
+    courses,
+    isLoading,
+    isSuccess,
+    isError,
+    message,
+    delete: {
+      isLoading: deleteLoading,
+      isSuccess: deleteSuccess,
+      isError: deleteError,
+      message: deleteMessage,
+    },
+  } = useSelector((state) => state.teaching);
 
   const dispatch = useDispatch();
 
@@ -35,11 +45,11 @@ function TeachingCoursesOverview() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || deleteSuccess) {
       setFilteredCourses(courses);
       dispatch(reset());
     }
-  }, [isSuccess, courses]);
+  }, [isSuccess, courses, deleteSuccess]);
 
   const applyFilters = (filter) => {
     switch (filter) {

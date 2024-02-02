@@ -19,6 +19,7 @@ import CatalogSearch from './pages/catalog/CatalogSearch';
 import CourseDetails from './pages/catalog/CourseDetails';
 import TeachingCoursesOverview from './pages/teaching/TeachingCoursesOverview';
 import PrivateRoute from './components/PrivateRoute';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,8 @@ function App() {
       </Route> */}
         </Routes>
       </BrowserRouter>
+
+      <ToastContainer />
     </>
   );
 }
