@@ -30,12 +30,8 @@ function TeachingCoursesOverview() {
     isSuccess,
     isError,
     message,
-    delete: {
-      isLoading: deleteLoading,
-      isSuccess: deleteSuccess,
-      isError: deleteError,
-      message: deleteMessage,
-    },
+    delete: { isSuccess: deleteSuccess },
+    create: { isSuccess: createSuccess },
   } = useSelector((state) => state.teaching);
 
   const dispatch = useDispatch();
@@ -45,7 +41,7 @@ function TeachingCoursesOverview() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isSuccess || deleteSuccess) {
+    if (isSuccess || deleteSuccess || createSuccess) {
       setFilteredCourses(courses);
       dispatch(reset());
     }

@@ -20,9 +20,22 @@ const deleteCourse = async (token, id) => {
   return response.data;
 };
 
+const createCourse = async (token, course, isImageUrl) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': isImageUrl ? 'application/json' : 'multipart/form-data',
+    },
+  };
+
+  const response = await axios.post(`${API_URL}/courses/`, course, config);
+  return response.data;
+};
+
 const teachingService = {
   getCourses,
   deleteCourse,
+  createCourse
 };
 
 export default teachingService;

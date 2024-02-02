@@ -13,6 +13,12 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  create: {
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
 };
 
 export const getCourses = createAsyncThunk(
@@ -37,7 +43,21 @@ export const deleteCourse = createAsyncThunk(
       await teachingService.deleteCourse(token, id);
       return id;
     } catch (error) {
-      let message = error.detail || error.toString();
+      let message = 'Unable to delete course. Please try again.';
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const createCourse = createAsyncThunk(
+  'teaching/createCourse',
+  async ({ course, isImageUrl }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await teachingService.createCourse(token, course, isImageUrl);
+    } catch (error) {
+      let message = 'Unable to create course. Please try again.';
 
       return thunkAPI.rejectWithValue(message);
     }
@@ -54,6 +74,12 @@ export const teachingSlice = createSlice({
       state.isSuccess = false;
       state.message = '';
       state.delete = {
+        isError: false,
+        isSuccess: false,
+        isLoading: false,
+        message: '',
+      };
+      state.create = {
         isError: false,
         isSuccess: false,
         isLoading: false,
@@ -90,6 +116,19 @@ export const teachingSlice = createSlice({
         state.delete.isLoading = false;
         state.delete.isError = true;
         state.delete.message = action.payload;
+      })
+      .addCase(createCourse.pending, (state) => {
+        state.create.isLoading = true;
+      })
+      .addCase(createCourse.fulfilled, (state, action) => {
+        state.create.isLoading = false;
+        state.create.isSuccess = true;
+        state.courses.push(action.payload);
+      })
+      .addCase(createCourse.rejected, (state, action) => {
+        state.create.isLoading = false;
+        state.create.isError = true;
+        state.create.message = action.payload;
       });
   },
 });
