@@ -20,6 +20,7 @@ import CourseDetails from './pages/catalog/CourseDetails';
 import TeachingCoursesOverview from './pages/teaching/TeachingCoursesOverview';
 import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
+import NewCourse from './pages/teaching/NewCourse';
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          {/* Catalog */}
           <Route path='/' element={<Catalog />} />
           <Route path='/catalog' element={<Catalog />} />
           <Route path='/catalog/search' element={<CatalogSearch />} />
@@ -52,6 +54,8 @@ function App() {
             path='/catalog/courses/:courseId'
             element={<CourseDetails />}
           />
+
+          {/* Auth */}
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route
@@ -59,19 +63,17 @@ function App() {
             element={<NotifyConfirmEmail />}
           />
           <Route path='/confirm-email' element={<ConfirmEmail />} />
+
+          {/* Users */}
           <Route path='/profile' element={<ProfileEdit />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
+
           <Route path='' element={<PrivateRoute />}>
+            {/* Teaching */}
             <Route path='/teaching' element={<TeachingCoursesOverview />} />
+            <Route path='/teaching/courses/new' element={<NewCourse />} />
           </Route>
-          {/* 
-      <Route path='/tickets' element={<PrivateRoute />}>
-        <Route path='/tickets' element={<Tickets />} />
-      </Route>
-      <Route path='/ticket/:ticketId' element={<PrivateRoute />}>
-        <Route path='/ticket/:ticketId' element={<Ticket />} />
-      </Route> */}
         </Routes>
       </BrowserRouter>
 

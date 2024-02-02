@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Divider,
   FormControl,
@@ -14,15 +15,19 @@ import {
 import React, { useEffect, useState } from 'react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 import TeachingCourseCard from '../../components/teaching/cards/TeachingCourseCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses, reset } from '../../features/teaching/teachingSlice';
 import Spinner from '../../components/Spinner';
+import { useNavigate } from 'react-router-dom';
 
 function TeachingCoursesOverview() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [filteredCourses, setFilteredCourses] = useState([]);
+
+  const navigate = useNavigate();
 
   const {
     courses,
@@ -146,6 +151,15 @@ function TeachingCoursesOverview() {
           />
           <SearchIcon />
         </Paper>
+        <Button
+          startIcon={<AddIcon fontSize='large' />}
+          p={4}
+          variant='outlined'
+          color='secondary'
+          onClick={() => navigate('/teaching/courses/new')}
+        >
+          <Typography variant='subtitle'>New Course</Typography>
+        </Button>
       </Box>
       {isLoading ? (
         <Spinner />

@@ -14,6 +14,7 @@ const initialState = {
     message: '',
   },
   create: {
+    course: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -123,6 +124,7 @@ export const teachingSlice = createSlice({
       .addCase(createCourse.fulfilled, (state, action) => {
         state.create.isLoading = false;
         state.create.isSuccess = true;
+        state.create.course = action.payload;
         state.courses.push(action.payload);
       })
       .addCase(createCourse.rejected, (state, action) => {
