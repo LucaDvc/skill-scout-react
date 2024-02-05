@@ -20,6 +20,13 @@ const initialState = {
     isLoading: false,
     message: '',
   },
+  edit: {
+    course: null,
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+  },
 };
 
 export const getCourses = createAsyncThunk(
@@ -59,6 +66,20 @@ export const createCourse = createAsyncThunk(
       return await teachingService.createCourse(token, course, isImageUrl);
     } catch (error) {
       let message = 'Unable to create course. Please try again.';
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getCourseById = createAsyncThunk(
+  'teaching/getCourseById',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await teachingService.getCourseById(token, id);
+    } catch (error) {
+      let message = 'Unable to get course. Please try again.';
 
       return thunkAPI.rejectWithValue(message);
     }
@@ -131,6 +152,19 @@ export const teachingSlice = createSlice({
         state.create.isLoading = false;
         state.create.isError = true;
         state.create.message = action.payload;
+      })
+      .addCase(getCourseById.pending, (state) => {
+        state.edit.isLoading = true;
+      })
+      .addCase(getCourseById.fulfilled, (state, action) => {
+        state.edit.isLoading = false;
+        state.edit.isSuccess = true;
+        state.edit.course = action.payload;
+      })
+      .addCase(getCourseById.rejected, (state, action) => {
+        state.edit.isLoading = false;
+        state.edit.isError = true;
+        state.edit.message = action.payload;
       });
   },
 });

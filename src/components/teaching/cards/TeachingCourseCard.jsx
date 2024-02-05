@@ -76,10 +76,11 @@ function TeachingCourseCard({ course }) {
                 />
               </Box>
               <Box mt={1} ml={1} width='50%'>
-                <Typography variant='h6' component='span'>
-                  {course.title}
-                </Typography>
-
+                <Link href={`teaching/courses/${course.id}`} underline='hover'>
+                  <Typography variant='h6' component='span'>
+                    {course.title}
+                  </Typography>
+                </Link>
                 <Typography variant='body1' sx={{ fontStyle: 'italic' }}>
                   {course.release_date === null
                     ? 'Draft'

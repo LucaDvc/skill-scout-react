@@ -32,10 +32,20 @@ const createCourse = async (token, course, isImageUrl) => {
   return response.data;
 };
 
+const getCourseById = async (token, id) => {
+  const response = await axios.get(`${API_URL}/courses/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 const teachingService = {
   getCourses,
   deleteCourse,
-  createCourse
+  createCourse,
+  getCourseById,
 };
 
 export default teachingService;

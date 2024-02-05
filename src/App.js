@@ -21,6 +21,7 @@ import TeachingCoursesOverview from './pages/teaching/TeachingCoursesOverview';
 import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
 import NewCourse from './pages/teaching/NewCourse';
+import EditCourse from './pages/teaching/EditCourse';
 
 function App() {
   const dispatch = useDispatch();
@@ -73,11 +74,15 @@ function App() {
             {/* Teaching */}
             <Route path='/teaching' element={<TeachingCoursesOverview />} />
             <Route path='/teaching/courses/new' element={<NewCourse />} />
+            <Route
+              path='/teaching/courses/:courseId'
+              element={<EditCourse />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
 
-      <ToastContainer />
+      <ToastContainer position='bottom-center' />
     </>
   );
 }

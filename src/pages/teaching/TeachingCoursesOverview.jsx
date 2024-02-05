@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Divider,
   FormControl,
@@ -162,7 +163,9 @@ function TeachingCoursesOverview() {
         </Button>
       </Box>
       {isLoading ? (
-        <Spinner />
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+          <CircularProgress color='inherit' />
+        </Box>
       ) : (
         <Box sx={{ marginTop: 4 }}>
           {filteredCourses && filteredCourses.length > 0 ? (
