@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import InformationTab from '../../components/teaching/edit/InformationTab';
+import InformationTab from '../../components/teaching/edit/information/InformationTab';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
