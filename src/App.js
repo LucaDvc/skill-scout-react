@@ -22,6 +22,9 @@ import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
 import NewCourse from './pages/teaching/NewCourse';
 import EditCourse from './pages/teaching/EditCourse';
+import { Box } from '@mui/material';
+import { LayoutProvider } from './context/LayoutContext';
+import Footer from './components/Footer';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,47 +46,57 @@ function App() {
   }, [dispatch, accessToken, refreshToken]);
 
   return (
-    <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          {/* Catalog */}
-          <Route path='/' element={<Catalog />} />
-          <Route path='/catalog' element={<Catalog />} />
-          <Route path='/catalog/search' element={<CatalogSearch />} />
-          <Route
-            path='/catalog/courses/:courseId'
-            element={<CourseDetails />}
-          />
-
-          {/* Auth */}
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route
-            path='/notify-confirm-email'
-            element={<NotifyConfirmEmail />}
-          />
-          <Route path='/confirm-email' element={<ConfirmEmail />} />
-
-          {/* Users */}
-          <Route path='/profile' element={<ProfileEdit />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
-
-          <Route path='' element={<PrivateRoute />}>
-            {/* Teaching */}
-            <Route path='/teaching' element={<TeachingCoursesOverview />} />
-            <Route path='/teaching/courses/new' element={<NewCourse />} />
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+      }}
+    >
+      <LayoutProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            {/* Catalog */}
+            <Route path='/' element={<Catalog />} />
+            <Route path='/catalog' element={<Catalog />} />
+            <Route path='/catalog/search' element={<CatalogSearch />} />
             <Route
-              path='/teaching/courses/:courseId'
-              element={<EditCourse />}
+              path='/catalog/courses/:courseId'
+              element={<CourseDetails />}
             />
-          </Route>
-        </Routes>
-      </BrowserRouter>
 
-      <ToastContainer position='bottom-center' />
-    </>
+            {/* Auth */}
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route
+              path='/notify-confirm-email'
+              element={<NotifyConfirmEmail />}
+            />
+            <Route path='/confirm-email' element={<ConfirmEmail />} />
+
+            {/* Users */}
+            <Route path='/profile' element={<ProfileEdit />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path='/reset-password' element={<ResetPassword />} />
+
+            <Route path='' element={<PrivateRoute />}>
+              {/* Teaching */}
+              <Route path='/teaching' element={<TeachingCoursesOverview />} />
+              <Route path='/teaching/courses/new' element={<NewCourse />} />
+              <Route
+                path='/teaching/courses/:courseId'
+                element={<EditCourse />}
+              />
+            </Route>
+          </Routes>
+
+          <Footer />
+
+          <ToastContainer position='bottom-center' />
+        </BrowserRouter>
+      </LayoutProvider>
+    </Box>
   );
 }
 

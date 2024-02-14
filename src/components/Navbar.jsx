@@ -24,8 +24,13 @@ import { useSelector } from 'react-redux';
 import AccountMenu from './AccountMenu';
 import LogoutDialog from './LogoutDialog';
 import logo from '../resources/logo.png';
+import { useLayout } from '../context/LayoutContext';
 
 export default function Navbar() {
+  // Layout context
+  const { showNavbar } = useLayout();
+  if (!showNavbar) return null;
+
   const { user, accessToken } = useSelector((state) => state.users);
 
   const theme = useTheme();
