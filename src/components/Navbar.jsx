@@ -135,8 +135,15 @@ export default function Navbar() {
             </Drawer>
           </>
         ) : (
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ flexGrow: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Box>
               <Link
                 to='/'
                 style={{
@@ -152,101 +159,104 @@ export default function Navbar() {
                 </Typography>
               </Link>
             </Box>
-            <Link
-              to='/catalog'
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                margin: 8,
-              }}
-            >
-              <Typography color='inherit' variant='button'>
-                Catalog
-              </Typography>
-            </Link>
-            <Link
-              to='/learning'
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                margin: 8,
-                '&:hover': {
-                  color: 'primary.dark',
-                },
-              }}
-            >
-              <Typography color='inherit' variant='button'>
-                Learning
-              </Typography>
-            </Link>
-            <Link
-              to='/teaching'
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                margin: 8,
-              }}
-            >
-              <Typography color='inherit' variant='button'>
-                Teaching
-              </Typography>
-            </Link>
-          </Box>
-        )}
-
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder='Search...'
-            inputProps={{ 'aria-label': 'search' }}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                navigate(`catalog/search?search=${event.target.value}&page=1`);
-              }
-            }}
-          />
-        </Search>
-
-        {!isMobile &&
-          (accessToken ? (
-            <>
-              <Avatar
-                src={user.picture}
-                alt={user.first_name}
-                onClick={handleMenuClick}
-                sx={{ cursor: 'pointer', mx: 1 }}
-              />
-              <AccountMenu
-                anchorEl={anchorEl}
-                handleClose={handleClose}
-                logoutClick={handleLogoutOpen}
-              />
-            </>
-          ) : (
-            <Box sx={{ mx: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Link
-                to='/login'
+                to='/catalog'
                 style={{
                   textDecoration: 'none',
                   color: 'inherit',
+                  margin: 8,
                 }}
               >
-                <Button color='inherit' variant='outlined' sx={{ mr: 1 }}>
-                  Login
-                </Button>
+                <Typography color='inherit' variant='button'>
+                  Catalog
+                </Typography>
               </Link>
               <Link
-                to='/register'
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                to='/learning'
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  margin: 8,
+                  '&:hover': {
+                    color: 'primary.dark',
+                  },
+                }}
               >
-                <Button color='inherit' variant='outlined'>
-                  Register
-                </Button>
+                <Typography color='inherit' variant='button'>
+                  Learning
+                </Typography>
               </Link>
+              <Link
+                to='/teaching'
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  margin: 8,
+                }}
+              >
+                <Typography color='inherit' variant='button'>
+                  Teaching
+                </Typography>
+              </Link>
+
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder='Search...'
+                  inputProps={{ 'aria-label': 'search' }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      navigate(
+                        `catalog/search?search=${event.target.value}&page=1`
+                      );
+                    }
+                  }}
+                />
+              </Search>
+              {!isMobile &&
+                (accessToken ? (
+                  <>
+                    <Avatar
+                      src={user.picture}
+                      alt={user.first_name}
+                      onClick={handleMenuClick}
+                      sx={{ cursor: 'pointer', mx: 1 }}
+                    />
+                    <AccountMenu
+                      anchorEl={anchorEl}
+                      handleClose={handleClose}
+                      logoutClick={handleLogoutOpen}
+                    />
+                  </>
+                ) : (
+                  <Box sx={{ mx: 1 }}>
+                    <Link
+                      to='/login'
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }}
+                    >
+                      <Button color='inherit' variant='outlined' sx={{ mr: 1 }}>
+                        Login
+                      </Button>
+                    </Link>
+                    <Link
+                      to='/register'
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <Button color='inherit' variant='outlined'>
+                        Register
+                      </Button>
+                    </Link>
+                  </Box>
+                ))}
             </Box>
-          ))}
+          </Box>
+        )}
 
         <LogoutDialog open={logoutOpen} handleClose={handleLogoutClose} />
       </Toolbar>
