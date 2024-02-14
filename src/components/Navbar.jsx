@@ -27,11 +27,10 @@ import logo from '../resources/logo.png';
 import { useLayout } from '../context/LayoutContext';
 
 export default function Navbar() {
+  const { user, accessToken } = useSelector((state) => state.users);
+
   // Layout context
   const { showNavbar } = useLayout();
-  if (!showNavbar) return null;
-
-  const { user, accessToken } = useSelector((state) => state.users);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -109,6 +108,8 @@ export default function Navbar() {
       </Link>
     </Box>
   );
+
+  if (!showNavbar) return null;
 
   return (
     <AppBar position='static'>
