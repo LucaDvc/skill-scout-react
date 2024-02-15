@@ -10,7 +10,7 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState, useEffect } from 'react';
 
-function UploadBox({ imageUrl }) {
+function UploadBox({ imageUrl, onImageChange }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(imageUrl);
   const [hover, setHover] = useState(false);
@@ -29,6 +29,7 @@ function UploadBox({ imageUrl }) {
     const newFile = event.target.files[0];
     if (newFile) {
       setFile(newFile);
+      onImageChange(newFile);
     }
   };
 
@@ -47,7 +48,7 @@ function UploadBox({ imageUrl }) {
           type='file'
           hidden
           onChange={handleUploadClick}
-          accept='image/png, image/jpeg' // You can specify the file types
+          accept='image/png, image/jpeg' // file types
         />
         {preview ? (
           <Avatar

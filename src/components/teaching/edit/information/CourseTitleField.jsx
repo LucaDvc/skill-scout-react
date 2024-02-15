@@ -1,9 +1,13 @@
 import { TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function CourseTitleField({ title }) {
+function CourseTitleField({ title, onChange, name, marginTop }) {
   const [error, setError] = useState('');
   const [value, setValue] = useState(title);
+
+  useEffect(() => {
+    setValue(title);
+  }, [title]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -13,13 +17,15 @@ function CourseTitleField({ title }) {
       setError('Max. 100 characters long');
     } else {
       setError('');
+      onChange(event);
     }
   };
 
   return (
     <TextField
-      sx={{ marginTop: 4 }}
+      sx={{ marginTop: marginTop }}
       value={value}
+      name={name}
       onChange={handleChange}
       fullWidth
       error={error !== ''}
