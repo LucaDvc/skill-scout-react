@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { wishlistCourse } from '../../../features/catalog/catalogSlice';
 import { refreshAuthUser } from '../../../features/users/usersSlice';
 import { LoadingButton } from '@mui/lab';
+import HtmlContent from '../../HtmlContent';
 
 function MainDetailsContent({ course }) {
   const theme = useTheme();
@@ -78,14 +79,14 @@ function MainDetailsContent({ course }) {
               About this course
             </Typography>
             <Typography variant='body1' mt={2}>
-              {course.description}
+              <HtmlContent html={course.description} />
             </Typography>
 
             <Typography variant='h3' mt={6}>
               Initial requirements
             </Typography>
             <Typography variant='body1' mt={2}>
-              {course.requirements}
+              <HtmlContent html={course.requirements} />
             </Typography>
 
             <Typography variant='h3' mt={6}>
