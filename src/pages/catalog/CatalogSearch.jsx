@@ -27,6 +27,7 @@ import LoadingLargeCard from '../../components/catalog/cards/LoadingLargeCard';
 import CourseLargeCard from '../../components/catalog/cards/CourseLargeCard';
 import LoadingSmallCard from '../../components/catalog/cards/LoadingSmallCard';
 import CourseSmallCard from '../../components/catalog/cards/CourseSmallCard';
+import { useLayout } from '../../context/LayoutContext';
 
 function CatalogSearch() {
   const theme = useTheme();
@@ -34,6 +35,20 @@ function CatalogSearch() {
   const drawerWidth = 260;
   const [drawerOpen, setDrawerOpen] = useState(isXsScreen ? false : true);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Layout context
+  const { setShowNavbar, setShowFooter } = useLayout();
+
+  useEffect(() => {
+    setShowNavbar(true);
+    setShowFooter(false);
+
+    // Show Navbar and Footer when the component unmounts
+    return () => {
+      setShowNavbar(true);
+      setShowFooter(true);
+    };
+  }, [setShowNavbar, setShowFooter]);
 
   // categories redux
   const {

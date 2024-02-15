@@ -19,12 +19,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InformationTab from '../../components/teaching/edit/information/InformationTab';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourseById } from '../../features/teaching/teachingSlice';
+import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
+import { useLayout } from '../../context/LayoutContext';
 
 function EditCourse() {
   const { courseId } = useParams();
+
+  const { setShowFooter } = useLayout();
 
   const dispatch = useDispatch();
   const { course, isLoading, isError, message, isSuccess } = useSelector(
@@ -39,7 +42,11 @@ function EditCourse() {
     if (isError) {
       toast.error(message);
     }
-  }, [isError, message]);
+
+    if (isSuccess) {
+      dispatch(reset());
+    }
+  }, [isError, message, isSuccess, dispatch]);
 
   const [activeContent, setActiveContent] = useState('information');
 
@@ -64,58 +71,54 @@ function EditCourse() {
   }
 
   return (
-    <Grid container>
+    <Grid container style={{ height: 'calc(100vh-64px)' }}>
       <Grid item xs={12} sm={3}>
-        <Stack>
-          <Box
-            sx={{
-              height: 'calc(100vh - 64px)', // Adjust the height if your AppBar is different
-              overflowY: 'auto',
-            }}
-            component={Paper}
-            elevation={3}
-          >
-            <List>
-              <Accordion
-                disableGutters
-                expanded={expandedAccordions.contentAcc}
-                onChange={handleChangeAccordion('contentAcc')}
-              >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant='subtitle1'
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <MenuBookIcon sx={{ mr: 2 }} /> Content
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <List>
-                    <ListItem disablePadding>
-                      <ListItemButton
-                        selected={activeContent === 'information'}
-                        onClick={() => handleListItemClick('information')}
-                      >
-                        <ListItemText primary='Information' />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                      <ListItemButton
-                        selected={activeContent === 'syllabus'}
-                        onClick={() => handleListItemClick('syllabus')}
-                      >
-                        <ListItemText primary='Syllabus' />
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
-                </AccordionDetails>
-              </Accordion>
-            </List>
-          </Box>
-        </Stack>
+        <Paper square elevation={6} sx={{ height: '100%', overflowY: 'auto' }}>
+          <List>
+            <Accordion
+              disableGutters
+              expanded={expandedAccordions.contentAcc}
+              onChange={handleChangeAccordion('contentAcc')}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant='subtitle1'
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <MenuBookIcon sx={{ mr: 2 }} /> Content
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={activeContent === 'information'}
+                      onClick={() => handleListItemClick('information')}
+                    >
+                      <ListItemText primary='Information' />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={activeContent === 'syllabus'}
+                      onClick={() => handleListItemClick('syllabus')}
+                    >
+                      <ListItemText primary='Syllabus' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
+          </List>
+        </Paper>
       </Grid>
 
-      <Grid item xs={12} sm={9}>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        sx={{ height: 'calc(100vh-64px)', overflowY: 'auto' }}
+      >
         <Container maxWidth='md'>
           {activeContent === 'information' && <InformationTab />}
           {/* Add more content components based on activeContent */}
