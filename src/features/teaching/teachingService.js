@@ -41,11 +41,21 @@ const getCourseById = async (token, id) => {
   return response.data;
 };
 
+const updateCourse = async (token, id, updatedCourse) => {
+  const response = await axios.put(`${API_URL}/courses/${id}/`, updatedCourse, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 const teachingService = {
   getCourses,
   deleteCourse,
   createCourse,
   getCourseById,
+  updateCourse,
 };
 
 export default teachingService;

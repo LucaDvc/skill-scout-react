@@ -86,6 +86,19 @@ export const getCourseById = createAsyncThunk(
   }
 );
 
+export const updateCourse = createAsyncThunk(
+  'teaching/updateCourse',
+  async ({ id, updatedCourse }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await teachingService.updateCourse(token, id, updatedCourse);
+    } catch (error) {
+      let message = 'Unable to update course. Please try again.';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const teachingSlice = createSlice({
   name: 'teaching',
   initialState,
@@ -102,6 +115,14 @@ export const teachingSlice = createSlice({
         message: '',
       };
       state.create = {
+        course: state.create.course,
+        isError: false,
+        isSuccess: false,
+        isLoading: false,
+        message: '',
+      };
+      state.edit = {
+        course: state.edit.course,
         isError: false,
         isSuccess: false,
         isLoading: false,
@@ -162,6 +183,19 @@ export const teachingSlice = createSlice({
         state.edit.course = action.payload;
       })
       .addCase(getCourseById.rejected, (state, action) => {
+        state.edit.isLoading = false;
+        state.edit.isError = true;
+        state.edit.message = action.payload;
+      })
+      .addCase(updateCourse.fulfilled, (state, action) => {
+        state.edit.isLoading = false;
+        state.edit.isSuccess = true;
+        state.edit.course = action.payload;
+        state.courses = state.courses.map((course) =>
+          course.id === action.payload.id ? action.payload : course
+        );
+      })
+      .addCase(updateCourse.rejected, (state, action) => {
         state.edit.isLoading = false;
         state.edit.isError = true;
         state.edit.message = action.payload;
