@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InformationTab from '../../components/teaching/edit/information/InformationTab';
@@ -22,12 +22,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
-import { useLayout } from '../../context/LayoutContext';
 
 function EditCourse() {
   const { courseId } = useParams();
 
-  const { setShowFooter } = useLayout();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const { course, isLoading, isError, message, isSuccess } = useSelector(
@@ -48,9 +47,12 @@ function EditCourse() {
     }
   }, [isError, message, isSuccess, dispatch]);
 
-  const [activeContent, setActiveContent] = useState('information');
+  const [activeContent, setActiveContent] = useState(
+    searchParams.get('tab') || 'information'
+  );
 
   const handleListItemClick = (content) => {
+    setSearchParams(new URLSearchParams({ tab: content }));
     setActiveContent(content);
   };
 

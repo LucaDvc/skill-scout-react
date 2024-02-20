@@ -98,13 +98,13 @@ function TeachingCourseCard({ course }) {
                   }}
                 >
                   <Link
-                    href={`teaching/courses/${course.id}/info`}
+                    href={`teaching/courses/${course.id}?tab=information`}
                     underline='hover'
                   >
                     <Typography variant='body1'>Information</Typography>
                   </Link>
                   <Link
-                    href={`teaching/courses/${course.id}/syllabus`}
+                    href={`teaching/courses/${course.id}?tab=syllabus`}
                     underline='hover'
                   >
                     <Typography variant='body1'>Syllabus</Typography>

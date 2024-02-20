@@ -167,7 +167,8 @@ export const teachingSlice = createSlice({
         state.create.isLoading = false;
         state.create.isSuccess = true;
         state.create.course = action.payload;
-        state.courses.push(action.payload);
+        state.edit.course = action.payload;
+        state.courses = [...state.courses, action.payload];
       })
       .addCase(createCourse.rejected, (state, action) => {
         state.create.isLoading = false;

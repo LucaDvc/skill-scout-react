@@ -52,11 +52,11 @@ function InformationTab() {
   };
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(
-    course?.category.id
+    course?.category ? course.category.id : ''
   );
 
   useEffect(() => {
-    setSelectedCategoryId(course?.category.id);
+    setSelectedCategoryId(course?.category?.id);
   }, [course]);
 
   // Form data
@@ -72,9 +72,9 @@ function InformationTab() {
     if (course) {
       setFormData({
         title: course.title,
-        intro: course.intro,
-        level: course.level,
-        totalHours: course.total_hours,
+        intro: course.intro ? course.intro : '',
+        level: course.level ? course.level : '',
+        totalHours: course.total_hours ? course.total_hours : '',
         tags: course.tags,
       });
     }
