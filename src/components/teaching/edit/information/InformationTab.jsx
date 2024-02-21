@@ -21,7 +21,10 @@ import categoryUtils from '../../../../utils/categoryUtils';
 import { Editor } from '@tinymce/tinymce-react';
 import informationTabConstants from './constants';
 import { nanoid } from 'nanoid';
-import { updateCourse } from '../../../../features/teaching/teachingSlice';
+import {
+  reset,
+  updateCourse,
+} from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 
 function InformationTab() {
@@ -162,6 +165,9 @@ function InformationTab() {
         isLoading: false,
         autoClose: 3000,
         closeButton: true,
+        onClose: () => {
+          dispatch(reset());
+        },
       });
     }
 
@@ -172,6 +178,9 @@ function InformationTab() {
         isLoading: false,
         autoClose: 3000,
         closeButton: true,
+        onClose: () => {
+          dispatch(reset());
+        },
       });
     }
   }, [isSuccess, isError, message]);
