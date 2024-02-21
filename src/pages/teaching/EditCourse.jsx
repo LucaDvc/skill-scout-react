@@ -14,24 +14,32 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import InformationTab from '../../components/teaching/edit/information/InformationTab';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
-import SyllabusTab from '../../components/teaching/edit/syllabus/SyllabusTab';
-import { SyllabusProvider } from '../../context/SyllabusContext';
 
 function EditCourse() {
   const { courseId } = useParams();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  // Router
+  const location = useLocation();
+  const selectedTab = location.pathname.split('/').pop();
+  const navigate = useNavigate();
+
+  const [activeContent, setActiveContent] = useState();
 
   const dispatch = useDispatch();
-  const { course, isLoading, isError, message, isSuccess } = useSelector(
+  const { isLoading, isError, message, isSuccess } = useSelector(
     (state) => state.teaching.edit
   );
 
@@ -49,13 +57,8 @@ function EditCourse() {
     }
   }, [isError, message, isSuccess, dispatch]);
 
-  const [activeContent, setActiveContent] = useState(
-    searchParams.get('tab') || 'information'
-  );
-
   const handleListItemClick = (content) => {
-    setSearchParams(new URLSearchParams({ tab: content }));
-    setActiveContent(content);
+    navigate(`/teaching/courses/${courseId}/${content}`);
   };
 
   const [expandedAccordions, setExpandedAccordions] = useState({
@@ -96,7 +99,7 @@ function EditCourse() {
                 <List>
                   <ListItem disablePadding>
                     <ListItemButton
-                      selected={activeContent === 'information'}
+                      selected={selectedTab === 'information'}
                       onClick={() => handleListItemClick('information')}
                     >
                       <ListItemText primary='Information' />
@@ -104,7 +107,7 @@ function EditCourse() {
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemButton
-                      selected={activeContent === 'syllabus'}
+                      selected={selectedTab === 'syllabus'}
                       onClick={() => handleListItemClick('syllabus')}
                     >
                       <ListItemText primary='Syllabus' />
@@ -124,12 +127,7 @@ function EditCourse() {
         sx={{ height: 'calc(100vh-64px)', overflowY: 'auto' }}
       >
         <Container maxWidth='md'>
-          {activeContent === 'information' && <InformationTab />}
-          {activeContent === 'syllabus' && (
-            <SyllabusProvider>
-              <SyllabusTab />
-            </SyllabusProvider>
-          )}
+          <Outlet />
         </Container>
       </Grid>
     </Grid>

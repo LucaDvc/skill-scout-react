@@ -33,6 +33,19 @@ function ModuleCard({ chapter, index }) {
     setTitle(e.target.value);
   };
 
+  const handleBlur = () => {
+    setChapters(
+      chapters.map((ch) =>
+        chapter.id === ch.id
+          ? {
+              ...chapter,
+              title: title,
+            }
+          : ch
+      )
+    );
+  };
+
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -146,6 +159,7 @@ function ModuleCard({ chapter, index }) {
                       label=''
                       value={title}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
                       sx={{
                         margin: 1,

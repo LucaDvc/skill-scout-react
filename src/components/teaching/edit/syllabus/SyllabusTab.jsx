@@ -1,7 +1,18 @@
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ModuleCard from './cards/ModuleCard';
 import { SyllabusContext } from '../../../../context/SyllabusContext';
@@ -11,6 +22,8 @@ import {
   updateCourse,
 } from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
+import ReactRouterPrompt from 'react-router-prompt';
+import { isEqual } from 'lodash-es';
 
 function SyllabusTab() {
   const STD_MARGIN_TOP = 4;
@@ -44,7 +57,7 @@ function SyllabusTab() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     const updatedChapters = chapters
       .filter((chapter) => !chapter.deleted)
@@ -106,6 +119,8 @@ function SyllabusTab() {
     }
   }, [isSuccess, isError, message]);
 
+  const [promptOpen, setPromptOpen] = useState(false);
+
   return (
     course && (
       <Box
@@ -117,6 +132,57 @@ function SyllabusTab() {
         <Typography variant='h3' mb={STD_MARGIN_TOP}>
           Course content
         </Typography>
+
+        <ReactRouterPrompt when={!isEqual(chapters, course.chapters)}>
+          {({ isActive, onConfirm, onCancel }) => {
+            return (
+              <Dialog
+                open={isActive}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogTitle id='alert-dialog-title'>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Typography variant='subtitle1'>Unsaved changes</Typography>
+                    <IconButton>
+                      <CloseIcon onClick={onCancel} />
+                    </IconButton>
+                  </Box>
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id='alert-dialog-description'>
+                    {
+                      'You have unsaved changes. Are you sure you want to leave?'
+                    }
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={onCancel}
+                    variant='outlined'
+                    color='secondary'
+                    autoFocus
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={onConfirm}
+                    variant='contained'
+                    color='primary'
+                  >
+                    Discard Changes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            );
+          }}
+        </ReactRouterPrompt>
 
         <Box
           sx={{

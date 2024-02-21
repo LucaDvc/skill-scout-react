@@ -4,7 +4,15 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Navbar from './components/Navbar';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from 'react-router-dom';
 import Catalog from './pages/catalog/Catalog';
 import Login from './pages/users/auth/Login';
 import Register from './pages/users/auth/Register';
@@ -25,6 +33,57 @@ import EditCourse from './pages/teaching/EditCourse';
 import { Box } from '@mui/material';
 import { LayoutProvider } from './context/LayoutContext';
 import Footer from './components/Footer';
+import { SyllabusProvider } from './context/SyllabusContext';
+import SyllabusTab from './components/teaching/edit/syllabus/SyllabusTab';
+import InformationTab from './components/teaching/edit/information/InformationTab';
+
+const router = createBrowserRouter([{ path: '*', Component: Root }]);
+
+function Root() {
+  // 2️⃣ `BrowserRouter` component removed, but the <Routes>/<Route>
+  // component below are unchanged
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        {/* Catalog */}
+        <Route path='/' element={<Catalog />} />
+        <Route path='/catalog' element={<Catalog />} />
+        <Route path='/catalog/search' element={<CatalogSearch />} />
+        <Route path='/catalog/courses/:courseId' element={<CourseDetails />} />
+
+        {/* Auth */}
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/notify-confirm-email' element={<NotifyConfirmEmail />} />
+        <Route path='/confirm-email' element={<ConfirmEmail />} />
+
+        {/* Users */}
+        <Route path='/profile' element={<ProfileEdit />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
+
+        <Route path='' element={<PrivateRoute />}>
+          {/* Teaching */}
+          <Route path='/teaching' element={<TeachingCoursesOverview />} />
+          <Route path='/teaching/courses/new' element={<NewCourse />} />
+
+          <Route path='/teaching/courses/:courseId' element={<EditCourse />}>
+            <Route path='information' element={<InformationTab />} />
+            <Route
+              path='syllabus'
+              element={
+                <SyllabusProvider>
+                  <SyllabusTab />
+                </SyllabusProvider>
+              }
+            />
+            <Route index element={<Navigate to='information' replace />} />
+          </Route>
+        </Route>
+      </Route>
+    </Routes>
+  );
+}
 
 function App() {
   const dispatch = useDispatch();
@@ -54,49 +113,20 @@ function App() {
       }}
     >
       <LayoutProvider>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            {/* Catalog */}
-            <Route path='/' element={<Catalog />} />
-            <Route path='/catalog' element={<Catalog />} />
-            <Route path='/catalog/search' element={<CatalogSearch />} />
-            <Route
-              path='/catalog/courses/:courseId'
-              element={<CourseDetails />}
-            />
-
-            {/* Auth */}
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route
-              path='/notify-confirm-email'
-              element={<NotifyConfirmEmail />}
-            />
-            <Route path='/confirm-email' element={<ConfirmEmail />} />
-
-            {/* Users */}
-            <Route path='/profile' element={<ProfileEdit />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
-            <Route path='/reset-password' element={<ResetPassword />} />
-
-            <Route path='' element={<PrivateRoute />}>
-              {/* Teaching */}
-              <Route path='/teaching' element={<TeachingCoursesOverview />} />
-              <Route path='/teaching/courses/new' element={<NewCourse />} />
-              <Route
-                path='/teaching/courses/:courseId'
-                element={<EditCourse />}
-              />
-            </Route>
-          </Routes>
-
-          <Footer />
-
-          <ToastContainer position='bottom-center' />
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </LayoutProvider>
     </Box>
+  );
+}
+
+function Layout() {
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+      <Footer />
+      <ToastContainer position='bottom-center' />
+    </>
   );
 }
 

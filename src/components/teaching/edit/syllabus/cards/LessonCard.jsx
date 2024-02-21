@@ -28,6 +28,21 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
     setTitle(e.target.value);
   };
 
+  const handleBlur = () => {
+    setChapters(
+      chapters.map((chapter) =>
+        chapter.id === lesson.chapter_id
+          ? {
+              ...chapter,
+              lessons: chapter.lessons.map((l) =>
+                l.id === lesson.id ? { ...l, title: title } : l
+              ),
+            }
+          : chapter
+      )
+    );
+  };
+
   const handleDeleteClick = (e) => {
     e.preventDefault();
     setChapters(
@@ -214,22 +229,7 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
                       },
                     }}
                     helperText='Max. 50 characters'
-                    onBlur={() =>
-                      setChapters(
-                        chapters.map((chapter) =>
-                          chapter.id === lesson.chapter_id
-                            ? {
-                                ...chapter,
-                                lessons: chapter.lessons.map((l) =>
-                                  l.id === lesson.id
-                                    ? { ...l, title: title }
-                                    : l
-                                ),
-                              }
-                            : chapter
-                        )
-                      )
-                    }
+                    onBlur={handleBlur}
                   />
                 </Box>
               </Box>
