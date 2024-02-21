@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
+import SyllabusTab from '../../components/teaching/edit/syllabus/SyllabusTab';
+import { SyllabusProvider } from '../../context/SyllabusContext';
 
 function EditCourse() {
   const { courseId } = useParams();
@@ -123,7 +125,11 @@ function EditCourse() {
       >
         <Container maxWidth='md'>
           {activeContent === 'information' && <InformationTab />}
-          {/* Add more content components based on activeContent */}
+          {activeContent === 'syllabus' && (
+            <SyllabusProvider>
+              <SyllabusTab />
+            </SyllabusProvider>
+          )}
         </Container>
       </Grid>
     </Grid>

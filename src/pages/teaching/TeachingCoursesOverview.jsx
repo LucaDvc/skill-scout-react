@@ -20,7 +20,6 @@ import AddIcon from '@mui/icons-material/Add';
 import TeachingCourseCard from '../../components/teaching/cards/TeachingCourseCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses, reset } from '../../features/teaching/teachingSlice';
-import Spinner from '../../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 
 function TeachingCoursesOverview() {
