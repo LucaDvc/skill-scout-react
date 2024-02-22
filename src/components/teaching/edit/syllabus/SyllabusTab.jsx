@@ -24,6 +24,7 @@ import {
 import { toast } from 'react-toastify';
 import ReactRouterPrompt from 'react-router-prompt';
 import { isEqual } from 'lodash-es';
+import UnsavedChangesPrompt from '../prompt/UnsavedChangesPrompt';
 
 function SyllabusTab() {
   const STD_MARGIN_TOP = 4;
@@ -133,56 +134,7 @@ function SyllabusTab() {
           Course content
         </Typography>
 
-        <ReactRouterPrompt when={!isEqual(chapters, course.chapters)}>
-          {({ isActive, onConfirm, onCancel }) => {
-            return (
-              <Dialog
-                open={isActive}
-                aria-labelledby='alert-dialog-title'
-                aria-describedby='alert-dialog-description'
-              >
-                <DialogTitle id='alert-dialog-title'>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Typography variant='subtitle1'>Unsaved changes</Typography>
-                    <IconButton>
-                      <CloseIcon onClick={onCancel} />
-                    </IconButton>
-                  </Box>
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id='alert-dialog-description'>
-                    {
-                      'You have unsaved changes. Are you sure you want to leave?'
-                    }
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={onCancel}
-                    variant='outlined'
-                    color='secondary'
-                    autoFocus
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={onConfirm}
-                    variant='contained'
-                    color='primary'
-                  >
-                    Discard Changes
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            );
-          }}
-        </ReactRouterPrompt>
+        <UnsavedChangesPrompt when={!isEqual(chapters, course.chapters)} />
 
         <Box
           sx={{

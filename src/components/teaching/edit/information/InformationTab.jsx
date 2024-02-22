@@ -26,15 +26,19 @@ import {
   updateCourse,
 } from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
+import ReactRouterPrompt from 'react-router-prompt';
+import UnsavedChangesPrompt from '../prompt/UnsavedChangesPrompt';
 
 function InformationTab() {
   const STD_MARGIN_TOP = 4;
+
+  const [isDirty, setIsDirty] = useState(false);
 
   // Toast
   const toastId = useRef(null);
 
   // Redux
-  const { course, isLoading, isSuccess, isError, message } = useSelector(
+  const { course, isSuccess, isError, message } = useSelector(
     (state) => state.teaching.edit
   );
   const { categories } = useSelector((state) => state.category);
@@ -45,6 +49,7 @@ function InformationTab() {
 
   const handleImageChange = (newImageFile) => {
     setImageFile(newImageFile);
+    setIsDirty(true);
   };
 
   // Categories
@@ -94,6 +99,7 @@ function InformationTab() {
       ...prevFormData,
       [name]: value,
     }));
+    setIsDirty(true);
   };
 
   const handleTotalHoursChange = (event) => {
@@ -106,6 +112,7 @@ function InformationTab() {
         ...prevFormData,
         totalHours: value,
       }));
+      setIsDirty(true);
     }
   };
 
@@ -120,6 +127,7 @@ function InformationTab() {
         }));
         event.target.value = '';
       }
+      setIsDirty(true);
     }
   };
 
@@ -128,6 +136,7 @@ function InformationTab() {
       ...prevFormData,
       tags: prevFormData.tags.filter((tag) => tag.id !== id),
     }));
+    setIsDirty(true);
   };
 
   const handleSubmit = (event) => {
@@ -148,6 +157,7 @@ function InformationTab() {
     // Append the image file if it has been selected
     if (imageFile) {
       form.append('image', imageFile);
+      setIsDirty(true);
     }
 
     dispatch(updateCourse({ id: course.id, updatedCourse: form }));
@@ -192,6 +202,8 @@ function InformationTab() {
           Information
         </Typography>
 
+        <UnsavedChangesPrompt when={isDirty} />
+
         {/* Image */}
         <UploadBox imageUrl={course.image} onImageChange={handleImageChange} />
 
@@ -221,6 +233,7 @@ function InformationTab() {
           handleClose={handleCategoriesClick}
           selectedCategoryId={selectedCategoryId}
           setSelectedCategoryId={setSelectedCategoryId}
+          setIsDirty={setIsDirty}
         />
         {selectedCategoryId && (
           <Typography variant='body1' mt={2}>
@@ -331,6 +344,7 @@ function InformationTab() {
               toolbar: informationTabConstants.EDITOR_TOOLBAR,
               content_style: informationTabConstants.EDITOR_CONTENT_STYLE,
             }}
+            onChange={() => setIsDirty(true)}
           />
         </Box>
 
@@ -354,6 +368,7 @@ function InformationTab() {
               toolbar: informationTabConstants.EDITOR_TOOLBAR,
               content_style: informationTabConstants.EDITOR_CONTENT_STYLE,
             }}
+            onChange={() => setIsDirty(true)}
           />
         </Box>
 

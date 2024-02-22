@@ -36,9 +36,11 @@ function ChooseCategoryDialog({
   handleClose,
   selectedCategoryId,
   setSelectedCategoryId,
+  setIsDirty,
 }) {
   const handleRadioChange = (event) => {
     setSelectedCategoryId(Number(event.target.value));
+    setIsDirty(true);
   };
 
   const dispatch = useDispatch();
