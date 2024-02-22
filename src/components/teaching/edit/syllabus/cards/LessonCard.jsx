@@ -243,7 +243,9 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
                 }}
               >
                 {!lesson.new && (
-                  <Link to={`/teaching/${course.id}/lessons/${lesson.id}`}>
+                  <Link
+                    to={`/teaching/edit-lessons/${course.id}/lessons/${lesson.id}`}
+                  >
                     <Button
                       sx={{ paddingX: 4, paddingY: 1, marginRight: 1 }}
                       variant='outlined'

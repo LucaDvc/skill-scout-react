@@ -42,7 +42,7 @@ function TeachingCoursesOverview() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCourses());
+    if (!courses || courses.length === 0) dispatch(getCourses());
   }, [dispatch]);
 
   useEffect(() => {

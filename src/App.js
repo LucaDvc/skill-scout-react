@@ -82,7 +82,10 @@ function Root() {
             <Route index element={<Navigate to='information' replace />} />
           </Route>
 
-          <Route path='/teaching/:courseId' element={<EditLessonsDetails />}>
+          <Route
+            path='/teaching/edit-lessons/:courseId'
+            element={<EditLessonsDetails />}
+          >
             <Route path='lessons/:lessonId' element={<LessonDetails />} />
           </Route>
         </Route>

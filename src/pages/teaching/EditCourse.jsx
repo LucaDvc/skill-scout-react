@@ -37,12 +37,14 @@ function EditCourse() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { isLoading, isError, message, isSuccess } = useSelector(
+  const { course, isLoading, isError, message, isSuccess } = useSelector(
     (state) => state.teaching.edit
   );
 
   useEffect(() => {
-    dispatch(getCourseById(courseId));
+    if (!course || course.id !== courseId) {
+      dispatch(getCourseById(courseId));
+    }
   }, [dispatch, courseId]);
 
   useEffect(() => {

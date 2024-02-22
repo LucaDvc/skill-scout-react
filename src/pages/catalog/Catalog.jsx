@@ -29,7 +29,7 @@ function Catalog() {
   }, [categoryError]);
 
   useEffect(() => {
-    dispatch(getCategories());
+    if (!categories || categories.length === 0) dispatch(getCategories());
 
     return () => dispatch(reset());
   }, [dispatch]);

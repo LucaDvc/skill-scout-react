@@ -57,8 +57,9 @@ function RecommendedCoursesTabs() {
   }, [isError]);
 
   useEffect(() => {
-    dispatch(getHighestRatedCourses());
-
+    if (!highestRatedCourses || highestRatedCourses.length === 0) {
+      dispatch(getHighestRatedCourses());
+    }
     return () => dispatch(reset());
   }, [dispatch]);
 
