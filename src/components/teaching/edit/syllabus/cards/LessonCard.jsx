@@ -9,20 +9,21 @@ import {
 } from '@mui/material';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useNavigate } from 'react-router-dom';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { SyllabusContext } from '../../../../../context/SyllabusContext';
+import { useSelector } from 'react-redux';
 
 function LessonCard({ lesson, moduleIndex, totalLessons }) {
-  const navigate = useNavigate();
-
   const [title, setTitle] = useState(
     lesson.title ? lesson.title : 'New Lesson'
   );
 
   const { chapters, setChapters } = useContext(SyllabusContext);
+
+  const { course } = useSelector((state) => state.teaching.edit);
 
   const handleChange = (e) => {
     setTitle(e.target.value);
@@ -187,7 +188,7 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
                     id='lesson-move-up-button'
                     onClick={handleMoveUp}
                   >
-                    <ArrowUpwardIcon />
+                    <KeyboardArrowUpIcon />
                   </IconButton>
                 )}
                 {lesson.order !== totalLessons && (
@@ -196,7 +197,7 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
                     id='lesson-move-down-button'
                     onClick={handleMoveDown}
                   >
-                    <ArrowDownwardIcon />
+                    <KeyboardArrowDownIcon />
                   </IconButton>
                 )}
               </Box>
@@ -242,13 +243,14 @@ function LessonCard({ lesson, moduleIndex, totalLessons }) {
                 }}
               >
                 {!lesson.new && (
-                  <Button
-                    sx={{ paddingX: 4, paddingY: 1, marginRight: 1 }}
-                    variant='outlined'
-                    onClick={() => navigate(`/teaching/lessons/${lesson.id}`)}
-                  >
-                    Edit
-                  </Button>
+                  <Link to={`/teaching/${course.id}/lessons/${lesson.id}`}>
+                    <Button
+                      sx={{ paddingX: 4, paddingY: 1, marginRight: 1 }}
+                      variant='outlined'
+                    >
+                      Edit
+                    </Button>
+                  </Link>
                 )}
 
                 <IconButton

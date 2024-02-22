@@ -7,11 +7,10 @@ import {
   Rating,
   Stack,
   CardMedia,
-  Link,
 } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function CourseSmallCard({ course }) {
   const navigate = useNavigate();
@@ -40,28 +39,23 @@ function CourseSmallCard({ course }) {
           minHeight: 140,
         }}
       >
-        <Link
-          href={`catalog/courses/${course.id}`}
-          underline='hover'
-          sx={{
-            textDecoration: 'none',
-            '&:hover': { textDecoration: 'underline' },
-          }}
-        >
-          <Typography gutterBottom variant='h6' component='div'>
+        <Link to={`catalog/courses/${course.id}`} className='link-no-style'>
+          <Typography
+            gutterBottom
+            variant='h6'
+            component='div'
+            sx={{ '&:hover': { textDecoration: 'underline' } }}
+          >
             {course.title}
           </Typography>
         </Link>
 
-        <Link
-          href={`users/${course.instructor.id}`}
-          underline='hover'
-          sx={{
-            textDecoration: 'none',
-            '&:hover': { textDecoration: 'underline' },
-          }}
-        >
-          <Typography variant='body2' color='text.secondary'>
+        <Link to={`users/${course.instructor.id}`} className='link-no-style'>
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            sx={{ '&:hover': { textDecoration: 'underline' } }}
+          >
             {course.instructor.first_name + ' ' + course.instructor.last_name}
           </Typography>
         </Link>

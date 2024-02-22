@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Link,
   Stack,
   Typography,
   IconButton,
@@ -12,7 +11,7 @@ import {
   ListItemIcon,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -76,8 +75,15 @@ function TeachingCourseCard({ course }) {
                 />
               </Box>
               <Box mt={1} ml={1} width='50%'>
-                <Link href={`teaching/courses/${course.id}`} underline='hover'>
-                  <Typography variant='h6' component='span'>
+                <Link
+                  to={`/teaching/courses/${course.id}`}
+                  className='link-no-style'
+                >
+                  <Typography
+                    variant='h6'
+                    component='span'
+                    sx={{ '&:hover': { textDecoration: 'underline' } }}
+                  >
                     {course.title}
                   </Typography>
                 </Link>
@@ -98,16 +104,26 @@ function TeachingCourseCard({ course }) {
                   }}
                 >
                   <Link
-                    href={`teaching/courses/${course.id}?tab=information`}
-                    underline='hover'
+                    to={`/teaching/courses/${course.id}/information`}
+                    className='link-no-style'
                   >
-                    <Typography variant='body1'>Information</Typography>
+                    <Typography
+                      variant='body1'
+                      sx={{ '&:hover': { textDecoration: 'underline' } }}
+                    >
+                      Information
+                    </Typography>
                   </Link>
                   <Link
-                    href={`teaching/courses/${course.id}?tab=syllabus`}
-                    underline='hover'
+                    to={`/teaching/courses/${course.id}/syllabus`}
+                    className='link-no-style'
                   >
-                    <Typography variant='body1'>Syllabus</Typography>
+                    <Typography
+                      variant='body1'
+                      sx={{ '&:hover': { textDecoration: 'underline' } }}
+                    >
+                      Syllabus
+                    </Typography>
                   </Link>
                 </Box>
               </Box>

@@ -3,9 +3,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import './index.css';
 import Navbar from './components/Navbar';
 import {
-  BrowserRouter,
   Routes,
   Route,
   Outlet,
@@ -36,6 +36,8 @@ import Footer from './components/Footer';
 import { SyllabusProvider } from './context/SyllabusContext';
 import SyllabusTab from './components/teaching/edit/syllabus/SyllabusTab';
 import InformationTab from './components/teaching/edit/information/InformationTab';
+import EditLessonsDetails from './pages/teaching/EditLessonsDetails';
+import LessonDetails from './components/teaching/edit/lesson_edit/LessonDetails';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -78,6 +80,10 @@ function Root() {
               }
             />
             <Route index element={<Navigate to='information' replace />} />
+          </Route>
+
+          <Route path='/teaching/:courseId' element={<EditLessonsDetails />}>
+            <Route path='lessons/:lessonId' element={<LessonDetails />} />
           </Route>
         </Route>
       </Route>

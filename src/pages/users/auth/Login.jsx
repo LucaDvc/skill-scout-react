@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -12,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../../../components/Copyright';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   clearGeneralErrorMessage,
   login,
@@ -152,26 +151,27 @@ function Login() {
             <Divider sx={{ my: 2 }} />
             <Grid container justifyContent='space-between'>
               <Grid item>
-                <Link href='/forgot-password' variant='body2'>
-                  Forgot password?
+                <Link to='/forgot-password' style={{ color: 'inherit' }}>
+                  <Typography variant='body2'>Forgot password?</Typography>
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='/notify-confirm-email' variant='body2'>
-                  Confirm your email
+                <Link to='/notify-confirm-email' style={{ color: 'inherit' }}>
+                  <Typography variant='body2'>Confirm your email</Typography>
                 </Link>
               </Grid>
             </Grid>
             <Grid container justifyContent='center' sx={{ my: 2 }}>
               <Grid item>
-                <Link href='/register' variant='body2'>
-                  Don't have an account? Sign Up
+                <Link to='/register' style={{ color: 'inherit' }}>
+                  <Typography variant='body2'>
+                    Don't have an account? Sign Up
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </>
   );

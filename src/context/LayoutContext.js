@@ -9,10 +9,18 @@ export function useLayout() {
 export function LayoutProvider({ children }) {
   const [showNavbar, setShowNavbar] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
+  const [navbarFixed, setNavbarFixed] = useState(false);
 
   return (
     <LayoutContext.Provider
-      value={{ showNavbar, setShowNavbar, showFooter, setShowFooter }}
+      value={{
+        showNavbar,
+        setShowNavbar,
+        showFooter,
+        setShowFooter,
+        navbarFixed,
+        setNavbarFixed,
+      }}
     >
       {children}
     </LayoutContext.Provider>

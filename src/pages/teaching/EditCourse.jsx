@@ -36,8 +36,6 @@ function EditCourse() {
   const selectedTab = location.pathname.split('/').pop();
   const navigate = useNavigate();
 
-  const [activeContent, setActiveContent] = useState();
-
   const dispatch = useDispatch();
   const { isLoading, isError, message, isSuccess } = useSelector(
     (state) => state.teaching.edit

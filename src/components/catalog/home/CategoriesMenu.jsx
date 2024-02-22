@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Divider, Link, Skeleton, Typography } from '@mui/material';
+import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Link } from 'react-router-dom';
 
 const CategoriesMenu = ({ categories, loading }) => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -42,7 +43,7 @@ const CategoriesMenu = ({ categories, loading }) => {
               ))
             : categories.map((category) => (
                 <Link
-                  href={`/catalog/search?categories=${category.name}&page=1`}
+                  to={`/catalog/search?categories=${category.name}&page=1`}
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
@@ -88,7 +89,7 @@ const CategoriesMenu = ({ categories, loading }) => {
           >
             {activeCategory.subcategories.map((subCategory) => (
               <Link
-                href={`/catalog/search?categories=${subCategory.name}&page=1`}
+                to={`/catalog/search?categories=${subCategory.name}&page=1`}
                 style={{
                   textDecoration: 'none',
                   display: 'block',

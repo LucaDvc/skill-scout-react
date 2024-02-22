@@ -30,7 +30,7 @@ export default function Navbar() {
   const { user, accessToken } = useSelector((state) => state.users);
 
   // Layout context
-  const { showNavbar } = useLayout();
+  const { showNavbar, navbarFixed } = useLayout();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -72,18 +72,12 @@ export default function Navbar() {
         <Avatar src={user.picture} alt={user.first_name} />
       ) : (
         <>
-          <Link
-            to='/login'
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
+          <Link to='/login' className='link-no-style'>
             <Button color='inherit' fullWidth>
               Login
             </Button>
           </Link>
-          <Link
-            to='/register'
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
+          <Link to='/register' className='link-no-style'>
             <Button color='inherit' fullWidth>
               Register
             </Button>
@@ -91,17 +85,17 @@ export default function Navbar() {
         </>
       )}
       <Divider />
-      <Link to='/catalog' style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to='/catalog' className='link-no-style'>
         <Button color='inherit' fullWidth>
           Catalog
         </Button>
       </Link>
-      <Link to='/learning' style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to='/learning' className='link-no-style'>
         <Button color='inherit' fullWidth>
           Learning
         </Button>
       </Link>
-      <Link to='/teaching' style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to='/teaching' className='link-no-style'>
         <Button color='inherit' fullWidth>
           Teaching
         </Button>
@@ -112,7 +106,7 @@ export default function Navbar() {
   if (!showNavbar) return null;
 
   return (
-    <AppBar position='static'>
+    <AppBar position={navbarFixed ? 'fixed' : 'static'}>
       <Toolbar>
         {isMobile ? (
           <>

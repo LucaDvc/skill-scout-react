@@ -6,7 +6,6 @@ import {
   Container,
   Divider,
   Grid,
-  Link,
   Rating,
   Stack,
   Typography,
@@ -23,6 +22,7 @@ import { wishlistCourse } from '../../../features/catalog/catalogSlice';
 import { refreshAuthUser } from '../../../features/users/usersSlice';
 import { LoadingButton } from '@mui/lab';
 import HtmlContent from '../../HtmlContent';
+import { Link } from 'react-router-dom';
 
 function MainDetailsContent({ course }) {
   const theme = useTheme();
@@ -112,14 +112,14 @@ function MainDetailsContent({ course }) {
               />
               <Stack spacing={1}>
                 <Link
-                  href={`/users/${course.instructor?.id}`}
-                  underline='hover'
-                  sx={{
-                    textDecoration: 'none',
-                    '&:hover': { textDecoration: 'underline' },
-                  }}
+                  to={`/users/${course.instructor?.id}`}
+                  className='link-no-style'
                 >
-                  <Typography variant='h6' component='span'>
+                  <Typography
+                    variant='h6'
+                    component='span'
+                    sx={{ '&:hover': { textDecoration: 'underline' } }}
+                  >
                     {course.instructor?.first_name +
                       ' ' +
                       course.instructor?.last_name}

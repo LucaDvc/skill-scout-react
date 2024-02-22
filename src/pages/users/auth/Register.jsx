@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -20,7 +19,7 @@ import {
   reset,
 } from '../../../features/users/usersSlice';
 import Spinner from '../../../components/Spinner';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
   const [isFormInvalid, setIsFormInvalid] = useState(false);
@@ -216,14 +215,15 @@ function Register() {
             </Button>
             <Grid container justifyContent='center'>
               <Grid item>
-                <Link href='/login' variant='body2'>
-                  Already have an account? Sign in
+                <Link to='/login' style={{ color: 'inherit' }}>
+                  <Typography variant='body2'>
+                    Already have an account? Sign in
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </>
   );

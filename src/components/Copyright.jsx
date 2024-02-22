@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -11,8 +11,8 @@ function Copyright(props) {
       {...props}
     >
       {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Your Website
+      <Link to='/catalog' style={{ color: 'inherit' }}>
+        Skill Scout
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
