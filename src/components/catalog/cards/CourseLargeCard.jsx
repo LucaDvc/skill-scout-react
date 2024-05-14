@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Rating,
-  Stack,
-  Avatar,
-} from '@mui/material';
+import { Card, CardContent, Typography, Box, Rating, Stack, Avatar } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { Link, useNavigate } from 'react-router-dom';
@@ -44,10 +36,7 @@ function CourseLargeCard({ course }) {
                 />
               </Box>
               <Box mt={1} ml={1}>
-                <Link
-                  to={`/catalog/courses/${course.id}`}
-                  className='link-no-style'
-                >
+                <Link to={`/catalog/courses/${course.id}`} className='link-no-style'>
                   <Typography
                     variant='h6'
                     component='span'
@@ -59,10 +48,7 @@ function CourseLargeCard({ course }) {
 
                 <Typography variant='body1'>{course.intro}</Typography>
 
-                <Link
-                  to={`/users/${course.instructor.id}`}
-                  className='link-no-style'
-                >
+                <Link to={`/users/${course.instructor.id}`} className='link-no-style'>
                   <Typography
                     variant='body2'
                     color='text.secondary'
@@ -72,18 +58,11 @@ function CourseLargeCard({ course }) {
                       marginTop: 1,
                     }}
                   >
-                    {course.instructor.first_name +
-                      ' ' +
-                      course.instructor.last_name}
+                    {course.instructor.first_name + ' ' + course.instructor.last_name}
                   </Typography>
                 </Link>
 
-                <Stack
-                  direction='row'
-                  spacing={2}
-                  alignItems='center'
-                  marginTop={1}
-                >
+                <Stack direction='row' spacing={2} alignItems='center' marginTop={1}>
                   <Box sx={{ display: 'flex', alignContent: 'center' }}>
                     <Rating
                       name='read-only'
@@ -92,37 +71,23 @@ function CourseLargeCard({ course }) {
                       readOnly
                       size='small'
                     />
-                    <Typography
-                      variant='body2'
-                      color='text.secondary'
-                      component='span'
-                    >
-                      {course.average_rating}
+                    <Typography variant='body2' color='text.secondary' component='span'>
+                      {course.average_rating % 1 === 0
+                        ? course.average_rating
+                        : course.average_rating.toFixed(1)}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: 'flex', alignContent: 'center' }}>
                     <PeopleAltIcon color='action' fontSize='small' />
-                    <Typography
-                      variant='body2'
-                      color='text.secondary'
-                      component='span'
-                    >
+                    <Typography variant='body2' color='text.secondary' component='span'>
                       {course.enrolled_learners}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: 'flex', alignContent: 'center' }}>
-                    <AccessTimeIcon
-                      color='action'
-                      fontSize='small'
-                      sx={{ mr: 0.75 }}
-                    />
-                    <Typography
-                      variant='body2'
-                      color='text.secondary'
-                      component='span'
-                    >
+                    <AccessTimeIcon color='action' fontSize='small' sx={{ mr: 0.75 }} />
+                    <Typography variant='body2' color='text.secondary' component='span'>
                       {course.total_hours} h
                     </Typography>
                   </Box>

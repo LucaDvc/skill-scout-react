@@ -60,10 +60,20 @@ function CourseSmallCard({ course }) {
           </Typography>
         </Link>
 
-        <Stack direction='row' spacing={2} alignItems='center' marginTop={8}>
+        <Box
+          sx={{
+            mt: 8,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant='body1' color='text.secondary' component='span'>
-              {course.average_rating}
+              {course.average_rating % 1 === 0
+                ? course.average_rating
+                : course.average_rating.toFixed(1)}
             </Typography>
             <Rating
               name='read-only'
@@ -78,20 +88,20 @@ function CourseSmallCard({ course }) {
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', alignContent: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <PeopleAltIcon color='action' fontSize='small' />
             <Typography variant='body2' color='text.secondary' component='span'>
               {course.enrolled_learners}
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', alignContent: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <AccessTimeIcon color='action' fontSize='small' sx={{ mr: 0.75 }} />
             <Typography variant='body2' color='text.secondary' component='span'>
               {course.total_hours} h
             </Typography>
           </Box>
-        </Stack>
+        </Box>
 
         <Typography
           variant='h5'
