@@ -33,7 +33,7 @@ export default function Navbar() {
   const { showNavbar, navbarFixed } = useLayout();
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -106,7 +106,10 @@ export default function Navbar() {
   if (!showNavbar) return null;
 
   return (
-    <AppBar position={navbarFixed ? 'fixed' : 'static'}>
+    <AppBar
+      position={navbarFixed ? 'fixed' : 'static'}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar>
         {isMobile ? (
           <>
@@ -209,9 +212,7 @@ export default function Navbar() {
                   inputProps={{ 'aria-label': 'search' }}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter') {
-                      navigate(
-                        `catalog/search?search=${event.target.value}&page=1`
-                      );
+                      navigate(`catalog/search?search=${event.target.value}&page=1`);
                     }
                   }}
                 />
