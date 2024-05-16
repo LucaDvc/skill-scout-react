@@ -14,8 +14,10 @@ import {
   SortableContext,
 } from '@dnd-kit/sortable';
 import { SortableStepCard } from './SortableStepCard';
+import { useEditLesson } from '../../../../context/EditLessonContext';
 
-function StepsList({ steps, setSteps, selectedStep, setSelectedStep }) {
+function StepsList() {
+  const { setIsDirty, steps, setSteps } = useEditLesson();
   const [hover, setHover] = useState(false);
 
   const sensors = useSensors(
@@ -26,6 +28,11 @@ function StepsList({ steps, setSteps, selectedStep, setSelectedStep }) {
     })
   );
 
+  const handleAddStep = () => {
+    console.log('Add step');
+    setIsDirty(true);
+  };
+
   function handleDragEnd(event) {
     const { active, over } = event;
 
@@ -33,9 +40,8 @@ function StepsList({ steps, setSteps, selectedStep, setSelectedStep }) {
       setSteps((steps) => {
         const oldIndex = steps.findIndex((step) => step.id === active.id);
         const newIndex = steps.findIndex((step) => step.id === over.id);
-        steps[oldIndex] = { ...steps[oldIndex], order: newIndex + 1 };
-        steps[newIndex] = { ...steps[newIndex], order: oldIndex + 1 };
 
+        setIsDirty(true);
         return arrayMove(steps, oldIndex, newIndex);
       });
     }
@@ -49,20 +55,14 @@ function StepsList({ steps, setSteps, selectedStep, setSelectedStep }) {
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={steps} strategy={horizontalListSortingStrategy}>
-          {steps.map((step) => (
-            <SortableStepCard
-              key={step.id}
-              id={step.id}
-              step={step}
-              onClick={() => setSelectedStep(step)}
-              selectedStep={selectedStep}
-            />
+          {steps.map((step, index) => (
+            <SortableStepCard key={step.id} id={step.id} step={step} index={index} />
           ))}
         </SortableContext>
       </DndContext>
       <Tooltip title='Add new step' placement='right' arrow>
         <Card
-          onClick={() => console.log('Add new step')}
+          onClick={handleAddStep}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           sx={{

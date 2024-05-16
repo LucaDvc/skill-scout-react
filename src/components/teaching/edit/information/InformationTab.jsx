@@ -21,12 +21,8 @@ import categoryUtils from '../../../../utils/categoryUtils';
 import { Editor } from '@tinymce/tinymce-react';
 import informationTabConstants from './constants';
 import { nanoid } from 'nanoid';
-import {
-  reset,
-  updateCourse,
-} from '../../../../features/teaching/teachingSlice';
+import { reset, updateCourse } from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
-import ReactRouterPrompt from 'react-router-prompt';
 import UnsavedChangesPrompt from '../prompt/UnsavedChangesPrompt';
 
 function InformationTab() {
@@ -104,10 +100,7 @@ function InformationTab() {
 
   const handleTotalHoursChange = (event) => {
     const value = event.target.value;
-    if (
-      (/^(?!0)\d+$/.test(value) && parseInt(value, 10) <= 200) ||
-      value === ''
-    ) {
+    if ((/^(?!0)\d+$/.test(value) && parseInt(value, 10) <= 200) || value === '') {
       setFormData((prevFormData) => ({
         ...prevFormData,
         totalHours: value,
@@ -238,18 +231,11 @@ function InformationTab() {
         {selectedCategoryId && (
           <Typography variant='body1' mt={2}>
             Selected category:
-            <Typography
-              variant='subtitle2'
-              component='span'
-              sx={{ fontStyle: 'italic' }}
-            >
+            <Typography variant='subtitle2' component='span' sx={{ fontStyle: 'italic' }}>
               {' ' +
                 (selectedCategoryId === course.category.id
                   ? course.category.name
-                  : categoryUtils.findCategoryById(
-                      categories,
-                      selectedCategoryId
-                    )?.name)}
+                  : categoryUtils.findCategoryById(categories, selectedCategoryId)?.name)}
             </Typography>
           </Typography>
         )}
@@ -289,14 +275,10 @@ function InformationTab() {
             onChange={handleTotalHoursChange}
             name='totalHours'
             focused
-            label={
-              <Typography variant='h5'>Expected Time to Complete</Typography>
-            }
+            label={<Typography variant='h5'>Expected Time to Complete</Typography>}
             variant='outlined'
             InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>hours</InputAdornment>
-              ),
+              endAdornment: <InputAdornment position='end'>hours</InputAdornment>,
             }}
             sx={{ width: 225 }}
             helperText='Max. 200 hours'
@@ -409,12 +391,7 @@ function InformationTab() {
             alignItems: 'center',
           }}
         >
-          <Button
-            variant='contained'
-            color='primary'
-            type='submit'
-            sx={{ width: '35%' }}
-          >
+          <Button variant='contained' color='primary' type='submit' sx={{ width: '35%' }}>
             <Typography variant='h5'>Save</Typography>
           </Button>
         </Box>

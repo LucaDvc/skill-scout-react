@@ -1,14 +1,10 @@
 import {
   Box,
   Button,
-  Container,
-  Divider,
   Drawer,
-  Grid,
   List,
   ListItem,
   ListItemButton,
-  Paper,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -20,6 +16,7 @@ import { getCourseById } from '../../features/teaching/teachingSlice';
 import { useLayout } from '../../context/LayoutContext';
 import Spinner from '../../components/Spinner';
 import { useTheme } from '@emotion/react';
+import { EditLessonProvider } from '../../context/EditLessonContext';
 
 function EditLessonsDetails() {
   const { courseId, lessonId } = useParams();
@@ -89,8 +86,8 @@ function EditLessonsDetails() {
                 </ListItem>
                 <List>
                   {course.chapters.map((chapter, index) => (
-                    <>
-                      <ListItem key={chapter.id} disablePadding>
+                    <React.Fragment key={chapter.id}>
+                      <ListItem disablePadding>
                         <ListItemButton>
                           <Typography
                             variant='body1'
@@ -104,8 +101,9 @@ function EditLessonsDetails() {
                         <Link
                           to={`/teaching/edit-lessons/${course.id}/lessons/${lesson.id}`}
                           className='link-no-style'
+                          key={lesson.id}
                         >
-                          <ListItem key={lesson.id} disablePadding>
+                          <ListItem disablePadding>
                             <ListItemButton
                               sx={{
                                 backgroundColor:
@@ -123,7 +121,7 @@ function EditLessonsDetails() {
                           </ListItem>
                         </Link>
                       ))}
-                    </>
+                    </React.Fragment>
                   ))}
                 </List>
               </List>
@@ -131,23 +129,19 @@ function EditLessonsDetails() {
           </Drawer>
         )}
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            backgroundColor: 'white',
+            paddingBottom: 9,
+            minHeight: '100dvh',
+          }}
+        >
           <Toolbar />
-          <Box>
-            <Outlet />
-          </Box>
-          <Box
-            sx={{
-              position: 'fixed',
-              bottom: 0,
-              width: '100%',
-              padding: 2,
-              backgroundColor: 'gray',
-            }}
-          >
-            <Button variant='contained' type='submit'>
-              Save
-            </Button>
+          <Box mt={4}>
+            <EditLessonProvider>
+              <Outlet />
+            </EditLessonProvider>
           </Box>
         </Box>
       </Box>

@@ -42,8 +42,6 @@ import LessonDetails from './components/teaching/edit/lesson_edit/LessonDetails'
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
 function Root() {
-  // 2️⃣ `BrowserRouter` component removed, but the <Routes>/<Route>
-  // component below are unchanged
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -82,10 +80,7 @@ function Root() {
             <Route index element={<Navigate to='information' replace />} />
           </Route>
 
-          <Route
-            path='/teaching/edit-lessons/:courseId'
-            element={<EditLessonsDetails />}
-          >
+          <Route path='/teaching/edit-lessons/:courseId' element={<EditLessonsDetails />}>
             <Route path='lessons/:lessonId' element={<LessonDetails />} />
           </Route>
         </Route>

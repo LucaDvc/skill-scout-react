@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Card, Typography } from '@mui/material';
@@ -6,26 +6,45 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import QuizIcon from '@mui/icons-material/Quiz';
 import CodeIcon from '@mui/icons-material/Code';
+import { useEditLesson } from '../../../../context/EditLessonContext';
 
 export function SortableStepCard(props) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: props.id,
   });
-  const { step, selectedStep, onClick } = props;
 
-  const style = {
-    transform: CSS.Translate.toString(transform),
-    transition,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 1,
+  const { selectedStep, setSelectedStep, saveStep } = useEditLesson();
+
+  const { step, index } = props;
+
+  useEffect(() => {
+    const updatedStep = { ...step, order: index + 1 };
+    saveStep(updatedStep);
+    if (selectedStep.id === step.id) {
+      setSelectedStep(updatedStep);
+    }
+  }, [index]);
+
+  const style = useMemo(
+    () => ({
+      transform: CSS.Translate.toString(transform),
+      transition,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 1,
+    }),
+    [transform, transition]
+  );
+
+  const onClick = () => {
+    setSelectedStep(step);
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Typography variant='body2' sx={{ color: 'action.disabled' }}>
-        {step.order}
+        {index + 1}
       </Typography>
       <Card
         onClick={onClick}
