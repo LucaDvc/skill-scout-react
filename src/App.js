@@ -38,6 +38,7 @@ import SyllabusTab from './components/teaching/edit/syllabus/SyllabusTab';
 import InformationTab from './components/teaching/edit/information/InformationTab';
 import EditLessonsDetails from './pages/teaching/EditLessonsDetails';
 import LessonDetails from './components/teaching/edit/lesson_edit/LessonDetails';
+import './aceConfig';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
