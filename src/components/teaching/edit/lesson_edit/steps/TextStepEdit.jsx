@@ -1,17 +1,25 @@
 import { Box, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import stepsEditConstants from './constants';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
 
 function TextStepEdit() {
-  const { selectedStep, setSelectedStep, saveStep } = useEditLesson();
-
-  const editorRef = useRef(null);
+  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
+    useEditLesson();
 
   const handleChange = (value, editor) => {
-    setSelectedStep({ ...selectedStep, text: value });
+    setSelectedStep((step) => {
+      if (step.text !== value) {
+        setIsDirty(true);
+      }
+      return { ...step, text: value };
+    });
   };
+
+  useEffect(() => {
+    saveStep(selectedStep);
+  }, [savePressed]);
 
   useEffect(() => {
     return () => {
@@ -26,7 +34,6 @@ function TextStepEdit() {
       </Typography>
       <Editor
         apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-        onInit={(evt, editor) => (editorRef.current = editor)}
         init={{
           height: 500,
           menubar: false,

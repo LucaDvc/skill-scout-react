@@ -59,7 +59,7 @@ function LessonDetails() {
   }, [setShowFooter, setNavbarFixed, lessonId]);
 
   return (
-    <Box sx={{ minHeight: '100%' }}>
+    <Box sx={{ minHeight: '100%' }} component='form' onSubmit={handleSave}>
       <UnsavedChangesPrompt when={isDirty} />
 
       <Container maxWidth='md'>
@@ -90,7 +90,7 @@ function LessonDetails() {
               onChange={handleTitleChange}
               required
               sx={{
-                margin: 1,
+                marginY: 1,
                 width: '100%',
               }}
               InputProps={{
@@ -117,9 +117,10 @@ function LessonDetails() {
           width: '100%',
           padding: 1,
           backgroundColor: 'gray',
+          zIndex: 100,
         }}
       >
-        <Button variant='contained' onClick={handleSave}>
+        <Button variant='contained' type='submit'>
           Save
         </Button>
       </Box>

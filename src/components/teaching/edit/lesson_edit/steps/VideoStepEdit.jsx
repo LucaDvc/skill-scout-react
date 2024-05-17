@@ -32,19 +32,24 @@ function VideoStepEdit() {
     setIsDirty,
     videoFiles,
     setVideoFiles,
+    savePressed,
   } = useEditLesson();
 
   const [videoUrl, setVideoUrl] = useState(selectedStep.video_file || '');
 
   useEffect(() => {
-    setVideoUrl(selectedStep.video_file || '');
-  }, [selectedStep]);
+    saveStep(selectedStep);
+  }, [savePressed]);
 
   useEffect(() => {
     return () => {
       saveStep(selectedStep);
     };
   }, [selectedStep, saveStep]);
+
+  useEffect(() => {
+    setVideoUrl(selectedStep.video_file || '');
+  }, [selectedStep]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

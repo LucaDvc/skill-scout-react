@@ -1,4 +1,4 @@
-import { Box, Card, Tooltip, Typography } from '@mui/material';
+import { Card, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import {
@@ -23,7 +23,7 @@ function StepsList() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 0.01,
+        distance: 0.1,
       },
     })
   );
@@ -36,7 +36,7 @@ function StepsList() {
   function handleDragEnd(event) {
     const { active, over } = event;
 
-    if (active.id !== over.id) {
+    if (active && over && active.id !== over.id) {
       setSteps((steps) => {
         const oldIndex = steps.findIndex((step) => step.id === active.id);
         const newIndex = steps.findIndex((step) => step.id === over.id);
