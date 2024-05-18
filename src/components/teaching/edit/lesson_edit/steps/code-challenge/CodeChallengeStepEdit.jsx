@@ -5,28 +5,13 @@ import stepsEditConstants from '../constants';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import TestCasesTab from './TestCasesTab';
 import LanguagesTemplatesTab from './LanguagesTemplatesTab';
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ paddingY: 2 }}>{children}</Box>}
-    </div>
-  );
-}
+import TabPanel from '../utils/TabPanel';
 
 function CodeChallengeStepEdit() {
   const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
     useEditLesson();
-  const [selectedTab, setSelectedTab] = useState(0);
 
+  const [selectedTab, setSelectedTab] = useState(0);
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };

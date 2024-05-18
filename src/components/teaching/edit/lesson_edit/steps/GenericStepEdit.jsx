@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import VideoStepEdit from './VideoStepEdit';
-import QuizStepEdit from './QuizStepEdit';
+import QuizStepEdit from './choice-quiz/QuizStepEdit';
 import CodeChallengeStepEdit from './code-challenge/CodeChallengeStepEdit';
 import TextStepEdit from './TextStepEdit';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
