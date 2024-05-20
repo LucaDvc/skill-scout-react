@@ -11,6 +11,7 @@ import {
   defaultLayoutIcons,
   DefaultVideoLayout,
 } from '@vidstack/react/player/layouts/default';
+import LessonStepHeader from './utils/LessonStepHeader';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -76,9 +77,7 @@ function VideoStepEdit() {
 
   return (
     <Box>
-      <Typography variant='h6' gutterBottom>
-        Step {selectedStep.order}: Video
-      </Typography>
+      <LessonStepHeader>Step {selectedStep.order}: Video</LessonStepHeader>
       {videoUrl && (
         <>
           <TextField

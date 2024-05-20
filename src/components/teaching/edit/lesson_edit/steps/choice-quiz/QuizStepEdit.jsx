@@ -1,4 +1,13 @@
-import { Box, Button, ButtonGroup, Divider, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Divider,
+  IconButton,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
 import React, { useEffect, useState } from 'react';
 import stepsEditConstants from '../constants';
@@ -8,6 +17,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import TabPanel from '../utils/TabPanel';
 import OptionsTab from './OptionsTab';
 import ExplanationTab from './ExplanationTab';
+import LessonStepHeader from '../utils/LessonStepHeader';
 
 function QuizStepEdit() {
   const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
@@ -59,9 +69,7 @@ function QuizStepEdit() {
 
   return (
     <Box>
-      <Typography variant='h6' gutterBottom>
-        Step {selectedStep.order}: Multiple Choice Quiz
-      </Typography>
+      <LessonStepHeader>Step {selectedStep.order}: Multiple Choice Quiz</LessonStepHeader>
       <Typography variant='subtitle1' gutterBottom sx={{ marginTop: 1 }}>
         Statement
       </Typography>

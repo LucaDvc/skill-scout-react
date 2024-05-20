@@ -5,7 +5,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Card, Checkbox, IconButton, Radio, TextField } from '@mui/material';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
-import { CheckBox } from '@mui/icons-material';
 
 export default function SortableQuizOption(props) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({

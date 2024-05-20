@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import React, { useEffect } from 'react';
 import stepsEditConstants from './constants';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
+import LessonStepHeader from './utils/LessonStepHeader';
 
 function TextStepEdit() {
   const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
@@ -29,9 +30,7 @@ function TextStepEdit() {
 
   return (
     <Box>
-      <Typography variant='h6' gutterBottom>
-        Step {selectedStep.order}: Text
-      </Typography>
+      <LessonStepHeader>Step {selectedStep.order}: Text</LessonStepHeader>
       <Editor
         apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
         init={{

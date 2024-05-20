@@ -6,6 +6,7 @@ import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import TestCasesTab from './TestCasesTab';
 import LanguagesTemplatesTab from './LanguagesTemplatesTab';
 import TabPanel from '../utils/TabPanel';
+import LessonStepHeader from '../utils/LessonStepHeader';
 
 function CodeChallengeStepEdit() {
   const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
@@ -56,9 +57,7 @@ function CodeChallengeStepEdit() {
 
   return (
     <Box>
-      <Typography variant='h6' gutterBottom>
-        Step {selectedStep.order}: Code Challenge
-      </Typography>
+      <LessonStepHeader>Step {selectedStep.order}: Code Challenge</LessonStepHeader>
 
       <TextField
         label='Code Challenge Title'
