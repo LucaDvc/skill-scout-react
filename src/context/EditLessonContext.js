@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import videoStepService from '../features/teaching/videoStepService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { updateLesson } from '../features/teaching/teachingSlice';
 
 const EditLessonContext = createContext();
 
@@ -16,9 +18,10 @@ export function EditLessonProvider({ children }) {
   const [savePressed, setSavePressed] = useState(0);
   const [title, setTitle] = useState('');
   const [videoFiles, setVideoFiles] = useState({});
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { accessToken } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const saveStep = useCallback((step) => {
     setSteps((steps) => {
@@ -32,6 +35,7 @@ export function EditLessonProvider({ children }) {
     for (const stepId in videoFiles) {
       try {
         const formData = new FormData();
+        console.log(stepId, videoFiles[stepId]);
         formData.append('video_file', videoFiles[stepId]);
         const response = await videoStepService.updateVideoStep(
           accessToken,
@@ -46,7 +50,7 @@ export function EditLessonProvider({ children }) {
         });
       } catch (error) {
         console.error('Error uploading video file:', error);
-        setError(true);
+        toast.error('Error uploading video file. Please try again.');
       }
     }
   }, [selectedStep, videoFiles, accessToken]);
@@ -54,6 +58,7 @@ export function EditLessonProvider({ children }) {
   const handleSave = useCallback(
     async (e) => {
       e.preventDefault();
+      setLoading(true);
       console.log('Save lesson');
       setSavePressed((prev) => prev + 1);
       console.log('steps:', steps);
@@ -68,15 +73,28 @@ export function EditLessonProvider({ children }) {
       try {
         await updateVideoFiles(); // Update video files first
         setVideoFiles({}); // Clear video files after saving
-        // Save lesson in backend
-        // setLesson((lesson) => ({ ...lesson, lesson_steps: lessonSteps, title }));
 
-        // If no errors, set isDirty to false
+        // Save lesson in backend
+        const updatedLesson = await dispatch(
+          updateLesson({
+            id: lesson.id,
+            lesson: {
+              ...lesson,
+              title,
+              lesson_steps: lessonSteps,
+            },
+          })
+        ).unwrap();
+
+        // If no errors, set update lesson in context and set isDirty to false
+        setLesson(updatedLesson);
         setIsDirty(false);
+        toast.success('Lesson saved successfully');
         console.log('Lesson saved successfully');
       } catch (error) {
         console.error('Error saving lesson:', error);
       }
+      setLoading(false);
     },
     [steps, selectedStep]
   );
@@ -97,8 +115,7 @@ export function EditLessonProvider({ children }) {
     setTitle,
     videoFiles,
     setVideoFiles,
-    error,
-    setError,
+    loading,
   };
 
   return (

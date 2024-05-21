@@ -15,8 +15,8 @@ function GenericStepEdit() {
       text: <TextStepEdit />,
       codechallenge: <CodeChallengeStepEdit />,
     };
-    return steps[selectedStep.type] || null;
-  }, [selectedStep, selectedStep.type]);
+    return steps[selectedStep?.type] || null;
+  }, [selectedStep, selectedStep?.type]);
 
   return <div>{StepComponent}</div>;
 }

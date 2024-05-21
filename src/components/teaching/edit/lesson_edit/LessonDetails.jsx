@@ -24,6 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteLessonDialog from '../prompt/DeleteLessonDialog';
 import Spinner from '../../../Spinner';
 import { reset } from '../../../../features/teaching/teachingSlice';
+import { toast } from 'react-toastify';
 
 function LessonDetails() {
   const theme = useTheme();
@@ -35,7 +36,14 @@ function LessonDetails() {
   // Redux
   const dispatch = useDispatch();
   const { course } = useSelector((state) => state.teaching.edit);
-  const { isLoading } = useSelector((state) => state.teaching.delete);
+  const { isLoading: deleteLoading } = useSelector((state) => state.teaching.delete);
+  const { isError, message } = useSelector((state) => state.teaching.edit);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+  }, [isError, message]);
 
   // Context
   const {
@@ -48,6 +56,7 @@ function LessonDetails() {
     handleSave,
     title,
     setTitle,
+    loading: updateLoading,
   } = useEditLesson();
 
   const [lessonActionsMenuAnchor, setLessonActionsMenuAnchor] = useState(null);
@@ -105,7 +114,7 @@ function LessonDetails() {
     <Box sx={{ minHeight: '100%' }} component='form' onSubmit={handleSave}>
       <UnsavedChangesPrompt when={isDirty} />
 
-      {isLoading && <Spinner />}
+      {(deleteLoading || updateLoading) && <Spinner />}
 
       <Container maxWidth='md'>
         <Typography variant='h4' gutterBottom>
@@ -182,7 +191,7 @@ function LessonDetails() {
             transformOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             PaperProps={{
               sx: {
-                marginTop: -1, // Adjust this value to increase or decrease the spacing
+                marginTop: -1,
                 '&::before': {
                   content: '""',
                   display: 'block',

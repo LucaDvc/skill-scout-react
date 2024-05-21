@@ -13,6 +13,24 @@ import {
 import LessonStepHeader from './utils/LessonStepHeader';
 import VisuallyHiddenInput from './utils/VisuallyHiddenInput';
 
+const getVideoType = (url) => {
+  const extension = url.split('.').pop().toLowerCase();
+  switch (extension) {
+    case 'mp4':
+      return 'video/mp4';
+    case 'mov':
+      return 'video/quicktime';
+    case 'avi':
+      return 'video/x-msvideo';
+    case 'webm':
+      return 'video/webm';
+    case 'mkv':
+      return 'video/x-matroska';
+    default:
+      return '';
+  }
+};
+
 function VideoStepEdit() {
   const {
     selectedStep,
@@ -25,6 +43,7 @@ function VideoStepEdit() {
   } = useEditLesson();
 
   const [videoUrl, setVideoUrl] = useState(selectedStep.video_file || '');
+  const [videoType, setVideoType] = useState(getVideoType(selectedStep.video_file || ''));
 
   useEffect(() => {
     saveStep(selectedStep);
@@ -38,13 +57,20 @@ function VideoStepEdit() {
 
   useEffect(() => {
     setVideoUrl(selectedStep.video_file || '');
+    setVideoType(
+      selectedStep.fileType
+        ? selectedStep.fileType
+        : getVideoType(selectedStep.video_file || '')
+    );
   }, [selectedStep]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setSelectedStep({ ...selectedStep, video_file: url });
+      const fileType = file.type;
+      console.log(url, fileType);
+      setSelectedStep({ ...selectedStep, video_file: url, fileType });
       setVideoFiles((videoFiles) => ({ ...videoFiles, [selectedStep.id]: file }));
       setIsDirty(true);
 
@@ -93,7 +119,10 @@ function VideoStepEdit() {
               marginBottom: 2,
             }}
           >
-            <MediaPlayer title={selectedStep.title} src={videoUrl}>
+            <MediaPlayer
+              title={selectedStep.title}
+              src={{ src: videoUrl, type: videoType }}
+            >
               <MediaProvider />
               <DefaultVideoLayout icons={defaultLayoutIcons} />
             </MediaPlayer>

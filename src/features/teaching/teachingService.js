@@ -50,6 +50,16 @@ const updateCourse = async (token, id, updatedCourse) => {
   return response.data;
 };
 
+const updateLesson = async (token, id, updatedLesson) => {
+  const response = await axiosInstance.put(`${API_URL}/lessons/${id}/`, updatedLesson, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
 const deleteLesson = async (token, id) => {
   const response = await axiosInstance.delete(`${API_URL}/lessons/${id}`, {
     headers: {
@@ -66,6 +76,7 @@ const teachingService = {
   createCourse,
   getCourseById,
   updateCourse,
+  updateLesson,
   deleteLesson,
 };
 

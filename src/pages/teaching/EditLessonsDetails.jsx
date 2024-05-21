@@ -53,7 +53,6 @@ function EditLessonsDetails() {
   return (
     course && (
       <Box sx={{ display: 'flex' }}>
-        {isLoading && <Spinner />}
         {!isMobile && (
           <Drawer
             variant='permanent'

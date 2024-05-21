@@ -96,6 +96,19 @@ export const updateCourse = createAsyncThunk(
   }
 );
 
+export const updateLesson = createAsyncThunk(
+  'teaching/updateLesson',
+  async ({ id, lesson }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      return await teachingService.updateLesson(token, id, lesson);
+    } catch (error) {
+      let message = 'Unable to update lesson. Please try again.';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const deleteLesson = createAsyncThunk(
   'teaching/deleteLesson',
   async (id, thunkAPI) => {
@@ -206,6 +219,30 @@ export const teachingSlice = createSlice({
         );
       })
       .addCase(updateCourse.rejected, (state, action) => {
+        state.edit.isLoading = false;
+        state.edit.isError = true;
+        state.edit.message = action.payload;
+      })
+      .addCase(updateLesson.pending, (state, action) => {
+        state.edit.isLoading = true;
+        state.edit.isSuccess = false;
+        state.edit.isError = false;
+      })
+      .addCase(updateLesson.fulfilled, (state, action) => {
+        const lesson = action.payload;
+        state.edit.course = {
+          ...state.edit.course,
+          chapters: state.edit.course.chapters.map((chapter) => ({
+            ...chapter,
+            lessons: chapter.lessons.map((l) => {
+              return l.id === lesson.id ? lesson : l;
+            }),
+          })),
+        };
+        state.edit.isLoading = false;
+        state.edit.isSuccess = true;
+      })
+      .addCase(updateLesson.rejected, (state, action) => {
         state.edit.isLoading = false;
         state.edit.isError = true;
         state.edit.message = action.payload;
