@@ -37,10 +37,6 @@ function QuizStepEdit() {
     });
   };
 
-  useEffect(() => {
-    console.log(selectedStep);
-  }, [selectedStep]);
-
   const handleRadioButtonsInputChange = () => {
     setSelectedStep((step) => {
       const firstCheckedIndex = step.quiz_choices.findIndex((o) => o.correct);

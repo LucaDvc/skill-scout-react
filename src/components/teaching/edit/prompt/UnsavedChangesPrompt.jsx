@@ -32,8 +32,8 @@ function UnsavedChangesPrompt({ when }) {
                 }}
               >
                 <Typography variant='subtitle1'>Unsaved changes</Typography>
-                <IconButton>
-                  <CloseIcon onClick={onCancel} />
+                <IconButton onClick={onCancel}>
+                  <CloseIcon />
                 </IconButton>
               </Box>
             </DialogTitle>
@@ -43,12 +43,7 @@ function UnsavedChangesPrompt({ when }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button
-                onClick={onCancel}
-                variant='outlined'
-                color='secondary'
-                autoFocus
-              >
+              <Button onClick={onCancel} variant='outlined' color='secondary' autoFocus>
                 Cancel
               </Button>
               <Button onClick={onConfirm} variant='contained' color='primary'>

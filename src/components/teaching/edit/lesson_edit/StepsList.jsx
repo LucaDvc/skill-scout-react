@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable';
 import { SortableStepCard } from './SortableStepCard';
 import { useEditLesson } from '../../../../context/EditLessonContext';
+import AddLessonStepDialog from '../prompt/AddLessonStepDialog';
 
 function StepsList() {
   const { setIsDirty, steps, setSteps } = useEditLesson();
@@ -28,8 +29,10 @@ function StepsList() {
     })
   );
 
+  const [addStepDialogOpen, setAddStepDialogOpen] = useState(false);
+
   const handleAddStep = () => {
-    console.log('Add step');
+    setAddStepDialogOpen(true);
     setIsDirty(true);
   };
 
@@ -49,6 +52,11 @@ function StepsList() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
+      <AddLessonStepDialog
+        open={addStepDialogOpen}
+        handleClose={() => setAddStepDialogOpen(false)}
+      />
+
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
