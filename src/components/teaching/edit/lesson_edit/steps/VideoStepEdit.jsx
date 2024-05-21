@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import '@vidstack/react/player/styles/default/theme.css';
@@ -12,18 +11,7 @@ import {
   DefaultVideoLayout,
 } from '@vidstack/react/player/layouts/default';
 import LessonStepHeader from './utils/LessonStepHeader';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
+import VisuallyHiddenInput from './utils/VisuallyHiddenInput';
 
 function VideoStepEdit() {
   const {
