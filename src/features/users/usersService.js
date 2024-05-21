@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../../axios';
 
 const API_URL = '/api/users';
 
@@ -65,7 +66,7 @@ const updateProfile = async (userId, token, profile) => {
     },
   };
 
-  const response = await axios.put(`${API_URL}/${userId}/`, profile, config);
+  const response = await axiosInstance.put(`${API_URL}/${userId}/`, profile, config);
 
   return response.data;
 };
@@ -93,7 +94,7 @@ const getUserById = async (userId, token) => {
     },
   };
 
-  const response = await axios.get(`${API_URL}/${userId}/`, config);
+  const response = await axiosInstance.get(`${API_URL}/${userId}/`, config);
 
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
