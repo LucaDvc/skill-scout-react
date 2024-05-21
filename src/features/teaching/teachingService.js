@@ -50,12 +50,23 @@ const updateCourse = async (token, id, updatedCourse) => {
   return response.data;
 };
 
+const deleteLesson = async (token, id) => {
+  const response = await axios.delete(`${API_URL}/lessons/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
 const teachingService = {
   getCourses,
   deleteCourse,
   createCourse,
   getCourseById,
   updateCourse,
+  deleteLesson,
 };
 
 export default teachingService;

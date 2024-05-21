@@ -1,19 +1,43 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useLayout } from '../../../../context/LayoutContext';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StepsList from './StepsList';
 import GenericStepEdit from './steps/GenericStepEdit';
 import UnsavedChangesPrompt from '../prompt/UnsavedChangesPrompt';
 import { useEditLesson } from '../../../../context/EditLessonContext';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { useTheme } from '@emotion/react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteLessonDialog from '../prompt/DeleteLessonDialog';
+import Spinner from '../../../Spinner';
+import { reset } from '../../../../features/teaching/teachingSlice';
 
 function LessonDetails() {
-  const { lessonId } = useParams();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { setShowFooter, setNavbarFixed } = useLayout();
 
+  const { lessonId } = useParams();
+
+  // Redux
+  const dispatch = useDispatch();
   const { course } = useSelector((state) => state.teaching.edit);
+  const { isLoading } = useSelector((state) => state.teaching.delete);
+
+  // Context
   const {
     lesson,
     setLesson,
@@ -25,6 +49,24 @@ function LessonDetails() {
     title,
     setTitle,
   } = useEditLesson();
+
+  const [lessonActionsMenuAnchor, setLessonActionsMenuAnchor] = useState(null);
+  const menuOpen = Boolean(lessonActionsMenuAnchor);
+
+  const handleMenuOpen = (event) => {
+    setLessonActionsMenuAnchor(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setLessonActionsMenuAnchor(null);
+  };
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDeleteLessonClick = () => {
+    setDeleteDialogOpen(true);
+    setLessonActionsMenuAnchor(null);
+  };
 
   const handleRestoreLesson = () => {};
 
@@ -55,12 +97,15 @@ function LessonDetails() {
       setShowFooter(true);
       setNavbarFixed(false);
       setIsDirty(false);
+      dispatch(reset());
     };
   }, [setShowFooter, setNavbarFixed, lessonId]);
 
   return (
     <Box sx={{ minHeight: '100%' }} component='form' onSubmit={handleSave}>
       <UnsavedChangesPrompt when={isDirty} />
+
+      {isLoading && <Spinner />}
 
       <Container maxWidth='md'>
         <Typography variant='h4' gutterBottom>
@@ -114,15 +159,93 @@ function LessonDetails() {
         sx={{
           position: 'fixed',
           bottom: 0,
-          width: '100%',
+          left: isMobile ? 0 : '280px', // 280px is the drawer width
+          right: 0,
           padding: 1,
-          backgroundColor: 'gray',
+          backgroundColor: 'lightgray',
           zIndex: 100,
         }}
       >
-        <Button variant='contained' type='submit'>
-          Save
-        </Button>
+        <Container
+          maxWidth='lg'
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        >
+          <Menu
+            id='lesson-actions-menu'
+            anchorEl={lessonActionsMenuAnchor}
+            open={menuOpen}
+            onClose={handleMenuClose}
+            MenuListProps={{
+              'aria-labelledby': 'lesson-actions-button',
+            }}
+            anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+            transformOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+            PaperProps={{
+              sx: {
+                marginTop: -1, // Adjust this value to increase or decrease the spacing
+                '&::before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  bottom: -8,
+                  left: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
+                overflow: 'visible',
+              },
+            }}
+          >
+            <MenuItem onClick={handleDeleteLessonClick}>
+              <ListItemIcon>
+                <DeleteIcon fontSize='small' />
+              </ListItemIcon>
+              Delete lesson
+            </MenuItem>
+          </Menu>
+
+          <DeleteLessonDialog
+            open={deleteDialogOpen}
+            handleClose={() => setDeleteDialogOpen(false)}
+          />
+
+          {isMobile ? (
+            <IconButton
+              color='primary'
+              id='lesson-actions-button'
+              aria-controls={menuOpen ? 'lesson-actions-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={menuOpen ? 'true' : undefined}
+              onClick={handleMenuOpen}
+            >
+              <SettingsIcon />
+            </IconButton>
+          ) : (
+            <Button
+              startIcon={<SettingsIcon />}
+              variant='outlined'
+              id='lesson-actions-button'
+              aria-controls={menuOpen ? 'lesson-actions-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={menuOpen ? 'true' : undefined}
+              onClick={handleMenuOpen}
+            >
+              Lesson actions
+            </Button>
+          )}
+
+          <Box display='flex' ml={1}>
+            <Button variant='contained' type='submit' sx={{ mr: 1 }}>
+              Save
+            </Button>
+            <Link to={`/teaching/courses/${course.id}/syllabus`}>
+              <Button variant='outlined'>Back to syllabus</Button>
+            </Link>
+          </Box>
+        </Container>
       </Box>
     </Box>
   );

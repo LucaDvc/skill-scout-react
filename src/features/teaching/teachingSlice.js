@@ -29,19 +29,16 @@ const initialState = {
   },
 };
 
-export const getCourses = createAsyncThunk(
-  'teaching/getCourses',
-  async (_, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().users.accessToken;
-      return await teachingService.getCourses(token);
-    } catch (error) {
-      let message = error.detail || error.toString();
+export const getCourses = createAsyncThunk('teaching/getCourses', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().users.accessToken;
+    return await teachingService.getCourses(token);
+  } catch (error) {
+    let message = error.detail || error.toString();
 
-      return thunkAPI.rejectWithValue(message);
-    }
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const deleteCourse = createAsyncThunk(
   'teaching/deleteCourse',
@@ -99,6 +96,20 @@ export const updateCourse = createAsyncThunk(
   }
 );
 
+export const deleteLesson = createAsyncThunk(
+  'teaching/deleteLesson',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().users.accessToken;
+      await teachingService.deleteLesson(token, id);
+      return id;
+    } catch (error) {
+      let message = 'Unable to delete lesson. Please try again.';
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const teachingSlice = createSlice({
   name: 'teaching',
   initialState,
@@ -151,9 +162,7 @@ export const teachingSlice = createSlice({
       .addCase(deleteCourse.fulfilled, (state, action) => {
         state.delete.isLoading = false;
         state.delete.isSuccess = true;
-        state.courses = state.courses.filter(
-          (course) => course.id !== action.payload
-        );
+        state.courses = state.courses.filter((course) => course.id !== action.payload);
       })
       .addCase(deleteCourse.rejected, (state, action) => {
         state.delete.isLoading = false;
@@ -200,6 +209,30 @@ export const teachingSlice = createSlice({
         state.edit.isLoading = false;
         state.edit.isError = true;
         state.edit.message = action.payload;
+      })
+      .addCase(deleteLesson.pending, (state, action) => {
+        state.delete.isLoading = true;
+        state.delete.isSuccess = false;
+        state.delete.isError = false;
+      })
+      .addCase(deleteLesson.fulfilled, (state, action) => {
+        const lessonId = action.payload;
+        state.edit.course = {
+          ...state.edit.course,
+          chapters: state.edit.course.chapters.map((chapter) => {
+            return {
+              ...chapter,
+              lessons: chapter.lessons.filter((lesson) => lesson.id !== lessonId),
+            };
+          }),
+        };
+        state.delete.isLoading = false;
+        state.delete.isSuccess = true;
+      })
+      .addCase(deleteLesson.rejected, (state, action) => {
+        state.delete.isLoading = false;
+        state.delete.isError = true;
+        state.delete.message = action.payload;
       });
   },
 });
