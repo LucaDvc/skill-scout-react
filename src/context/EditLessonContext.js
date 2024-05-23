@@ -23,13 +23,13 @@ export function EditLessonProvider({ children }) {
   const { accessToken } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
-  const saveStep = useCallback((step) => {
+  const saveStep = (step) => {
     setSteps((steps) => {
       const index = steps.findIndex((s) => s.id === step.id);
       steps[index] = step;
       return [...steps];
     });
-  }, []);
+  };
 
   const updateVideoFiles = useCallback(async () => {
     for (const stepId in videoFiles) {

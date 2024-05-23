@@ -72,6 +72,13 @@ const DEFAULT_QUIZ_STEP_CHOICES = [
   { id: nanoid(), text: '504', correct: false },
 ];
 
+const DEFAULT_SORTING_PROBLEM_STATEMENT = `<p>You can change the problem statement right here and specify the settings below.</p>`;
+const DEFAULT_SORTING_PROBLEM_OPTIONS = [
+  { id: nanoid(), text: 'One', correct_order: 1 },
+  { id: nanoid(), text: 'Two', correct: 2 },
+  { id: nanoid(), text: 'Three', correct: 3 },
+];
+
 const stepsEditConstants = {
   EDITOR_PLUGINS,
   EDITOR_TOOLBAR,
@@ -84,6 +91,8 @@ const stepsEditConstants = {
   DEFAULT_QUIZ_STEP_QUESTION,
   DEFAULT_QUIZ_STEP_EXPLANATION,
   DEFAULT_QUIZ_STEP_CHOICES,
+  DEFAULT_SORTING_PROBLEM_STATEMENT,
+  DEFAULT_SORTING_PROBLEM_OPTIONS,
 };
 
 export default stepsEditConstants;

@@ -14,11 +14,12 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
-import SortableQuizOption from './SortableQuizOption';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
 import { nanoid } from 'nanoid';
-function OptionsTab() {
+import SortableOption from './SortableOption';
+
+function OptionsList() {
   const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -32,13 +33,13 @@ function OptionsTab() {
 
     if (active.id !== over.id) {
       setSelectedStep((step) => {
-        let options = [...step.quiz_choices];
+        let options = [...step.options];
         const oldIndex = options.findIndex((option) => option.id === active.id);
         const newIndex = options.findIndex((option) => option.id === over.id);
 
         options = arrayMove(options, oldIndex, newIndex);
 
-        return { ...step, quiz_choices: options };
+        return { ...step, options: options };
       });
     }
 
@@ -46,12 +47,12 @@ function OptionsTab() {
   }
 
   const addOption = () => {
-    if (selectedStep.quiz_choices.length >= 10) return; // Limit to 10 options
+    if (selectedStep.options.length >= 10) return; // Limit to 10 options
     const options = [
-      ...selectedStep.quiz_choices,
-      { id: nanoid(), text: '', correct: false },
+      ...selectedStep.options,
+      { id: nanoid(), text: '', correct_order: selectedStep.options.length + 1 },
     ];
-    setSelectedStep({ ...selectedStep, quiz_choices: options });
+    setSelectedStep({ ...selectedStep, options });
     setIsDirty(true);
   };
 
@@ -63,11 +64,17 @@ function OptionsTab() {
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={selectedStep.quiz_choices}
+          items={selectedStep.options}
           strategy={verticalListSortingStrategy}
         >
-          {selectedStep.quiz_choices.map((option, index) => (
-            <SortableQuizOption key={option.id} id={option.id} option={option} handle />
+          {selectedStep.options.map((option, index) => (
+            <SortableOption
+              key={option.id}
+              id={option.id}
+              option={option}
+              index={index}
+              handle
+            />
           ))}
         </SortableContext>
       </DndContext>
@@ -83,4 +90,4 @@ function OptionsTab() {
   );
 }
 
-export default OptionsTab;
+export default OptionsList;

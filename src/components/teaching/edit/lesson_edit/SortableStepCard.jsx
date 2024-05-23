@@ -6,6 +6,7 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import QuizIcon from '@mui/icons-material/Quiz';
 import CodeIcon from '@mui/icons-material/Code';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { useEditLesson } from '../../../../context/EditLessonContext';
 
 export function SortableStepCard(props) {
@@ -69,6 +70,9 @@ export function SortableStepCard(props) {
         {step.type === 'video' && <VideocamIcon sx={{ color: 'white' }} />}
         {step.type === 'quiz' && <QuizIcon sx={{ color: 'white' }} />}
         {step.type === 'codechallenge' && <CodeIcon sx={{ color: 'white' }} />}
+        {step.type === 'sorting_problem' && (
+          <SwapVertIcon sx={{ color: 'white' }} fontSize='large' />
+        )}
       </Card>
     </div>
   );

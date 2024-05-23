@@ -16,6 +16,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import QuizIcon from '@mui/icons-material/Quiz';
 import CloseIcon from '@mui/icons-material/Close';
 import CodeIcon from '@mui/icons-material/Code';
+import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { useEditLesson } from '../../../../context/EditLessonContext';
 import stepsEditConstants from '../lesson_edit/steps/constants';
 import { nanoid } from 'nanoid';
@@ -110,6 +111,21 @@ function AddLessonStepDialog({ open, handleClose }) {
     handleClose();
   };
 
+  const handleAddSortingStep = () => {
+    const sortingStep = {
+      id: nanoid(),
+      order: steps.length + 1,
+      title: 'New sorting problem',
+      statement: stepsEditConstants.DEFAULT_SORTING_PROBLEM_STATEMENT,
+      options: stepsEditConstants.DEFAULT_SORTING_PROBLEM_OPTIONS,
+      type: 'sorting_problem',
+    };
+    setSteps([...steps, sortingStep]);
+    setSelectedStep(sortingStep);
+    setIsDirty(true);
+    handleClose();
+  };
+
   return (
     <Dialog
       open={open}
@@ -172,6 +188,7 @@ function AddLessonStepDialog({ open, handleClose }) {
                 </Box>
               </CardContent>
             </Card>
+            <Divider light />
           </Grid>
 
           <Grid item xs={6}>
@@ -182,6 +199,21 @@ function AddLessonStepDialog({ open, handleClose }) {
                   <Typography variant='subtitle1'>Code Challenge</Typography>
                   <Typography variant='body2' color='textSecondary'>
                     Write a program, test using stdin → stdout
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+            <Divider light />
+          </Grid>
+
+          <Grid item xs={6}>
+            <Card sx={styles.card} variant='outlined' onClick={handleAddSortingStep}>
+              <CardContent sx={styles.cardContent}>
+                <SwapVertIcon />
+                <Box>
+                  <Typography variant='subtitle1'>Sorting Problem</Typography>
+                  <Typography variant='body2' color='textSecondary'>
+                    Sort a given list
                   </Typography>
                 </Box>
               </CardContent>
