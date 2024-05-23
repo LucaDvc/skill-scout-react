@@ -172,6 +172,7 @@ function InformationTab() {
           dispatch(reset());
         },
       });
+      setIsDirty(false);
     }
 
     if (isError) {

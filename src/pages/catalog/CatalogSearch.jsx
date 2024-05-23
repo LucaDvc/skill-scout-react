@@ -18,10 +18,7 @@ import SearchFiltersDrawer from '../../components/catalog/search/SearchFiltersDr
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import {
-  getCoursesByFilter,
-  getTags,
-} from '../../features/catalog/catalogSlice';
+import { getCoursesByFilter, getTags } from '../../features/catalog/catalogSlice';
 import { getCategories } from '../../features/category/categorySlice';
 import LoadingLargeCard from '../../components/catalog/cards/LoadingLargeCard';
 import CourseLargeCard from '../../components/catalog/cards/CourseLargeCard';
@@ -103,9 +100,7 @@ function CatalogSearch() {
 
   // Pagination logic
   const pageSize = 20;
-  const [pageCount, setPageCount] = useState(
-    Math.ceil(resultsCount / pageSize)
-  );
+  const [pageCount, setPageCount] = useState(Math.ceil(resultsCount / pageSize));
   const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
 
   const handlePageChange = (event, value) => {
@@ -249,8 +244,7 @@ function CatalogSearch() {
         {!catalogLoading && (
           <Typography variant='h3' my={2}>
             {resultsCount} results{' '}
-            {searchParams.get('search') &&
-              `for "${searchParams.get('search')}"`}
+            {searchParams.get('search') && `for "${searchParams.get('search')}"`}
           </Typography>
         )}
         {/* Filtered courses cards and pagination*/}
@@ -264,18 +258,14 @@ function CatalogSearch() {
                 <CourseLargeCard key={course.id} course={course} />
               ))
           : catalogLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <LoadingSmallCard key={index} />
-            ))
+          ? Array.from({ length: 3 }).map((_, index) => <LoadingSmallCard key={index} />)
           : filteredCourses &&
             filteredCourses.map((course) => (
               <CourseSmallCard key={course.id} course={course} />
             ))}
 
         {!catalogLoading && (
-          <Box
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
-          >
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <Pagination
               count={pageCount}
               page={page}

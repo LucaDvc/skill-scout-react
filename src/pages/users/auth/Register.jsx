@@ -64,7 +64,6 @@ function Register() {
       first_name: firstName,
       last_name: lastName,
     };
-    console.log(userData);
 
     if (userData.password1 !== userData.password2) {
       setIsFormInvalid(true);

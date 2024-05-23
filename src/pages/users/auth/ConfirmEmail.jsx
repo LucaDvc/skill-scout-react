@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   confirmEmail,
   resendConfirmationEmail,
@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Container,
+  Link,
   TextField,
   Typography,
 } from '@mui/material';
@@ -138,8 +139,10 @@ function ConfirmEmail() {
             </Typography>
             <Typography variant='h5' gutterBottom>
               Your email has been confirmed successfully. You can now{' '}
-              <Link to='/login'>
-                <Typography variant='h5'>sign in</Typography>
+              <Link href='/login'>
+                <Typography variant='h5' component='span'>
+                  sign in
+                </Typography>
               </Link>
               .
             </Typography>
