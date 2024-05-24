@@ -1,40 +1,5 @@
 import { nanoid } from 'nanoid';
 
-const downloadLessonStep = (lessonStep) => {
-  console.log(lessonStep);
-  let stepData;
-  switch (lessonStep.type) {
-    case 'text':
-      stepData = exportTextStep(lessonStep);
-      break;
-    case 'quiz':
-      stepData = exportQuizStep(lessonStep);
-      break;
-    case 'codechallenge':
-      stepData = exportCodeStep(lessonStep);
-      break;
-    default:
-      throw new Error(`Unknown step type: ${lessonStep.type}`);
-  }
-
-  // Convert the step data to a JSON string
-  const jsonString = JSON.stringify(stepData, null, 2);
-
-  const blob = new Blob([jsonString], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  // Create a link element
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${lessonStep.type}-step-${nanoid()}.step.json`;
-
-  // Programmatically click the link to trigger the download
-  link.click();
-
-  // Cleanup: remove the link after download
-  URL.revokeObjectURL(url);
-};
-
 const exportTextStep = (lessonStep) => ({
   text: lessonStep.text,
   type: 'text',
@@ -63,6 +28,53 @@ const exportCodeStep = (lessonStep) => ({
   })),
   type: 'codechallenge',
 });
+
+const exportSortingProblemStep = (lessonStep) => ({
+  statement: lessonStep.statement,
+  title: lessonStep.title,
+  options: lessonStep.options.map((option) => ({
+    text: option.text,
+    correct_order: option.correct_order,
+  })),
+  type: 'sorting_problem',
+});
+
+const downloadLessonStep = (lessonStep) => {
+  let stepData;
+  switch (lessonStep.type) {
+    case 'text':
+      stepData = exportTextStep(lessonStep);
+      break;
+    case 'quiz':
+      stepData = exportQuizStep(lessonStep);
+      break;
+    case 'codechallenge':
+      stepData = exportCodeStep(lessonStep);
+      break;
+    case 'sorting_problem':
+      stepData = exportSortingProblemStep(lessonStep);
+      break;
+    default:
+      throw new Error(`Unknown step type: ${lessonStep.type}`);
+  }
+
+  // Convert the step data to a JSON string
+  const jsonString = JSON.stringify(stepData, null, 2);
+
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Create a link element
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${lessonStep.type}-step-${nanoid()}.step.json`;
+
+  // Programmatically click the link to trigger the download
+  link.click();
+
+  // Cleanup: remove the link after download
+  URL.revokeObjectURL(url);
+};
 
 const validateTextStep = (stepData) => {
   if (typeof stepData.text !== 'string') {
@@ -110,6 +122,22 @@ const validateCodeStep = (stepData) => {
   });
 };
 
+const validateSortingProblemStep = (stepData) => {
+  if (
+    typeof stepData.statement !== 'string' ||
+    typeof stepData.title !== 'string' ||
+    !Array.isArray(stepData.options)
+  ) {
+    throw new Error('Invalid sorting problem step: invalid structure.');
+  }
+
+  stepData.options.forEach((option) => {
+    if (typeof option.text !== 'string' || typeof option.correct_order !== 'number') {
+      throw new Error('Invalid sorting problem step: invalid option.');
+    }
+  });
+};
+
 const importLessonStep = (jsonString, currentStepType) => {
   let stepData;
   try {
@@ -146,6 +174,16 @@ const importLessonStep = (jsonString, currentStepType) => {
           id: nanoid(),
           input: btoa(testCase.input),
           expected_output: btoa(testCase.expected_output),
+        })),
+      };
+      break;
+    case 'sorting_problem':
+      validateSortingProblemStep(stepData);
+      stepData = {
+        ...stepData,
+        options: stepData.options.map((option) => ({
+          id: nanoid(),
+          ...option,
         })),
       };
       break;
