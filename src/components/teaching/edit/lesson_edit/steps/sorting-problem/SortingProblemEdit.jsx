@@ -74,7 +74,8 @@ function SortingProblemEdit() {
         Settings
       </Typography>
       <Typography variant='subtitle2' gutterBottom color='text.secondary'>
-        Please specify items below. Learners will need to put them in the same order.
+        Please specify the options below. Learners will need to put them in the same
+        order.
       </Typography>
       <OptionsList />
     </Box>

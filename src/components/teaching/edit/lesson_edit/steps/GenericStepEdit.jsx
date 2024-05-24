@@ -5,22 +5,26 @@ import CodeChallengeStepEdit from './code-challenge/CodeChallengeStepEdit';
 import TextStepEdit from './TextStepEdit';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
 import SortingProblemEdit from './sorting-problem/SortingProblemEdit';
+import TextProblemStepEdit from './text-problem/TextProblemStepEdit';
 
 function GenericStepEdit() {
   const { selectedStep } = useEditLesson();
 
   const StepComponent = useMemo(() => {
-    const steps = {
-      video: <VideoStepEdit />,
-      quiz: <QuizStepEdit />,
-      text: <TextStepEdit />,
-      codechallenge: <CodeChallengeStepEdit />,
-      sorting_problem: <SortingProblemEdit />,
+    const stepComponents = {
+      video: VideoStepEdit,
+      quiz: QuizStepEdit,
+      text: TextStepEdit,
+      codechallenge: CodeChallengeStepEdit,
+      sorting_problem: SortingProblemEdit,
+      text_problem: TextProblemStepEdit,
     };
-    return steps[selectedStep?.type] || null;
-  }, [selectedStep, selectedStep?.type]);
+    return stepComponents[selectedStep?.type] || null;
+  }, [selectedStep?.type]);
 
-  return <div>{StepComponent}</div>;
+  const RenderedComponent = StepComponent ? <StepComponent /> : null;
+
+  return <div>{RenderedComponent}</div>;
 }
 
 export default GenericStepEdit;

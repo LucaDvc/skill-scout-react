@@ -17,6 +17,7 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import CloseIcon from '@mui/icons-material/Close';
 import CodeIcon from '@mui/icons-material/Code';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useEditLesson } from '../../../../context/EditLessonContext';
 import stepsEditConstants from '../lesson_edit/steps/constants';
 import { nanoid } from 'nanoid';
@@ -126,6 +127,23 @@ function AddLessonStepDialog({ open, handleClose }) {
     handleClose();
   };
 
+  const handleAddTextProblemStep = () => {
+    const textProblem = {
+      id: nanoid(),
+      order: steps.length + 1,
+      title: 'New text problem',
+      statement: stepsEditConstants.DEFAULT_SORTING_PROBLEM_STATEMENT,
+      correct_answer: '',
+      case_sensitive: true,
+      allow_regex: false,
+      type: 'text_problem',
+    };
+    setSteps([...steps, textProblem]);
+    setSelectedStep(textProblem);
+    setIsDirty(true);
+    handleClose();
+  };
+
   return (
     <Dialog
       open={open}
@@ -214,6 +232,20 @@ function AddLessonStepDialog({ open, handleClose }) {
                   <Typography variant='subtitle1'>Sorting Problem</Typography>
                   <Typography variant='body2' color='textSecondary'>
                     Sort a given list
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Card sx={styles.card} variant='outlined' onClick={handleAddTextProblemStep}>
+              <CardContent sx={styles.cardContent}>
+                <EditNoteIcon />
+                <Box>
+                  <Typography variant='subtitle1'>Text Problem</Typography>
+                  <Typography variant='body2' color='textSecondary'>
+                    Write text answer
                   </Typography>
                 </Box>
               </CardContent>
