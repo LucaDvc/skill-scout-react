@@ -104,6 +104,13 @@ export const updateLesson = createAsyncThunk(
       return await teachingService.updateLesson(token, id, lesson);
     } catch (error) {
       let message = 'Unable to update lesson. Please try again.';
+      if (error.response.status === 500) {
+        message = 'Internal server error. Please try again later.';
+      } else if (error.response.status === 400) {
+        message =
+          'Invalid data. Please fill in all the required fields for all lesson steps.';
+      }
+
       return thunkAPI.rejectWithValue(message);
     }
   }

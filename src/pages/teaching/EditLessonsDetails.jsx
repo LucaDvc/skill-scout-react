@@ -24,9 +24,7 @@ function EditLessonsDetails() {
   const { setShowFooter, setNavbarFixed } = useLayout();
 
   const dispatch = useDispatch();
-  const { course, isLoading, isError, message, isSuccess } = useSelector(
-    (state) => state.teaching.edit
-  );
+  const { course, isLoading } = useSelector((state) => state.teaching.edit);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -63,7 +61,14 @@ function EditLessonsDetails() {
             }}
           >
             <Toolbar />
-            <Box sx={{ overflow: 'auto', backgroundColor: 'primary.main', marginTop: 1 }}>
+            <Box
+              sx={{
+                overflow: 'auto',
+                backgroundColor: 'primary.main',
+                marginTop: 1,
+                minHeight: 'calc(100dvh - 72px)',
+              }}
+            >
               <List>
                 <ListItem>
                   <Link

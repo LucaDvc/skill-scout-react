@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import videoStepService from '../features/teaching/videoStepService';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -23,7 +16,6 @@ export const EditLessonProvider = ({ children }) => {
   const [steps, setSteps] = useState([]);
   const [selectedStep, setSelectedStep] = useState({});
   const [isDirty, setIsDirty] = useState(false);
-  const [savePressed, setSavePressed] = useState(0);
   const [title, setTitle] = useState('');
   const [videoFiles, setVideoFiles] = useState({});
   const [loading, setLoading] = useState(false);
@@ -67,9 +59,12 @@ export const EditLessonProvider = ({ children }) => {
     e.preventDefault();
     setLoading(true);
     console.log('Save lesson');
-    setSavePressed((prev) => prev + 1);
-    console.log('steps:', steps);
+
     console.log('selectedStep:', selectedStep);
+
+    saveStep(selectedStep);
+
+    console.log('steps:', steps);
 
     const isValid = await validateLesson(title, steps);
     if (!isValid) {
@@ -121,7 +116,6 @@ export const EditLessonProvider = ({ children }) => {
     setIsDirty,
     saveStep,
     handleSave,
-    savePressed,
     title,
     setTitle,
     videoFiles,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -32,28 +32,11 @@ const getVideoType = (url) => {
 };
 
 function VideoStepEdit() {
-  const {
-    selectedStep,
-    setSelectedStep,
-    saveStep,
-    setIsDirty,
-    videoFiles,
-    setVideoFiles,
-    savePressed,
-  } = useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty, videoFiles, setVideoFiles } =
+    useEditLesson();
 
   const [videoUrl, setVideoUrl] = useState(selectedStep.video_file || '');
   const [videoType, setVideoType] = useState(getVideoType(selectedStep.video_file || ''));
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   useEffect(() => {
     setVideoUrl(selectedStep.video_file || '');

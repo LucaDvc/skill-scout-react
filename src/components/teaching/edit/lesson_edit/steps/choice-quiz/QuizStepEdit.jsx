@@ -1,15 +1,6 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  IconButton,
-  Tab,
-  Tabs,
-  Typography,
-} from '@mui/material';
+import { Box, Button, ButtonGroup, Divider, Tab, Tabs, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import stepsEditConstants from '../constants';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
@@ -20,8 +11,7 @@ import ExplanationTab from './ExplanationTab';
 import LessonStepHeader from '../utils/LessonStepHeader';
 
 function QuizStepEdit() {
-  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
-    useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
 
   const [selectedTab, setSelectedTab] = useState(0);
   const handleTabChange = (event, newValue) => {
@@ -52,16 +42,6 @@ function QuizStepEdit() {
     setSelectedStep((step) => ({ ...step, multiple_choice: true }));
     setIsDirty(true);
   };
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   return (
     <Box>

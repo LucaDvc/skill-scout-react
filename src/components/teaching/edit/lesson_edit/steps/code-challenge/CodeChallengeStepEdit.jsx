@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import stepsEditConstants from '../constants';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import TestCasesTab from './TestCasesTab';
@@ -9,8 +9,7 @@ import TabPanel from '../utils/TabPanel';
 import LessonStepHeader from '../utils/LessonStepHeader';
 
 function CodeChallengeStepEdit() {
-  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
-    useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
 
   const [selectedTab, setSelectedTab] = useState(0);
   const handleTabChange = (event, newValue) => {
@@ -44,16 +43,6 @@ function CodeChallengeStepEdit() {
       return { ...step, proposed_solution: value };
     });
   };
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   return (
     <Box>

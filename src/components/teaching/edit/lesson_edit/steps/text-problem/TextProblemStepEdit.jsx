@@ -9,14 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import stepsEditConstants from '../constants';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import LessonStepHeader from '../utils/LessonStepHeader';
 
 function TextProblemStepEdit() {
-  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
-    useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
 
   const handleStatementChange = (value, editor) => {
     setSelectedStep((step) => {
@@ -46,16 +45,6 @@ function TextProblemStepEdit() {
     setSelectedStep({ ...selectedStep, allow_regex: event.target.checked });
     setIsDirty(true);
   };
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   return (
     <Box>

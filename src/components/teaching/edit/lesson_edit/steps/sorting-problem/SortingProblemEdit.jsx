@@ -1,14 +1,13 @@
 import { Box, TextField, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import stepsEditConstants from '../constants';
 import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import LessonStepHeader from '../utils/LessonStepHeader';
 import OptionsList from './OptionsList';
 
 function SortingProblemEdit() {
-  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
-    useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
 
   const handleTitleChange = (event) => {
     setSelectedStep({ ...selectedStep, title: event.target.value });
@@ -23,16 +22,6 @@ function SortingProblemEdit() {
       return { ...step, statement: value };
     });
   };
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   return (
     <Box>

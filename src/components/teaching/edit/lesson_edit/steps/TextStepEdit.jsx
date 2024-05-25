@@ -1,13 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import stepsEditConstants from './constants';
 import { useEditLesson } from '../../../../../context/EditLessonContext';
 import LessonStepHeader from './utils/LessonStepHeader';
 
 function TextStepEdit() {
-  const { selectedStep, setSelectedStep, saveStep, setIsDirty, savePressed } =
-    useEditLesson();
+  const { selectedStep, setSelectedStep, setIsDirty } = useEditLesson();
 
   const handleChange = (value, editor) => {
     setSelectedStep((step) => {
@@ -17,16 +16,6 @@ function TextStepEdit() {
       return { ...step, text: value };
     });
   };
-
-  useEffect(() => {
-    saveStep(selectedStep);
-  }, [savePressed]);
-
-  useEffect(() => {
-    return () => {
-      saveStep(selectedStep);
-    };
-  }, [selectedStep, saveStep]);
 
   return (
     <Box>

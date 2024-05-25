@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import VideoStepEdit from './VideoStepEdit';
 import QuizStepEdit from './choice-quiz/QuizStepEdit';
 import CodeChallengeStepEdit from './code-challenge/CodeChallengeStepEdit';
@@ -8,7 +8,17 @@ import SortingProblemEdit from './sorting-problem/SortingProblemEdit';
 import TextProblemStepEdit from './text-problem/TextProblemStepEdit';
 
 function GenericStepEdit() {
-  const { selectedStep } = useEditLesson();
+  const { selectedStep, saveStep } = useEditLesson();
+  const prevStepRef = useRef(selectedStep);
+
+  // Save the previous step when the selected step changes
+  useEffect(() => {
+    if (prevStepRef.current.id !== selectedStep.id) {
+      saveStep(prevStepRef.current);
+    }
+
+    prevStepRef.current = selectedStep;
+  }, [selectedStep]);
 
   const StepComponent = useMemo(() => {
     const stepComponents = {
