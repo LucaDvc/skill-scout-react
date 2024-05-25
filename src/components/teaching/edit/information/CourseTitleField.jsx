@@ -30,8 +30,7 @@ function CourseTitleField({ title, onChange, name, marginTop }) {
       fullWidth
       error={error !== ''}
       helperText={error}
-      focused
-      label={<Typography variant='h5'>Title</Typography>}
+      label='Title'
       variant='outlined'
     />
   );

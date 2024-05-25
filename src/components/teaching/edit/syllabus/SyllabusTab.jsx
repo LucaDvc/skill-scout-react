@@ -1,28 +1,13 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Backdrop, Box, Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ModuleCard from './cards/ModuleCard';
 import { SyllabusContext } from '../../../../context/SyllabusContext';
 import { nanoid } from 'nanoid';
-import {
-  reset,
-  updateCourse,
-} from '../../../../features/teaching/teachingSlice';
+import { reset, updateCourse } from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
-import ReactRouterPrompt from 'react-router-prompt';
 import { isEqual } from 'lodash-es';
 import UnsavedChangesPrompt from '../prompt/UnsavedChangesPrompt';
 
@@ -39,6 +24,7 @@ function SyllabusTab() {
   const dispatch = useDispatch();
 
   const { chapters, setChapters } = useContext(SyllabusContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (course) {
@@ -60,15 +46,21 @@ function SyllabusTab() {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
+    toastId.current = toast.loading('Saving changes...', {
+      autoClose: false,
+      isLoading: true,
+    });
+
+    setLoading(true);
+
     const updatedChapters = chapters
       .filter((chapter) => !chapter.deleted)
       .map((chapter) => {
-        const lessonsToKeep = chapter.lessons.filter(
-          (lesson) => !lesson.deleted
-        );
+        const lessonsToKeep = chapter.lessons.filter((lesson) => !lesson.deleted);
 
         const updatedLessons = lessonsToKeep.map((lesson, index) => ({
-          ...lesson,
+          id: lesson.id,
+          title: lesson.title,
           order: index + 1,
         }));
 
@@ -79,21 +71,15 @@ function SyllabusTab() {
       });
 
     const updatedCourse = {
-      ...course,
-      category: course.category.id,
       chapters: updatedChapters,
     };
 
     dispatch(updateCourse({ id: course.id, updatedCourse }));
-
-    toastId.current = toast.loading('Saving changes...', {
-      autoClose: false,
-      isLoading: true,
-    });
   };
 
   useEffect(() => {
     if (isSuccess) {
+      setLoading(false);
       toast.update(toastId.current, {
         render: 'Course updated successfully!',
         type: toast.TYPE.SUCCESS,
@@ -107,6 +93,7 @@ function SyllabusTab() {
     }
 
     if (isError) {
+      setLoading(false);
       toast.update(toastId.current, {
         render: message,
         type: toast.TYPE.ERROR,
@@ -120,16 +107,10 @@ function SyllabusTab() {
     }
   }, [isSuccess, isError, message]);
 
-  const [promptOpen, setPromptOpen] = useState(false);
-
   return (
     course && (
-      <Box
-        my={2}
-        component='form'
-        onSubmit={handleSubmit}
-        sx={{ minHeight: '100vh' }}
-      >
+      <Box my={2} component='form' onSubmit={handleSubmit} sx={{ minHeight: '100vh' }}>
+        <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} />
         <Typography variant='h3' mb={STD_MARGIN_TOP}>
           Course content
         </Typography>
@@ -155,15 +136,8 @@ function SyllabusTab() {
             </>
           ) : (
             chapters.map((chapter, index) => (
-              <Box
-                sx={{ minWidth: '100%', marginTop: STD_MARGIN_TOP }}
-                key={chapter.id}
-              >
-                <ModuleCard
-                  chapter={chapter}
-                  index={index + 1}
-                  key={chapter.id}
-                />
+              <Box sx={{ minWidth: '100%', marginTop: STD_MARGIN_TOP }} key={chapter.id}>
+                <ModuleCard chapter={chapter} index={index + 1} key={chapter.id} />
               </Box>
             ))
           )}

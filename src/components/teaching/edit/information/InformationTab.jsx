@@ -1,4 +1,5 @@
 import {
+  Backdrop,
   Box,
   Button,
   Chip,
@@ -29,6 +30,7 @@ function InformationTab() {
   const STD_MARGIN_TOP = 4;
 
   const [isDirty, setIsDirty] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Toast
   const toastId = useRef(null);
@@ -135,6 +137,12 @@ function InformationTab() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    setLoading(true);
+    toastId.current = toast.loading('Saving changes...', {
+      autoClose: false,
+      isLoading: true,
+    });
+
     const form = new FormData();
 
     // Append text fields to formData
@@ -154,14 +162,11 @@ function InformationTab() {
     }
 
     dispatch(updateCourse({ id: course.id, updatedCourse: form }));
-    toastId.current = toast.loading('Saving changes...', {
-      autoClose: false,
-      isLoading: true,
-    });
   };
 
   useEffect(() => {
     if (isSuccess) {
+      setLoading(false);
       toast.update(toastId.current, {
         render: 'Course updated successfully!',
         type: toast.TYPE.SUCCESS,
@@ -176,6 +181,7 @@ function InformationTab() {
     }
 
     if (isError) {
+      setLoading(false);
       toast.update(toastId.current, {
         render: message,
         type: toast.TYPE.ERROR,
@@ -192,6 +198,7 @@ function InformationTab() {
   return (
     course && (
       <Box my={2} component='form' onSubmit={handleSubmit}>
+        <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} />
         <Typography variant='h3' mb={STD_MARGIN_TOP}>
           Information
         </Typography>
@@ -243,13 +250,12 @@ function InformationTab() {
 
         {/* Intro */}
         <TextField
-          label={<Typography variant='h5'>Introduction</Typography>}
+          label='Introduction'
           value={intro}
           onChange={handleFormChange}
           name='intro'
           multiline
           rows={3}
-          focused
           variant='outlined'
           fullWidth
           sx={{ marginTop: STD_MARGIN_TOP }}
@@ -275,8 +281,7 @@ function InformationTab() {
             value={totalHours}
             onChange={handleTotalHoursChange}
             name='totalHours'
-            focused
-            label={<Typography variant='h5'>Expected Time to Complete</Typography>}
+            label='Expected Time to Complete'
             variant='outlined'
             InputProps={{
               endAdornment: <InputAdornment position='end'>hours</InputAdornment>,
@@ -286,12 +291,8 @@ function InformationTab() {
           />
 
           {/* Level */}
-          <FormControl sx={{ minWidth: 155 }} focused>
-            <InputLabel id='level'>
-              <Typography variant='h5' ml={-0.25}>
-                Level
-              </Typography>
-            </InputLabel>
+          <FormControl sx={{ minWidth: 155 }}>
+            <InputLabel id='level'>Level</InputLabel>
             <Select
               name='level'
               labelId='level'
@@ -367,7 +368,6 @@ function InformationTab() {
             placeholder='Enter a tag name and press Enter'
             helperText='Tags are used to help learners find your course. Press Enter to add a tag.'
             onKeyDown={handleTagAdd}
-            focused
           />
 
           <Box mt={2} display='flex' flexWrap='wrap'>

@@ -23,9 +23,7 @@ import { nanoid } from 'nanoid';
 function ModuleCard({ chapter, index }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
-  const [title, setTitle] = useState(
-    chapter.title ? chapter.title : 'New Module'
-  );
+  const [title, setTitle] = useState(chapter.title ? chapter.title : 'New Module');
 
   const { chapters, setChapters } = useContext(SyllabusContext);
 
@@ -90,6 +88,7 @@ function ModuleCard({ chapter, index }) {
         title: `${chapter.title} (copy)`,
         lessons: chapter.lessons.map((l) => ({
           ...l,
+          lesson_steps: l.lesson_steps.map((s) => ({ ...s, id: nanoid() })),
           id: nanoid(),
           new: true,
         })),
@@ -126,13 +125,8 @@ function ModuleCard({ chapter, index }) {
                   width: '100%',
                 }}
               >
-                <Typography
-                  variant='body1'
-                  color='text.secondary'
-                  fontStyle='italic'
-                >
-                  Module "{chapter.title}" will be removed from the course on
-                  save
+                <Typography variant='body1' color='text.secondary' fontStyle='italic'>
+                  Module "{chapter.title}" will be removed from the course on save
                 </Typography>
                 <Button variant='text' onClick={handleRestoreModule}>
                   Restore
@@ -194,12 +188,6 @@ function ModuleCard({ chapter, index }) {
                     open={menuOpen}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleDuplicateClick} disableRipple>
-                      <ListItemIcon>
-                        <FileCopyIcon />
-                      </ListItemIcon>
-                      Duplicate
-                    </MenuItem>
                     <MenuItem onClick={handleDeleteClick} disableRipple>
                       <ListItemIcon>
                         <DeleteIcon />
