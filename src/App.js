@@ -39,6 +39,7 @@ import InformationTab from './components/teaching/edit/information/InformationTa
 import EditLessonsDetails from './pages/teaching/EditLessonsDetails';
 import LessonDetails from './components/teaching/edit/lesson_edit/LessonDetails';
 import './aceConfig';
+import ChecklistTab from './components/teaching/edit/checklist/ChecklistTab';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -78,6 +79,7 @@ function Root() {
                 </SyllabusProvider>
               }
             />
+            <Route path='checklist' element={<ChecklistTab />} />
             <Route index element={<Navigate to='information' replace />} />
           </Route>
 

@@ -52,7 +52,6 @@ function VideoStepEdit() {
     if (file) {
       const url = URL.createObjectURL(file);
       const fileType = file.type;
-      console.log(url, fileType);
       setSelectedStep({ ...selectedStep, video_file: url, fileType });
       setVideoFiles((videoFiles) => ({ ...videoFiles, [selectedStep.id]: file }));
       setIsDirty(true);

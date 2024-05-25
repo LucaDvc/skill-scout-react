@@ -113,6 +113,14 @@ function EditCourse() {
                       <ListItemText primary='Syllabus' />
                     </ListItemButton>
                   </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'checklist'}
+                      onClick={() => handleListItemClick('checklist')}
+                    >
+                      <ListItemText primary='Checklist' />
+                    </ListItemButton>
+                  </ListItem>
                 </List>
               </AccordionDetails>
             </Accordion>
@@ -120,12 +128,7 @@ function EditCourse() {
         </Paper>
       </Grid>
 
-      <Grid
-        item
-        xs={12}
-        sm={9}
-        sx={{ height: 'calc(100vh-64px)', overflowY: 'auto' }}
-      >
+      <Grid item xs={12} sm={9} sx={{ height: 'calc(100vh-64px)', overflowY: 'auto' }}>
         <Container maxWidth='md'>
           <Outlet />
         </Container>

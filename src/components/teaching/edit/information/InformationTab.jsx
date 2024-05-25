@@ -250,7 +250,7 @@ function InformationTab() {
 
         {/* Intro */}
         <TextField
-          label='Introduction'
+          label='Summary'
           value={intro}
           onChange={handleFormChange}
           name='intro'
