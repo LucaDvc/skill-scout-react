@@ -30,13 +30,22 @@ const exportCodeStep = (lessonStep) => ({
 });
 
 const exportSortingProblemStep = (lessonStep) => ({
-  statement: lessonStep.statement,
   title: lessonStep.title,
+  statement: lessonStep.statement,
   options: lessonStep.options.map((option) => ({
     text: option.text,
     correct_order: option.correct_order,
   })),
   type: 'sorting_problem',
+});
+
+const exportTextProblemStep = (lessonStep) => ({
+  title: lessonStep.title,
+  statement: lessonStep.statement,
+  correct_answer: lessonStep.correct_answer,
+  case_sensitive: lessonStep.case_sensitive,
+  allow_regex: lessonStep.allow_regex,
+  type: 'text_problem',
 });
 
 const downloadLessonStep = (lessonStep) => {
@@ -53,6 +62,9 @@ const downloadLessonStep = (lessonStep) => {
       break;
     case 'sorting_problem':
       stepData = exportSortingProblemStep(lessonStep);
+      break;
+    case 'text_problem':
+      stepData = exportTextProblemStep(lessonStep);
       break;
     default:
       throw new Error(`Unknown step type: ${lessonStep.type}`);
@@ -138,6 +150,18 @@ const validateSortingProblemStep = (stepData) => {
   });
 };
 
+const validateTextProblemStep = (stepData) => {
+  if (
+    typeof stepData.statement !== 'string' ||
+    typeof stepData.title !== 'string' ||
+    typeof stepData.correct_answer !== 'string' ||
+    typeof stepData.case_sensitive !== 'boolean' ||
+    typeof stepData.allow_regex !== 'boolean'
+  ) {
+    throw new Error('Invalid text problem step: invalid structure.');
+  }
+};
+
 const importLessonStep = (jsonString, currentStepType) => {
   let stepData;
   try {
@@ -186,6 +210,9 @@ const importLessonStep = (jsonString, currentStepType) => {
           ...option,
         })),
       };
+      break;
+    case 'text_problem':
+      validateTextProblemStep(stepData);
       break;
     default:
       throw new Error(`Unknown step type: ${stepData.type}`);

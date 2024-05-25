@@ -20,10 +20,13 @@ export function SortableStepCard(props) {
   const { step, index } = props;
 
   useEffect(() => {
-    const updatedStep = { ...step, order: index + 1 };
-    saveStep(updatedStep);
     if (selectedStep.id === step.id) {
+      const updatedStep = { ...selectedStep, order: index + 1 };
       setSelectedStep(updatedStep);
+      saveStep(updatedStep);
+    } else {
+      const updatedStep = { ...step, order: index + 1 };
+      saveStep(updatedStep);
     }
   }, [index]);
 

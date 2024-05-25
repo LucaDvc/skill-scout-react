@@ -45,7 +45,8 @@ export const EditLessonProvider = ({ children }) => {
     const uploadPromises = Object.keys(videoFiles).map(async (stepId) => {
       try {
         const formData = new FormData();
-        formData.append('title', updatedSteps.find((s) => s.id === stepId).title);
+        const currentVideoStep = updatedSteps.find((s) => s.id === stepId);
+        formData.append('title', currentVideoStep.title);
         formData.append('video_file', videoFiles[stepId]);
 
         const response = isUUIDv4(stepId)
@@ -54,7 +55,7 @@ export const EditLessonProvider = ({ children }) => {
 
         const index = updatedSteps.findIndex((s) => s.id === stepId);
         if (index !== -1) {
-          updatedSteps[index] = response;
+          updatedSteps[index] = { ...response, order: currentVideoStep.order };
         }
         return response;
       } catch (error) {
