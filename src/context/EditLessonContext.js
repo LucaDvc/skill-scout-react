@@ -5,6 +5,14 @@ import { toast } from 'react-toastify';
 import { updateLesson } from '../features/teaching/teachingSlice';
 import { validateLesson } from '../utils/lessonValidators';
 
+function isUUIDv4(uuid) {
+  // Regular expression to match a valid UUIDv4
+  const uuidv4Pattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  // Test the uuid against the regular expression
+  return uuidv4Pattern.test(uuid);
+}
+
 const EditLessonContext = createContext();
 
 export function useEditLesson() {
@@ -32,27 +40,32 @@ export const EditLessonProvider = ({ children }) => {
   };
 
   const updateVideoFiles = async () => {
-    for (const stepId in videoFiles) {
+    const updatedSteps = [...steps];
+
+    const uploadPromises = Object.keys(videoFiles).map(async (stepId) => {
       try {
         const formData = new FormData();
-        console.log(stepId, videoFiles[stepId]);
+        formData.append('title', updatedSteps.find((s) => s.id === stepId).title);
         formData.append('video_file', videoFiles[stepId]);
-        const response = await videoStepService.updateVideoStep(
-          accessToken,
-          stepId,
-          formData
-        );
 
-        setSteps((steps) => {
-          const index = steps.findIndex((s) => s.id === stepId);
-          steps[index] = response;
-          return [...steps];
-        });
+        const response = isUUIDv4(stepId)
+          ? await videoStepService.updateVideoStep(accessToken, stepId, formData)
+          : await videoStepService.createVideoStep(accessToken, lesson.id, formData);
+
+        const index = updatedSteps.findIndex((s) => s.id === stepId);
+        if (index !== -1) {
+          updatedSteps[index] = response;
+        }
+        return response;
       } catch (error) {
         console.error('Error uploading video file:', error);
         toast.error('Error uploading video file. Please try again.');
+        throw error;
       }
-    }
+    });
+
+    await Promise.all(uploadPromises);
+    return updatedSteps;
   };
 
   const handleSave = async (e) => {
@@ -62,9 +75,9 @@ export const EditLessonProvider = ({ children }) => {
 
     console.log('selectedStep:', selectedStep);
 
-    saveStep(selectedStep);
-
     console.log('steps:', steps);
+
+    saveStep(selectedStep);
 
     const isValid = await validateLesson(title, steps);
     if (!isValid) {
@@ -72,15 +85,10 @@ export const EditLessonProvider = ({ children }) => {
       return;
     }
 
-    const lessonSteps = steps.map((step) => ({ ...step }));
-    // remove video_file from steps as it contains the video url, which is not supported by the backend
-    for (let step of lessonSteps) {
-      if (step.type === 'video') delete step.video_file;
-    }
-
     try {
-      await updateVideoFiles(); // Update video files first
+      const updatedSteps = await updateVideoFiles(); // Update video files first
       setVideoFiles({}); // Clear video files after saving
+      console.log('updatedSteps:', updatedSteps);
 
       // Save lesson in backend
       const updatedLesson = await dispatch(
@@ -89,7 +97,7 @@ export const EditLessonProvider = ({ children }) => {
           lesson: {
             ...lesson,
             title,
-            lesson_steps: lessonSteps,
+            lesson_steps: updatedSteps,
           },
         })
       ).unwrap();

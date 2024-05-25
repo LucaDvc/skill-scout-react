@@ -68,32 +68,34 @@ function StepsList() {
           ))}
         </SortableContext>
       </DndContext>
-      <Tooltip title='Add new step' placement='right' arrow>
-        <Card
-          onClick={handleAddStep}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          sx={{
-            backgroundColor: '#d4f1ff',
-            width: 64,
-            height: 64,
-            mt: 3,
-            borderRadius: 1,
-            '&:hover': {
-              backgroundColor: '#1F60D3',
-              transition: '0.1s',
-              cursor: 'pointer',
-            },
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant='h4' sx={{ color: hover ? '#ffffff' : '#1F60D3' }}>
-            +
-          </Typography>
-        </Card>
-      </Tooltip>
+      {steps.length < 12 && (
+        <Tooltip title='Add new step' placement='right' arrow>
+          <Card
+            onClick={handleAddStep}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            sx={{
+              backgroundColor: '#d4f1ff',
+              width: 64,
+              height: 64,
+              mt: 3,
+              borderRadius: 1,
+              '&:hover': {
+                backgroundColor: '#1F60D3',
+                transition: '0.1s',
+                cursor: 'pointer',
+              },
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant='h4' sx={{ color: hover ? '#ffffff' : '#1F60D3' }}>
+              +
+            </Typography>
+          </Card>
+        </Tooltip>
+      )}
     </div>
   );
 }
