@@ -40,6 +40,7 @@ import EditLessonsDetails from './pages/teaching/EditLessonsDetails';
 import LessonDetails from './components/teaching/edit/lesson_edit/LessonDetails';
 import './aceConfig';
 import ChecklistTab from './components/teaching/edit/checklist/ChecklistTab';
+import ReviewsTab from './components/teaching/edit/reviews/ReviewsTab';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -80,6 +81,7 @@ function Root() {
               }
             />
             <Route path='checklist' element={<ChecklistTab />} />
+            <Route path='reviews' element={<ReviewsTab />} />
             <Route index element={<Navigate to='information' replace />} />
           </Route>
 

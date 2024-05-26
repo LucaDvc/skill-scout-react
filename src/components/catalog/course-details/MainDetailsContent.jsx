@@ -102,27 +102,18 @@ function MainDetailsContent({ course }) {
             >
               <Avatar
                 src={course.instructor?.picture}
-                alt={
-                  course.instructor?.first_name +
-                  ' ' +
-                  course.instructor?.last_name
-                }
+                alt={course.instructor?.first_name + ' ' + course.instructor?.last_name}
                 variant='rounded'
                 sx={{ width: 98, height: 98 }}
               />
               <Stack spacing={1}>
-                <Link
-                  to={`/users/${course.instructor?.id}`}
-                  className='link-no-style'
-                >
+                <Link to={`/users/${course.instructor?.id}`} className='link-no-style'>
                   <Typography
                     variant='h6'
                     component='span'
                     sx={{ '&:hover': { textDecoration: 'underline' } }}
                   >
-                    {course.instructor?.first_name +
-                      ' ' +
-                      course.instructor?.last_name}
+                    {course.instructor?.first_name + ' ' + course.instructor?.last_name}
                   </Typography>
                 </Link>
                 <Typography variant='subtitle2'>
@@ -150,8 +141,10 @@ function MainDetailsContent({ course }) {
               }}
             >
               <StarIcon sx={{ color: '#FFC107', marginRight: 0.25 }} />
-              {course.average_rating} course rating - {course.reviews?.length}{' '}
-              ratings
+              {course.average_rating % 1 === 0
+                ? course.average_rating?.toFixed(0)
+                : course.average_rating?.toFixed(1)}{' '}
+              course rating - {course.reviews?.length} ratings
             </Typography>
             <Divider />
             <ReviewsList reviews={course.reviews} />
@@ -196,9 +189,7 @@ function MainDetailsContent({ course }) {
               color='primary'
               fullWidth
               sx={{ my: 1 }}
-              startIcon={
-                isWishlisted ? <FavoriteIcon /> : <FavoriteBorderIcon />
-              }
+              startIcon={isWishlisted ? <FavoriteIcon /> : <FavoriteBorderIcon />}
               onClick={handleWishlistButtonClick}
               loading={isWishlistUpdating}
               loadingPosition='start'
