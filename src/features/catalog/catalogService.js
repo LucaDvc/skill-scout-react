@@ -44,6 +44,11 @@ const wishlistCourse = async (courseId, token) => {
   return response.data;
 };
 
+const getCourseReviews = async (courseId, params) => {
+  const response = await axios.get(`${API_URL}/courses/${courseId}/reviews/`, { params });
+  return response.data;
+};
+
 const catalogService = {
   getHighestRatedCourses,
   getPopularCourses,
@@ -51,6 +56,7 @@ const catalogService = {
   getTags,
   getCourseById,
   wishlistCourse,
+  getCourseReviews,
 };
 
 export default catalogService;

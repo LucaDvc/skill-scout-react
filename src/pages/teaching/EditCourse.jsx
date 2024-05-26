@@ -23,6 +23,7 @@ import {
 } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
@@ -63,7 +64,7 @@ function EditCourse() {
 
   const [expandedAccordions, setExpandedAccordions] = useState({
     contentAcc: true,
-    analyticsAcc: false,
+    analyticsAcc: true,
   });
 
   const handleChangeAccordion = (panel) => (event, isExpanded) => {
@@ -119,6 +120,33 @@ function EditCourse() {
                       onClick={() => handleListItemClick('checklist')}
                     >
                       <ListItemText primary='Checklist' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              disableGutters
+              expanded={expandedAccordions.analyticsAcc}
+              onChange={handleChangeAccordion('analyticsAcc')}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant='subtitle1'
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <BarChartIcon sx={{ mr: 2 }} /> Analytics
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'reviews'}
+                      onClick={() => handleListItemClick('reviews')}
+                    >
+                      <ListItemText primary='Reviews' />
                     </ListItemButton>
                   </ListItem>
                 </List>

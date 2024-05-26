@@ -49,7 +49,7 @@ function ChecklistTab() {
 
   const checkLogoUploaded =
     course?.image !==
-    'https://courses-platform-bucket.s3.eu-north-1.amazonaws.com/courses/images/default.jpg';
+    'https://courses-platform-bucket.s3.amazonaws.com/courses/images/default.jpg';
 
   const checkSummary = course?.intro?.length > 100;
 
@@ -68,7 +68,7 @@ function ChecklistTab() {
   return (
     course && (
       <Box sx={{ py: 2 }}>
-        <Typography variant='h4' mb={2}>
+        <Typography variant='h3' mb={2}>
           Checklist
         </Typography>
         <Typography variant='h6' mb={2}>

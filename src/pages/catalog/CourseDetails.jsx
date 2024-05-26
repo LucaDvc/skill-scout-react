@@ -22,9 +22,7 @@ import MainDetailsContent from '../../components/catalog/course-details/MainDeta
 
 function CourseDetails() {
   const { courseId } = useParams();
-  const { course, isLoading, isError, message } = useSelector(
-    (state) => state.catalog
-  );
+  const { course, isLoading, isError, message } = useSelector((state) => state.catalog);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -71,15 +69,7 @@ function CourseDetails() {
             spacing={2}
             py={{ xs: 4, sm: 8 }}
           >
-            <Grid
-              item
-              container
-              direction='column'
-              spacing={3}
-              xs={12}
-              md={12}
-              lg={8}
-            >
+            <Grid item container direction='column' spacing={3} xs={12} md={12} lg={8}>
               <Grid item>
                 <Typography variant='h4'>{course.title}</Typography>
               </Grid>
@@ -111,10 +101,7 @@ function CourseDetails() {
                       sx={{ mr: 0.75 }}
                     />
                   ) : (
-                    <SignalCellularAltRoundedIcon
-                      fontSize='medium'
-                      sx={{ mr: 0.75 }}
-                    />
+                    <SignalCellularAltRoundedIcon fontSize='medium' sx={{ mr: 0.75 }} />
                   )}
                   <Typography variant='subtitle2' component='span' maxWidth={2}>
                     {course.level} Level
@@ -175,7 +162,9 @@ function CourseDetails() {
                       size='medium'
                     />
                     <Typography variant='subtitle2' component='span'>
-                      {' ' + course.average_rating}
+                      {' ' + (course.average_rating % 1) === 0
+                        ? course.average_rating?.toFixed(0)
+                        : course.average_rating?.toFixed(1)}
                     </Typography>
                   </Box>
 
