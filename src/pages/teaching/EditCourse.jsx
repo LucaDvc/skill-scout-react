@@ -24,6 +24,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
@@ -64,6 +65,7 @@ function EditCourse() {
 
   const [expandedAccordions, setExpandedAccordions] = useState({
     contentAcc: true,
+    analyticsAcc: true,
     analyticsAcc: true,
   });
 
