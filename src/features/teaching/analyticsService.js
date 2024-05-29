@@ -27,12 +27,18 @@ const getCourseCompletionAnalytics = async (courseId) => {
   return response.data;
 };
 
+const getAssessmentsAnalytics = async (courseId) => {
+  const response = await axiosInstance.get(`${API_URL}/${courseId}/assessments/`);
+  return response.data;
+};
+
 const analyticsService = {
   getEnrollmentAnalytics,
   getActiveUsersAnalytics,
   getLessonsEngagementAnalytics,
   getCourseCompletionAnalytics,
   getLessonStepsEngagementAnalytics,
+  getAssessmentsAnalytics,
 };
 
 export default analyticsService;

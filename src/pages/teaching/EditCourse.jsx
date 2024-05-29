@@ -169,6 +169,15 @@ function EditCourse() {
                       <ListItemText primary='Engagement' />
                     </ListItemButton>
                   </ListItem>
+
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'assessments'}
+                      onClick={() => handleListItemClick('assessments')}
+                    >
+                      <ListItemText primary='Assessments' />
+                    </ListItemButton>
+                  </ListItem>
                 </List>
               </AccordionDetails>
             </Accordion>
