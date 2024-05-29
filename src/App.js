@@ -42,6 +42,8 @@ import './aceConfig';
 import ChecklistTab from './components/teaching/edit/checklist/ChecklistTab';
 import ReviewsTab from './components/teaching/edit/reviews/ReviewsTab';
 import EnrollmentsTab from './components/teaching/edit/enrollments/EnrollmentsTab';
+import CourseActivityTab from './components/teaching/edit/activity/CourseActivityTab';
+import CourseEngagementTab from './components/teaching/edit/engagement/CourseEngagementTab';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -84,6 +86,8 @@ function Root() {
             <Route path='checklist' element={<ChecklistTab />} />
             <Route path='reviews' element={<ReviewsTab />} />
             <Route path='enrollments' element={<EnrollmentsTab />} />
+            <Route path='activity' element={<CourseActivityTab />} />
+            <Route path='engagement' element={<CourseEngagementTab />} />
 
             <Route index element={<Navigate to='information' replace />} />
           </Route>

@@ -2,7 +2,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Container,
   Grid,
   List,
@@ -10,20 +9,12 @@ import {
   ListItemButton,
   ListItemText,
   Paper,
-  Stack,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
@@ -151,15 +142,31 @@ function EditCourse() {
                       <ListItemText primary='Reviews' />
                     </ListItemButton>
                   </ListItem>
-                </List>
 
-                <List>
                   <ListItem disablePadding>
                     <ListItemButton
                       selected={selectedTab === 'enrollments'}
                       onClick={() => handleListItemClick('enrollments')}
                     >
                       <ListItemText primary='Enrollments' />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'activity'}
+                      onClick={() => handleListItemClick('activity')}
+                    >
+                      <ListItemText primary='Activity' />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'engagement'}
+                      onClick={() => handleListItemClick('engagement')}
+                    >
+                      <ListItemText primary='Engagement' />
                     </ListItemButton>
                   </ListItem>
                 </List>
