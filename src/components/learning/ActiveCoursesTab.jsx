@@ -1,10 +1,18 @@
-import { Box, CircularProgress, InputBase, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  InputBase,
+  Paper,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses } from '../../features/learning/learningSlice';
 import LearningCourseCard from './cards/LearningCourseCard';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function ActiveCoursesTab() {
   const [search, setSearch] = useState('');
@@ -20,6 +28,8 @@ function ActiveCoursesTab() {
     message: favouriteMessage,
   } = favourites;
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const toastId = useRef(null);
 
@@ -116,10 +126,20 @@ function ActiveCoursesTab() {
       {isLoading && <CircularProgress />}
 
       <Box display='flex' gap={2} flexDirection='column'>
-        {filteredCourses.length !== 0 &&
+        {filteredCourses.length !== 0 ? (
           filteredCourses.map((course) => (
             <LearningCourseCard key={course.id} course={course} action='add' />
-          ))}
+          ))
+        ) : (
+          <>
+            <Typography fontSize={17} gutterBottom mt={2}>
+              You're not enrolled in any courses yet.
+            </Typography>
+            <Button variant='outlined' onClick={() => navigate('/catalog')}>
+              Go to Catalog
+            </Button>
+          </>
+        )}
       </Box>
     </Box>
   );

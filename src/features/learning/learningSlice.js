@@ -147,7 +147,6 @@ export const learningSlice = createSlice({
       })
       .addCase(getFavouriteCourses.fulfilled, (state, action) => {
         state.favourites.isLoading = false;
-        state.favourites.isSuccess = true;
         state.favourites.courses = action.payload;
       })
       .addCase(getFavouriteCourses.rejected, (state, action) => {
@@ -165,7 +164,6 @@ export const learningSlice = createSlice({
         const course = state.courses.find((course) => course.id === action.payload);
         state.favourites.courses = [...state.favourites.courses, { ...course }];
         state.favourites.isSuccess = true;
-        state.favourites.courses = action.payload;
       })
       .addCase(addCourseToFavourites.rejected, (state, action) => {
         state.favourites.isUpdating = false;
