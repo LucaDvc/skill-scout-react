@@ -5,7 +5,6 @@ import {
   Container,
   Divider,
   FormControl,
-  IconButton,
   InputBase,
   InputLabel,
   MenuItem,
@@ -58,18 +57,14 @@ function TeachingCoursesOverview() {
         setFilteredCourses(courses);
         break;
       case 'drafted':
-        setFilteredCourses(
-          courses.filter((course) => course.release_date === null)
-        );
+        setFilteredCourses(courses.filter((course) => course.release_date === null));
         break;
       case 'active':
         setFilteredCourses(courses.filter((course) => course.active));
         break;
       case 'inactive':
         setFilteredCourses(
-          courses.filter(
-            (course) => !course.active && course.release_date !== null
-          )
+          courses.filter((course) => !course.active && course.release_date !== null)
         );
         break;
     }
@@ -92,9 +87,7 @@ function TeachingCoursesOverview() {
             .trim()
             .split(' ')
             .join('')
-            .includes(
-              searchVal.toLowerCase().toLowerCase().trim().split(' ').join('')
-            )
+            .includes(searchVal.toLowerCase().toLowerCase().trim().split(' ').join(''))
         )
       );
     } else {
