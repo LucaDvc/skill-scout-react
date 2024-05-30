@@ -46,6 +46,10 @@ import CourseActivityTab from './components/teaching/edit/activity/CourseActivit
 import CourseEngagementTab from './components/teaching/edit/engagement/CourseEngagementTab';
 import AssesmentsAnalyticsTab from './components/teaching/edit/assessments/AssesmentsAnalyticsTab';
 import CoursePublicationTab from './components/teaching/edit/publication/CoursePublicationTab';
+import LearningPage from './pages/learning/LearningPage';
+import ActiveCoursesTab from './components/learning/ActiveCoursesTab';
+import FavouriteCoursesTab from './components/learning/FavouriteCoursesTab';
+import WishlistedCoursesTab from './components/learning/WishlistedCoursesTab';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -98,6 +102,14 @@ function Root() {
 
           <Route path='/teaching/edit-lessons/:courseId' element={<EditLessonsDetails />}>
             <Route path='lessons/:lessonId' element={<LessonDetails />} />
+          </Route>
+
+          <Route path='/learning' element={<LearningPage />}>
+            <Route path='courses/active' element={<ActiveCoursesTab />} />
+            <Route path='courses/favourites' element={<FavouriteCoursesTab />} />
+            <Route path='courses/wishlist' element={<WishlistedCoursesTab />} />
+
+            <Route index element={<Navigate to='courses/active' replace />} />
           </Route>
         </Route>
       </Route>
