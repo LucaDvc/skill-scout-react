@@ -130,6 +130,19 @@ export const deleteLesson = createAsyncThunk(
   }
 );
 
+export const publishCourse = createAsyncThunk(
+  'teaching/publishCourse',
+  async (id, thunkAPI) => {
+    try {
+      await teachingService.publishCourse(id);
+      return id;
+    } catch (error) {
+      let message = error.response.data.detail;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const teachingSlice = createSlice({
   name: 'teaching',
   initialState,
@@ -227,6 +240,22 @@ export const teachingSlice = createSlice({
       })
       .addCase(updateCourse.rejected, (state, action) => {
         state.edit.isLoading = false;
+        state.edit.isError = true;
+        state.edit.message = action.payload;
+      })
+      .addCase(publishCourse.fulfilled, (state, action) => {
+        const updatedCourse = {
+          ...state.edit.course,
+          active: true,
+          release_date: new Date().toISOString(),
+        };
+        state.edit.course = updatedCourse;
+        state.courses = state.courses.map((course) =>
+          course.id === action.payload ? updatedCourse : course
+        );
+        state.edit.isSuccess = true;
+      })
+      .addCase(publishCourse.rejected, (state, action) => {
         state.edit.isError = true;
         state.edit.message = action.payload;
       })

@@ -80,7 +80,7 @@ function InformationTab() {
         title: course.title,
         intro: course.intro ? course.intro : '',
         level: course.level ? course.level : '',
-        totalHours: course.total_hours ? course.total_hours : '',
+        totalHours: course.total_hours ? course.total_hours : 0,
         tags: course.tags,
       });
     }
@@ -150,7 +150,7 @@ function InformationTab() {
     form.append('intro', formData.intro);
     form.append('level', formData.level);
     form.append('total_hours', formData.totalHours);
-    form.append('category', selectedCategoryId);
+    if (selectedCategoryId) form.append('category', selectedCategoryId);
     form.append('description', descriptionEditorRef.current.getContent());
     form.append('requirements', requirementsEditorRef.current.getContent());
     const tagsJsonString = JSON.stringify(formData.tags);
@@ -241,7 +241,7 @@ function InformationTab() {
             Selected category:
             <Typography variant='subtitle2' component='span' sx={{ fontStyle: 'italic' }}>
               {' ' +
-                (selectedCategoryId === course.category.id
+                (selectedCategoryId === course.category?.id
                   ? course.category.name
                   : categoryUtils.findCategoryById(categories, selectedCategoryId)?.name)}
             </Typography>
@@ -261,7 +261,7 @@ function InformationTab() {
           sx={{ marginTop: STD_MARGIN_TOP }}
           InputProps={{
             inputProps: {
-              maxLength: 300,
+              maxLength: 299,
             },
           }}
           helperText='Max. 300 characters'

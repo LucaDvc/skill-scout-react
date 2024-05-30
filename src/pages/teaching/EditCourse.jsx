@@ -2,6 +2,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
+  Box,
+  Button,
   Container,
   Grid,
   List,
@@ -10,19 +13,26 @@ import {
   ListItemText,
   Paper,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
+import { useTheme } from '@emotion/react';
 
 function EditCourse() {
   const { courseId } = useParams();
+
+  // Mui
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Router
   const location = useLocation();
@@ -41,9 +51,9 @@ function EditCourse() {
   }, [dispatch, courseId]);
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
+    // if (isError) {
+    //   toast.error(message);
+    // }
 
     if (isSuccess) {
       dispatch(reset());
@@ -57,7 +67,7 @@ function EditCourse() {
   const [expandedAccordions, setExpandedAccordions] = useState({
     contentAcc: true,
     analyticsAcc: true,
-    analyticsAcc: true,
+    settingsAcc: true,
   });
 
   const handleChangeAccordion = (panel) => (event, isExpanded) => {
@@ -74,7 +84,40 @@ function EditCourse() {
   return (
     <Grid container style={{ height: 'calc(100vh-64px)' }}>
       <Grid item xs={12} sm={3}>
-        <Paper square elevation={6} sx={{ height: '100%', overflowY: 'auto' }}>
+        <Paper
+          square
+          elevation={6}
+          sx={{
+            height: '100%',
+            minHeight: !isMobile && '100dvh',
+            overflowY: 'auto',
+            padding: 2,
+          }}
+        >
+          <Box px={2}>
+            {!isMobile && (
+              <Avatar
+                alt='Course Logo'
+                src={course?.image}
+                sx={{ width: 75, height: 75, borderRadius: 1 }}
+              />
+            )}
+
+            <Typography variant='h6' sx={{ my: 2 }}>
+              {course?.title}
+            </Typography>
+
+            {!isMobile && !course?.active && (
+              <Button
+                sx={{ padding: 1, paddingX: 6 }}
+                variant='outlined'
+                color='secondary'
+                onClick={() => handleListItemClick('publication')}
+              >
+                <Typography variant='subtitle1'>Publish</Typography>
+              </Button>
+            )}
+          </Box>
           <List>
             <Accordion
               disableGutters
@@ -176,6 +219,33 @@ function EditCourse() {
                       onClick={() => handleListItemClick('assessments')}
                     >
                       <ListItemText primary='Assessments' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              disableGutters
+              expanded={expandedAccordions.settingsAcc}
+              onChange={handleChangeAccordion('settingsAcc')}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant='subtitle1'
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <SettingsIcon sx={{ mr: 2 }} /> Settings
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedTab === 'publication'}
+                      onClick={() => handleListItemClick('publication')}
+                    >
+                      <ListItemText primary='Publication' />
                     </ListItemButton>
                   </ListItem>
                 </List>

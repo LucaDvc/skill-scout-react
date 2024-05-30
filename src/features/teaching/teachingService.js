@@ -70,6 +70,11 @@ const deleteLesson = async (token, id) => {
   return response.data;
 };
 
+const publishCourse = async (id) => {
+  const response = await axiosInstance.post(`${API_URL}/courses/${id}/publish/`);
+  return response.data;
+};
+
 const teachingService = {
   getCourses,
   deleteCourse,
@@ -78,6 +83,7 @@ const teachingService = {
   updateCourse,
   updateLesson,
   deleteLesson,
+  publishCourse,
 };
 
 export default teachingService;

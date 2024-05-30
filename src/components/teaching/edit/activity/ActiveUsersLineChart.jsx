@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 // Generating dummy data for active users
 const generateData = (numRecords, maxValue) => {
   const data = [];
-  let currentDate = new Date('2024-05-23');
+  let currentDate = new Date('2022-05-23');
 
   for (let i = 0; i < numRecords; i++) {
     data.push({
@@ -157,7 +157,7 @@ function ActiveUsersLineChart() {
     const fetchActiveUsersData = async () => {
       try {
         const response = await analyticsService.getActiveUsersAnalytics(course.id);
-        setData(response);
+        setData(allData);
       } catch (error) {
         console.error(error);
         toast.error('Failed to fetch active users data');

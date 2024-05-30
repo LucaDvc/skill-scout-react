@@ -82,7 +82,9 @@ const AssesmentsStackedBarChart = ({ data }) => {
       <Typography variant='h6' textAlign='center' gutterBottom>
         Assessments Performance
       </Typography>
-      <Chart options={options} series={series} type='bar' />
+      <Box minHeight={400}>
+        <Chart options={options} series={series} type='bar' height='100%' />
+      </Box>
     </Box>
   );
 };

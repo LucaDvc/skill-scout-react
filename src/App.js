@@ -45,6 +45,7 @@ import EnrollmentsTab from './components/teaching/edit/enrollments/EnrollmentsTa
 import CourseActivityTab from './components/teaching/edit/activity/CourseActivityTab';
 import CourseEngagementTab from './components/teaching/edit/engagement/CourseEngagementTab';
 import AssesmentsAnalyticsTab from './components/teaching/edit/assessments/AssesmentsAnalyticsTab';
+import CoursePublicationTab from './components/teaching/edit/publication/CoursePublicationTab';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -90,6 +91,7 @@ function Root() {
             <Route path='activity' element={<CourseActivityTab />} />
             <Route path='engagement' element={<CourseEngagementTab />} />
             <Route path='assessments' element={<AssesmentsAnalyticsTab />} />
+            <Route path='publication' element={<CoursePublicationTab />} />
 
             <Route index element={<Navigate to='information' replace />} />
           </Route>
