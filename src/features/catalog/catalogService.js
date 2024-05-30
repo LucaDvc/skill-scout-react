@@ -50,7 +50,7 @@ const getCourseReviews = async (courseId, params) => {
 };
 
 const getWishlist = async () => {
-  const response = await axiosInstance.get(`${API_URL}/courses/wishlist/`);
+  const response = await axiosInstance.get(`${API_URL}/wishlist/`);
   return response.data;
 };
 

@@ -1,53 +1,16 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFavouriteCourses } from '../../features/learning/learningSlice';
+import { getWishlist } from '../../features/learning/learningSlice';
 import WishlistCourseCard from './cards/WishlistCourseCard';
-import { toast } from 'react-toastify';
 
 function WishlistedCoursesTab() {
-  const { courses, isLoading, isSuccess, isError, message, isUpdating } = useSelector(
-    (state) => state.learning.favourites
-  );
+  const { courses, isLoading } = useSelector((state) => state.learning.wishlist);
   const dispatch = useDispatch();
 
-  const toastId = useRef(null);
-
   useEffect(() => {
-    if (!courses || courses.length === 0) {
-      dispatch(getFavouriteCourses());
-    }
-  }, [dispatch, getFavouriteCourses]);
-
-  useEffect(() => {
-    if (isUpdating) {
-      toastId.current = toast.loading('Removing course from favourites...', {
-        position: 'bottom-center',
-        autoClose: false,
-        isLoading: true,
-      });
-    }
-
-    if (isSuccess) {
-      toast.update(toastId.current, {
-        render: 'Removed course from favourites!',
-        type: toast.TYPE.SUCCESS,
-        isLoading: false,
-        autoClose: 3000,
-        closeButton: true,
-      });
-    }
-
-    if (isError) {
-      toast.update(toastId.current, {
-        render: message,
-        type: toast.TYPE.ERROR,
-        isLoading: false,
-        autoClose: 3000,
-        closeButton: true,
-      });
-    }
-  }, [isUpdating, isSuccess, isError, message]);
+    dispatch(getWishlist());
+  }, [dispatch, getWishlist]);
 
   return (
     <Box py={2}>
