@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import learningService from './learningService';
+import catalogService from '../catalog/catalogService';
 
 const initialState = {
   courses: [],
@@ -12,6 +13,13 @@ const initialState = {
     courses: [],
     isLoading: false,
     isUpdating: false,
+    isSuccess: false,
+    isError: false,
+    message: '',
+  },
+  wishlist: {
+    courses: [],
+    isLoading: false,
     isSuccess: false,
     isError: false,
     message: '',
@@ -85,6 +93,18 @@ export const removeCourseFromFavourites = createAsyncThunk(
     } catch (error) {
       let message = error.response.data.error || error.toString();
       return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getWishlist = createAsyncThunk(
+  'catalog/getWishlist',
+  async (_, thunkAPI) => {
+    try {
+      return await catalogService.getWishlist();
+    } catch (error) {
+      let message = error.message || error.toString();
+      thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -186,6 +206,20 @@ export const learningSlice = createSlice({
         state.favourites.isFavouriteUpdating = false;
         state.favourites.isError = true;
         state.favourites.message = action.payload;
+      })
+      .addCase(getWishlist.pending, (state) => {
+        state.wishlist.isLoading = true;
+        state.wishlist.isSuccess = false;
+        state.wishlist.isError = false;
+      })
+      .addCase(getWishlist.fulfilled, (state, action) => {
+        state.wishlist.isLoading = false;
+        state.wishlist.courses = action.payload;
+      })
+      .addCase(getWishlist.rejected, (state, action) => {
+        state.wishlist.isLoading = false;
+        state.wishlist.isError = true;
+        state.wishlist.message = action.payload;
       });
   },
 });

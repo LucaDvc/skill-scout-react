@@ -123,24 +123,30 @@ function ActiveCoursesTab() {
         <SearchIcon />
       </Paper>
 
-      {isLoading && <CircularProgress />}
-
-      <Box display='flex' gap={2} flexDirection='column'>
-        {filteredCourses.length !== 0 ? (
-          filteredCourses.map((course) => (
-            <LearningCourseCard key={course.id} course={course} action='add' />
-          ))
-        ) : (
-          <>
-            <Typography fontSize={17} gutterBottom mt={2}>
-              You're not enrolled in any courses yet.
-            </Typography>
-            <Button variant='outlined' onClick={() => navigate('/catalog')}>
-              Go to Catalog
-            </Button>
-          </>
-        )}
-      </Box>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Box display='flex' gap={2} flexDirection='column'>
+          {filteredCourses.length !== 0 ? (
+            filteredCourses.map((course) => (
+              <LearningCourseCard key={course.id} course={course} action='add' />
+            ))
+          ) : (
+            <>
+              <Typography fontSize={17} gutterBottom mt={2}>
+                You're not enrolled in any courses yet.
+              </Typography>
+              <Button
+                variant='outlined'
+                sx={{ width: 100 }}
+                onClick={() => navigate('/catalog')}
+              >
+                Go to Catalog
+              </Button>
+            </>
+          )}
+        </Box>
+      )}
     </Box>
   );
 }

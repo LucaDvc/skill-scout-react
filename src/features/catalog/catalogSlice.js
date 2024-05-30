@@ -66,18 +66,15 @@ export const getCoursesByFilter = createAsyncThunk(
   }
 );
 
-export const getTags = createAsyncThunk(
-  'catalog/getTags',
-  async (_, thunkAPI) => {
-    try {
-      return await catalogService.getTags();
-    } catch (error) {
-      let message = error.message || error.toString();
+export const getTags = createAsyncThunk('catalog/getTags', async (_, thunkAPI) => {
+  try {
+    return await catalogService.getTags();
+  } catch (error) {
+    let message = error.message || error.toString();
 
-      return thunkAPI.rejectWithValue(message);
-    }
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const getCourseById = createAsyncThunk(
   'catalog/getCourseById',
@@ -144,8 +141,7 @@ export const catalogSlice = createSlice({
       .addCase(getHighestRatedCourses.fulfilled, (state, action) => {
         state.recommendedCourses.isLoading = false;
         state.recommendedCourses.isSuccess = true;
-        state.recommendedCourses.highestRatedCourses =
-          action.payload.results.slice(0, 5);
+        state.recommendedCourses.highestRatedCourses = action.payload.results.slice(0, 5);
       })
       .addCase(getHighestRatedCourses.rejected, (state, action) => {
         state.recommendedCourses.isLoading = false;
@@ -158,10 +154,7 @@ export const catalogSlice = createSlice({
       .addCase(getPopularCourses.fulfilled, (state, action) => {
         state.recommendedCourses.isLoading = false;
         state.recommendedCourses.isSuccess = true;
-        state.recommendedCourses.popularCourses = action.payload.results.slice(
-          0,
-          5
-        );
+        state.recommendedCourses.popularCourses = action.payload.results.slice(0, 5);
       })
       .addCase(getPopularCourses.rejected, (state, action) => {
         state.recommendedCourses.isLoading = false;

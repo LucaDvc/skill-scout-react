@@ -54,8 +54,9 @@ function LearningCourseCard({ course, action }) {
     handleClose();
   };
 
-  const handleLearnClick = () => {
+  const handleLearnClick = (event) => {
     // navigate to last stopped course step
+    event.stopPropagation();
   };
 
   return (
@@ -90,6 +91,7 @@ function LearningCourseCard({ course, action }) {
               <Link
                 to={`/learning/courses/${course.id}/syllabus`}
                 className='link-no-style'
+                onClick={(event) => event.stopPropagation()}
               >
                 <Typography
                   variant='h6'
@@ -104,12 +106,19 @@ function LearningCourseCard({ course, action }) {
                 </Typography>
               </Link>
 
-              <Link to={`/users/${course.instructor.id}`} className='link-no-style'>
+              <Link
+                to={`/users/${course.instructor.id}`}
+                className='link-no-style'
+                onClick={(event) => event.stopPropagation()}
+              >
                 <Typography
                   variant='body2'
                   component='span'
                   display='block'
-                  sx={{ '&:hover': { textDecoration: 'underline' } }}
+                  sx={{
+                    '&:hover': { textDecoration: 'underline' },
+                    color: 'text.secondary',
+                  }}
                 >
                   {`${course.instructor.first_name} ${course.instructor.last_name}`}
                 </Typography>

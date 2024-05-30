@@ -1,7 +1,75 @@
-import React from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFavouriteCourses } from '../../features/learning/learningSlice';
+import WishlistCourseCard from './cards/WishlistCourseCard';
+import { toast } from 'react-toastify';
 
 function WishlistedCoursesTab() {
-  return <div>WishlistedCoursesTab</div>;
+  const { courses, isLoading, isSuccess, isError, message, isUpdating } = useSelector(
+    (state) => state.learning.favourites
+  );
+  const dispatch = useDispatch();
+
+  const toastId = useRef(null);
+
+  useEffect(() => {
+    if (!courses || courses.length === 0) {
+      dispatch(getFavouriteCourses());
+    }
+  }, [dispatch, getFavouriteCourses]);
+
+  useEffect(() => {
+    if (isUpdating) {
+      toastId.current = toast.loading('Removing course from favourites...', {
+        position: 'bottom-center',
+        autoClose: false,
+        isLoading: true,
+      });
+    }
+
+    if (isSuccess) {
+      toast.update(toastId.current, {
+        render: 'Removed course from favourites!',
+        type: toast.TYPE.SUCCESS,
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
+    }
+
+    if (isError) {
+      toast.update(toastId.current, {
+        render: message,
+        type: toast.TYPE.ERROR,
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
+    }
+  }, [isUpdating, isSuccess, isError, message]);
+
+  return (
+    <Box py={2}>
+      <Typography variant='h3' sx={{ mb: 2 }}>
+        Wishlist
+      </Typography>
+
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Box display='flex' gap={2} flexDirection='column'>
+          {courses.length !== 0 ? (
+            courses.map((course) => (
+              <WishlistCourseCard key={course.id} course={course} />
+            ))
+          ) : (
+            <Typography variant='body1'>You have no courses in your wishlist.</Typography>
+          )}
+        </Box>
+      )}
+    </Box>
+  );
 }
 
 export default WishlistedCoursesTab;
