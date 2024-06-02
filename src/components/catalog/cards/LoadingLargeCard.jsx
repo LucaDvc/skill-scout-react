@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Stack } from '@mui/material';
 import React from 'react';
 
 function LoadingLargeCard() {

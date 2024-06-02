@@ -11,7 +11,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CourseContent from './CourseContent';
@@ -19,10 +19,10 @@ import StarIcon from '@mui/icons-material/Star';
 import ReviewsList from './ReviewsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { wishlistCourse } from '../../../features/catalog/catalogSlice';
-import { refreshAuthUser } from '../../../features/users/usersSlice';
+import { refreshAuthUser, reset } from '../../../features/users/usersSlice';
 import { LoadingButton } from '@mui/lab';
 import HtmlContent from '../../HtmlContent';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function MainDetailsContent({ course }) {
   const theme = useTheme();
@@ -31,14 +31,16 @@ function MainDetailsContent({ course }) {
 
   const dispatch = useDispatch();
   const { isWishlistUpdating } = useSelector((state) => state.catalog);
-  const { user } = useSelector((state) => state.users);
-  const { wishlist, enrolled_courses: enrolledCourses } = user;
+  const { user, accessToken } = useSelector((state) => state.users);
   const [isWishlisted, setIsWishlisted] = useState(
-    wishlist?.some((wishlistedCourse) => wishlistedCourse.id === course.id)
+    user?.wishlist?.some((wishlistedCourse) => wishlistedCourse.id === course.id)
   );
   const isEnrolled = useMemo(() =>
-    enrolledCourses?.some((enrolledCourse) => enrolledCourse.id === course.id)
+    user?.enrolledCourses?.some((enrolledCourse) => enrolledCourse.id === course.id)
   );
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const bottomContainerStyle = useMemo(
     () => ({
@@ -58,12 +60,22 @@ function MainDetailsContent({ course }) {
   const handleBuyButtonClick = () => {};
 
   const handleWishlistButtonClick = () => {
-    dispatch(wishlistCourse(course.id));
-    setTimeout(() => {
-      dispatch(refreshAuthUser());
-      setIsWishlisted(!isWishlisted);
-    }, 1500);
+    if (accessToken) {
+      dispatch(wishlistCourse(course.id));
+      setTimeout(() => {
+        dispatch(refreshAuthUser());
+        setIsWishlisted(!isWishlisted);
+      }, 1500);
+    } else {
+      navigate('/login', { state: { from: location.pathname } });
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(reset()); // reset the users stats when the component unmounts
+    };
+  }, [dispatch]);
 
   return (
     <Container maxWidth='lg'>

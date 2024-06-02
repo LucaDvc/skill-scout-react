@@ -18,20 +18,20 @@ export const grey = {
 };
 
 export const primary = {
-  lighter: '#D0ECFE',
-  light: '#73BAFB',
-  main: '#1877F2',
-  dark: '#0C44AE',
-  darker: '#042174',
-  contrastText: '#FFFFFF',
+  lighter: '#2A8159',
+  light: '#053726',
+  main: '#181F0Dff',
+  dark: '#131A09',
+  darker: '#0E1606',
+  contrastText: '#36D3A7ff',
 };
 
 export const secondary = {
-  lighter: '#EFD6FF',
-  light: '#C684FF',
-  main: '#8E33FF',
-  dark: '#5119B7',
-  darker: '#27097A',
+  lighter: '#d5f6ed',
+  light: '#82e3c8',
+  main: '#36D3A7ff',
+  dark: '#0C724Dff', //#0A5B65, #0C724Dff
+  darker: '#065245', //#053648
   contrastText: '#FFFFFF',
 };
 
@@ -80,7 +80,7 @@ export const action = {
   hover: alpha(grey[500], 0.08),
   selected: alpha(grey[500], 0.16),
   disabled: alpha(grey[500], 0.8),
-  disabledBackground: alpha(grey[500], 0.24),
+  disabledBackground: alpha(grey[600], 0.24),
   focus: alpha(grey[500], 0.24),
   hoverOpacity: 0.08,
   disabledOpacity: 0.48,
@@ -95,7 +95,7 @@ const base = {
   error,
   grey,
   common,
-  divider: alpha(grey[500], 0.2),
+  divider: alpha(primary.main, 0.8),
   action,
 };
 

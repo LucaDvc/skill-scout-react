@@ -50,7 +50,7 @@ function CourseDetails() {
         maxWidth={false}
         disableGutters
         sx={{
-          backgroundColor: 'secondary.light',
+          backgroundColor: 'primary.light',
           overflow: 'hidden',
         }}
       >
@@ -58,6 +58,7 @@ function CourseDetails() {
           sx={{
             width: '100vw',
             margin: 0,
+            color: 'white',
           }}
           px={{ xs: 4, sm: 8, md: 18, lg: 24, xl: 24 }}
         >
@@ -180,7 +181,9 @@ function CourseDetails() {
                   </Box>
                 </Stack>
 
-                <Link href='#reviews'>{course.reviews?.length} reviews</Link>
+                <Link href='#reviews' color='inherit'>
+                  {course.reviews?.length} reviews
+                </Link>
               </Grid>
             </Grid>
           </Grid>

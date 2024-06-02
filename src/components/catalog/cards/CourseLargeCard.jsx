@@ -2,11 +2,9 @@ import React from 'react';
 import { Card, CardContent, Typography, Box, Rating, Stack, Avatar } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function CourseLargeCard({ course }) {
-  const navigate = useNavigate();
-
   return (
     <Link to={`/catalog/courses/${course.id}`} className='link-no-style'>
       <Card

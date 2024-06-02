@@ -69,7 +69,7 @@ export default function Navbar() {
       <Avatar src={logo} />
       <Divider />
       {user ? (
-        <Avatar src={user.picture} alt={user.first_name} />
+        <Avatar src={user?.picture} alt={user?.first_name} />
       ) : (
         <>
           <Link to='/login' className='link-no-style'>
@@ -218,11 +218,11 @@ export default function Navbar() {
                 />
               </Search>
               {!isMobile &&
-                (accessToken ? (
+                (accessToken && user ? (
                   <>
                     <Avatar
-                      src={user.picture}
-                      alt={user.first_name}
+                      src={user?.picture}
+                      alt={user?.first_name}
                       onClick={handleMenuClick}
                       sx={{ cursor: 'pointer', mx: 1 }}
                     />
