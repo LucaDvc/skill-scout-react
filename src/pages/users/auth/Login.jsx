@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   clearGeneralErrorMessage,
   login,
@@ -27,17 +27,19 @@ function Login() {
   });
   const { email, password, rememberMe } = formData;
 
-  const { isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.users
-  );
+  const { isError, isSuccess, isLoading, message } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from || '/';
+  console.log('from', from);
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(reset());
-      navigate('/');
+      navigate(from);
     }
   }, [isSuccess, isError, dispatch, navigate]);
 
@@ -139,12 +141,7 @@ function Login() {
               }
               label='Remember me'
             />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Divider sx={{ my: 2 }} />
@@ -163,9 +160,7 @@ function Login() {
             <Grid container justifyContent='center' sx={{ my: 2 }}>
               <Grid item>
                 <Link to='/register' style={{ color: 'inherit' }}>
-                  <Typography variant='body2'>
-                    Don't have an account? Sign Up
-                  </Typography>
+                  <Typography variant='body2'>Don't have an account? Sign Up</Typography>
                 </Link>
               </Grid>
             </Grid>
