@@ -15,7 +15,7 @@ const getCourses = async () => {
 };
 
 const getCourseById = async (id) => {
-  const response = await axiosInstance.get(`${API_URL}/courses/${id}/`);
+  const response = await axiosInstance.get(`${API_URL}/courses/${id}`);
   return response.data;
 };
 
@@ -30,12 +30,33 @@ const updateFavouriteCourse = async (request) => {
   return response.data;
 };
 
+const getUserCourseReview = async (courseId) => {
+  const response = await axiosInstance.get(`${API_URL}/courses/${courseId}/user-review/`);
+  return response.data;
+};
+
+const postReview = async (courseId, request) => {
+  const response = await axiosInstance.post(
+    `${API_URL}/courses/${courseId}/reviews/`,
+    request
+  );
+  return response.data;
+};
+
+const updateReview = async (reviewId, request) => {
+  const response = await axiosInstance.put(`${API_URL}/reviews/${reviewId}/`, request);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
   getCourseById,
   getFavouriteCourses,
   updateFavouriteCourse,
+  getUserCourseReview,
+  postReview,
+  updateReview,
 };
 
 export default learningService;

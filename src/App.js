@@ -50,6 +50,10 @@ import LearningPage from './pages/learning/LearningPage';
 import ActiveCoursesTab from './components/learning/ActiveCoursesTab';
 import FavouriteCoursesTab from './components/learning/FavouriteCoursesTab';
 import WishlistedCoursesTab from './components/learning/WishlistedCoursesTab';
+import LearningCourseDetails from './pages/learning/LearningCourseDetails';
+import LearningSyllabusTab from './components/learning/syllabus/SyllabusTab';
+import LearningReviewsTab from './components/learning/reviews/ReviewsTab';
+import LearnerReview from './components/learning/reviews/LearnerReview';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -104,12 +108,21 @@ function Root() {
             <Route path='lessons/:lessonId' element={<LessonDetails />} />
           </Route>
 
+          {/* Learning */}
           <Route path='/learning' element={<LearningPage />}>
             <Route path='courses/active' element={<ActiveCoursesTab />} />
             <Route path='courses/favourites' element={<FavouriteCoursesTab />} />
             <Route path='courses/wishlist' element={<WishlistedCoursesTab />} />
-
             <Route index element={<Navigate to='courses/active' replace />} />
+          </Route>
+
+          <Route path='/learning/courses/:courseId' element={<LearningCourseDetails />}>
+            {/* <Route path='lessons/:lessonId' element={<LessonDetails />} /> */}
+            <Route path='syllabus' element={<LearningSyllabusTab />} />
+            <Route path='reviews' element={<LearningReviewsTab />} />
+            <Route path='review' element={<LearnerReview />} />
+
+            <Route index element={<Navigate to='syllabus' replace />} />
           </Route>
         </Route>
       </Route>

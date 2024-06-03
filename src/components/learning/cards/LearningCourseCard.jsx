@@ -106,23 +106,24 @@ function LearningCourseCard({ course, action }) {
                 </Typography>
               </Link>
 
-              <Link
-                to={`/users/${course.instructor.id}`}
-                className='link-no-style'
-                onClick={(event) => event.stopPropagation()}
-              >
-                <Typography
-                  variant='body2'
-                  component='span'
-                  display='block'
-                  sx={{
-                    '&:hover': { textDecoration: 'underline' },
-                    color: 'text.secondary',
-                  }}
+              <Box>
+                <Link
+                  to={`/users/${course.instructor.id}`}
+                  className='link-no-style'
+                  onClick={(event) => event.stopPropagation()}
                 >
-                  {`${course.instructor.first_name} ${course.instructor.last_name}`}
-                </Typography>
-              </Link>
+                  <Typography
+                    variant='body2'
+                    component='span'
+                    sx={{
+                      '&:hover': { textDecoration: 'underline' },
+                      color: 'text.secondary',
+                    }}
+                  >
+                    {`${course.instructor.first_name} ${course.instructor.last_name}`}
+                  </Typography>
+                </Link>
+              </Box>
 
               <Box display='flex' mt={1}>
                 {course.learner_progress.completion_ratio === 100.0 ? (
