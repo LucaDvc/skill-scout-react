@@ -4,6 +4,8 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons,
 } from '@vidstack/react/player/layouts/default';
+import { useDispatch } from 'react-redux';
+import { completeLessonStep } from '../../../../features/learning/learningSlice';
 import React from 'react';
 
 const getVideoType = (url) => {
@@ -25,6 +27,14 @@ const getVideoType = (url) => {
 };
 
 function VideoStep({ step }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!step.completed) {
+      dispatch(completeLessonStep(step.id));
+    }
+  }, [dispatch, step]);
+
   return (
     <Container maxWidth='md'>
       <Typography variant='h4' gutterBottom>
