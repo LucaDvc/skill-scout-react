@@ -61,6 +61,19 @@ const completeLessonStep = async (stepId) => {
   return response.data;
 };
 
+const submitQuiz = async (stepId, request) => {
+  const response = await axiosInstance.post(
+    `${API_URL}/quiz-steps/${stepId}/submit/`,
+    request
+  );
+  return response.data;
+};
+
+const getQuizStep = async (stepId) => {
+  const response = await axiosInstance.get(`${API_URL}/quiz-steps/${stepId}/`);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -72,6 +85,8 @@ const learningService = {
   updateReview,
   sendEngagementData,
   completeLessonStep,
+  submitQuiz,
+  getQuizStep,
 };
 
 export default learningService;
