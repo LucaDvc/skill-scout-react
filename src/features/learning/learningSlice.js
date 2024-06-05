@@ -98,13 +98,25 @@ export const removeCourseFromFavourites = createAsyncThunk(
 );
 
 export const getWishlist = createAsyncThunk(
-  'catalog/getWishlist',
+  'learning/getWishlist',
   async (_, thunkAPI) => {
     try {
       return await catalogService.getWishlist();
     } catch (error) {
       let message = error.message || error.toString();
       thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const completeLessonStep = createAsyncThunk(
+  'learning/completeLessonStep',
+  async (stepId, thunkAPI) => {
+    try {
+      return await learningService.completeLessonStep(stepId);
+    } catch (error) {
+      let message = error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -220,6 +232,38 @@ export const learningSlice = createSlice({
         state.wishlist.isLoading = false;
         state.wishlist.isError = true;
         state.wishlist.message = action.payload;
+      })
+      .addCase(completeLessonStep.fulfilled, (state, action) => {
+        state.course.learner_progress = action.payload;
+        const { completed_chapters, completed_lessons, completed_steps } = action.payload;
+
+        state.course.chapters = state.course.chapters.map((chapter) => {
+          if (completed_chapters.includes(chapter.id)) {
+            chapter.completed = true;
+          }
+
+          chapter.lessons = chapter.lessons.map((lesson) => {
+            if (completed_lessons.includes(lesson.id)) {
+              lesson.completed = true;
+            }
+
+            lesson.lesson_steps = lesson.lesson_steps.map((step) => {
+              if (completed_steps.includes(step.id)) {
+                step.completed = true;
+              }
+
+              return step;
+            });
+
+            return lesson;
+          });
+
+          return chapter;
+        });
+      })
+      .addCase(completeLessonStep.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

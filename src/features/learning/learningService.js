@@ -56,6 +56,11 @@ const sendEngagementData = async (stepId, timeSpent) => {
   return response.data;
 };
 
+const completeLessonStep = async (stepId) => {
+  const response = await axiosInstance.post(`${API_URL}/progress/steps/${stepId}/`);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -66,6 +71,7 @@ const learningService = {
   postReview,
   updateReview,
   sendEngagementData,
+  completeLessonStep,
 };
 
 export default learningService;
