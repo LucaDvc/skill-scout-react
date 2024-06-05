@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import VideoStep from '../../components/learning/lesson/steps/VideoStep';
 import QuizStep from '../../components/learning/lesson/steps/QuizStep';
@@ -6,13 +6,14 @@ import TextStep from '../../components/learning/lesson/steps/TextStep';
 import CodeChallengeStep from '../../components/learning/lesson/steps/CodeChallengeStep';
 import SortingProblemStep from '../../components/learning/lesson/steps/SortingProblemStep';
 import TextProblemStep from '../../components/learning/lesson/steps/TextProblemStep';
+import learningService from '../../features/learning/learningService';
 
 function LearningLessonStep() {
   const { stepOrder } = useParams();
   const { steps } = useOutletContext();
-  const [timeSpent, setTimeSpent] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
   const selectedStep = steps.find((step) => step.order === parseInt(stepOrder, 10));
+  const timeSpentRef = useRef(0);
 
   useEffect(() => {
     // Clear the previous interval
@@ -21,18 +22,29 @@ function LearningLessonStep() {
     }
 
     // Reset the timer when the selected step changes
-    setTimeSpent(0);
+    timeSpentRef.current = 0;
 
     // Start a new timer
     const newIntervalId = setInterval(() => {
-      setTimeSpent((prevTime) => prevTime + 1);
+      timeSpentRef.current += 1;
     }, 1000);
 
     // Save the interval ID to state
     setIntervalId(newIntervalId);
 
-    // Cleanup the interval on unmount or when the step changes
-    return () => clearInterval(newIntervalId);
+    return () => {
+      // Send the data to the server if the user spent more than 5 seconds on the step
+      if (timeSpentRef.current >= 5) {
+        console.log('time spent', timeSpentRef.current);
+        try {
+          learningService.sendEngagementData(selectedStep.id, timeSpentRef.current);
+        } catch (error) {
+          console.error('Failed to send engagement data', error);
+        }
+      }
+      // Cleanup the interval on unmount or when the step changes
+      clearInterval(newIntervalId);
+    };
   }, [selectedStep]);
 
   const StepComponent = useMemo(() => {
@@ -49,12 +61,7 @@ function LearningLessonStep() {
 
   const RenderedComponent = StepComponent ? <StepComponent step={selectedStep} /> : null;
 
-  return (
-    <div>
-      <div>Time spent on this step: {timeSpent} seconds</div>
-      {RenderedComponent}
-    </div>
-  );
+  return <div>{RenderedComponent}</div>;
 }
 
 export default LearningLessonStep;

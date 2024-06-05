@@ -48,6 +48,14 @@ const updateReview = async (reviewId, request) => {
   return response.data;
 };
 
+const sendEngagementData = async (stepId, timeSpent) => {
+  const response = await axiosInstance.post(`${API_URL}/analytics/engagement/`, {
+    step_id: stepId,
+    time_spent: timeSpent,
+  });
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -57,6 +65,7 @@ const learningService = {
   getUserCourseReview,
   postReview,
   updateReview,
+  sendEngagementData,
 };
 
 export default learningService;
