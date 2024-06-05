@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Container,
+  Divider,
   Drawer,
   List,
   ListItem,
@@ -9,25 +11,28 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import { getCourseById } from '../../features/teaching/teachingSlice';
+import { getCourseById } from '../../features/learning/learningSlice';
 import { useLayout } from '../../context/LayoutContext';
 import Spinner from '../../components/Spinner';
 import { useTheme } from '@emotion/react';
-import { EditLessonProvider } from '../../context/EditLessonContext';
+import StepsList from '../../components/learning/lesson/StepsList';
 
-function EditLessonsDetails() {
+function LearningLessonPage() {
   const { courseId, lessonId } = useParams();
 
   const { setShowFooter, setNavbarFixed } = useLayout();
 
   const dispatch = useDispatch();
-  const { course, isLoading } = useSelector((state) => state.teaching.edit);
+  const { course, isLoading } = useSelector((state) => state.learning);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [lesson, setLesson] = useState(null);
+  const [stepsCompleted, setStepsCompleted] = useState(0);
+  const [steps, setSteps] = useState([]);
 
   useEffect(() => {
     setShowFooter(false);
@@ -42,7 +47,31 @@ function EditLessonsDetails() {
     };
   }, [dispatch, courseId]);
 
-  if (!course && isLoading) {
+  useEffect(() => {
+    if (course) {
+      const lesson = course.chapters
+        .map((chapter) => chapter.lessons)
+        .flat()
+        .find((lesson) => lesson.id === lessonId);
+
+      if (lesson) {
+        const chapterIndex = course.chapters.findIndex(
+          (chapter) => chapter.id === lesson.chapter_id
+        );
+        const lessonIndex = course.chapters[chapterIndex].lessons.findIndex(
+          (l) => l.id === lesson.id
+        );
+        const stepsCompleted = lesson.lesson_steps.filter(
+          (step) => step.completed
+        ).length;
+        setStepsCompleted(stepsCompleted);
+        setSteps([...lesson.lesson_steps]);
+        setLesson({ ...lesson, index: `${chapterIndex + 1}.${lessonIndex + 1}` });
+      }
+    }
+  }, [course, lessonId]);
+
+  if ((!course && isLoading) || !lesson) {
     return <Spinner />;
   }
 
@@ -72,7 +101,7 @@ function EditLessonsDetails() {
               <List>
                 <ListItem>
                   <Link
-                    to={`/teaching/courses/${course.id}/syllabus`}
+                    to={`/learning/courses/${course.id}/syllabus`}
                     className='link-no-style'
                   >
                     <Typography
@@ -103,7 +132,7 @@ function EditLessonsDetails() {
                       </ListItem>
                       {chapter.lessons.map((lesson) => (
                         <Link
-                          to={`/teaching/edit-lessons/${course.id}/lessons/${lesson.id}`}
+                          to={`/learning/course/${courseId}/lessons/${lesson.id}/step/1`}
                           className='link-no-style'
                           key={lesson.id}
                         >
@@ -142,15 +171,42 @@ function EditLessonsDetails() {
           }}
         >
           <Toolbar />
-          <Box mt={4}>
-            <EditLessonProvider>
-              <Outlet />
-            </EditLessonProvider>
+          <Box
+            width='100%'
+            sx={{
+              backgroundColor: 'white',
+              position: 'sticky',
+              top: '75px',
+              zIndex: 1100,
+            }}
+          >
+            <Container maxWidth='lg' sx={{ py: 1, overflow: 'auto' }}>
+              <StepsList steps={steps} />
+            </Container>
+
+            <Container maxWidth='lg' sx={{ py: 1 }}>
+              <Typography variant='body1' component='span'>
+                {lesson.index} {' ' + lesson.title}
+              </Typography>
+              <Typography
+                variant='body1'
+                component='span'
+                color='text.secondary'
+                sx={{ ml: 2 }}
+              >
+                {stepsCompleted} out of {lesson.lesson_steps.length} steps passed
+              </Typography>
+            </Container>
+
+            <Divider sx={{ borderColor: 'gray' }} />
           </Box>
+          <Container maxWidth='lg' sx={{ mt: 8 }}>
+            <Outlet context={{ steps }} />
+          </Container>
         </Box>
       </Box>
     )
   );
 }
 
-export default EditLessonsDetails;
+export default LearningLessonPage;

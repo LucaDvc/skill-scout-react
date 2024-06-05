@@ -1,15 +1,19 @@
-import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 function LessonCard({ lesson, moduleIndex }) {
+  const { courseId } = useParams();
   const totalLessonSteps = lesson.lesson_steps.length;
   const completedLessonSteps = lesson.lesson_steps.filter(
     (step) => step.completed
   ).length;
 
   return (
-    <Link to={`../lesson/${lesson.id}`} style={{ textDecoration: 'none' }}>
+    <Link
+      to={`/learning/course/${courseId}/lessons/${lesson.id}`}
+      style={{ textDecoration: 'none' }}
+    >
       <Card
         sx={{
           marginLeft: '5%',

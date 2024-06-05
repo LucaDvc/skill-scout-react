@@ -3,7 +3,6 @@ import { useEditLesson } from '../../../../../../context/EditLessonContext';
 import { Autocomplete, Box, Button, TextField, Typography } from '@mui/material';
 import globalConstants from '../../../../../../utils/globalConstants';
 import AceEditor from 'react-ace';
-import HtmlContent from '../../../../../HtmlContent';
 import stepsEditConstants from '../constants';
 
 function LanguagesTemplatesTab() {

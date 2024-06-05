@@ -54,6 +54,8 @@ import LearningCourseDetails from './pages/learning/LearningCourseDetails';
 import LearningSyllabusTab from './components/learning/syllabus/SyllabusTab';
 import LearningReviewsTab from './components/learning/reviews/ReviewsTab';
 import LearnerReview from './components/learning/reviews/LearnerReview';
+import LearningLessonPage from './pages/learning/LearningLessonPage';
+import LearningLessonStep from './pages/learning/LearningLessonStep';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -123,6 +125,13 @@ function Root() {
             <Route path='review' element={<LearnerReview />} />
 
             <Route index element={<Navigate to='syllabus' replace />} />
+          </Route>
+
+          <Route
+            path='/learning/course/:courseId/lessons/:lessonId'
+            element={<LearningLessonPage />}
+          >
+            <Route path='step/:stepOrder' element={<LearningLessonStep />} />
           </Route>
         </Route>
       </Route>
