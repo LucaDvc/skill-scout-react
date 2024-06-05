@@ -34,7 +34,6 @@ function Login() {
   const location = useLocation();
 
   const from = location.state?.from || '/';
-  console.log('from', from);
 
   useEffect(() => {
     if (isSuccess) {

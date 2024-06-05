@@ -26,7 +26,6 @@ function LessonStepHeader({ children }) {
   };
 
   const exportStep = () => {
-    console.log('Export step');
     downloadLessonStep(selectedStep);
     handleMenuClose();
   };
@@ -38,7 +37,6 @@ function LessonStepHeader({ children }) {
         const importedStep = await importStepFromFile(file, selectedStep.type);
         importedStep.id = selectedStep.id;
         importedStep.order = selectedStep.order;
-        console.log(importedStep);
         setSteps((steps) =>
           steps.map((step) => (step.id === selectedStep.id ? importedStep : step))
         );

@@ -10,7 +10,7 @@ function SyllabusTab() {
       <Typography variant='h3'>Course Content</Typography>
       <Box mt={2}>
         {course?.chapters.map((chapter, index) => (
-          <ModuleCard chapter={chapter} index={index + 1} />
+          <ModuleCard key={chapter.id} chapter={chapter} index={index + 1} />
         ))}
       </Box>
     </Box>

@@ -72,11 +72,6 @@ export const EditLessonProvider = ({ children }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log('Save lesson');
-
-    console.log('selectedStep:', selectedStep);
-
-    console.log('steps:', steps);
 
     saveStep(selectedStep);
 
@@ -89,7 +84,6 @@ export const EditLessonProvider = ({ children }) => {
     try {
       const updatedSteps = await updateVideoFiles(); // Update video files first
       setVideoFiles({}); // Clear video files after saving
-      console.log('updatedSteps:', updatedSteps);
 
       // Save lesson in backend
       const updatedLesson = await dispatch(
@@ -107,7 +101,6 @@ export const EditLessonProvider = ({ children }) => {
       setLesson(updatedLesson);
       setIsDirty(false);
       toast.success('Lesson saved successfully');
-      console.log('Lesson saved successfully');
     } catch (error) {
       console.error('Error saving lesson:', error);
     }

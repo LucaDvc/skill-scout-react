@@ -35,7 +35,6 @@ function LearningLessonStep() {
     return () => {
       // Send the data to the server if the user spent more than 5 seconds on the step
       if (timeSpentRef.current >= 5) {
-        console.log('time spent', timeSpentRef.current);
         try {
           learningService.sendEngagementData(selectedStep.id, timeSpentRef.current);
         } catch (error) {
