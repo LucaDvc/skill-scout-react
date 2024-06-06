@@ -62,15 +62,25 @@ const completeLessonStep = async (stepId) => {
 };
 
 const submitQuiz = async (stepId, request) => {
-  const response = await axiosInstance.post(
-    `${API_URL}/quiz-steps/${stepId}/submit/`,
-    request
-  );
+  const response = await axiosInstance.post(`${API_URL}/quiz-steps/${stepId}/`, request);
   return response.data;
 };
 
 const getQuizStep = async (stepId) => {
   const response = await axiosInstance.get(`${API_URL}/quiz-steps/${stepId}/`);
+  return response.data;
+};
+
+const submitSortingProblem = async (stepId, request) => {
+  const response = await axiosInstance.post(
+    `${API_URL}/sorting-steps/${stepId}/`,
+    request
+  );
+  return response.data;
+};
+
+const getSortingProblem = async (stepId) => {
+  const response = await axiosInstance.get(`${API_URL}/sorting-steps/${stepId}/`);
   return response.data;
 };
 
@@ -87,6 +97,8 @@ const learningService = {
   completeLessonStep,
   submitQuiz,
   getQuizStep,
+  submitSortingProblem,
+  getSortingProblem,
 };
 
 export default learningService;
