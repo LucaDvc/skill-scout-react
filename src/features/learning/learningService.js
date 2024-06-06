@@ -84,6 +84,19 @@ const getSortingProblem = async (stepId) => {
   return response.data;
 };
 
+const submitTextProblem = async (stepId, request) => {
+  const response = await axiosInstance.post(
+    `${API_URL}/text-problems/${stepId}/`,
+    request
+  );
+  return response.data;
+};
+
+const getTextProblem = async (stepId) => {
+  const response = await axiosInstance.get(`${API_URL}/text-problems/${stepId}/`);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -99,6 +112,8 @@ const learningService = {
   getQuizStep,
   submitSortingProblem,
   getSortingProblem,
+  submitTextProblem,
+  getTextProblem,
 };
 
 export default learningService;

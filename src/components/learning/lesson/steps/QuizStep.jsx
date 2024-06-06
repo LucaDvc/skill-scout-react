@@ -26,7 +26,7 @@ function QuizStep({ step }) {
     }, {})
   );
 
-  const [resultCorrect, setResultCorrect] = useState(step.completed);
+  const [resultCorrect, setResultCorrect] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -37,6 +37,7 @@ function QuizStep({ step }) {
       if (step.completed) {
         try {
           setLoading(true);
+          setResultCorrect(true);
           const quiz = await learningService.getQuizStep(step.id);
           setSelectedChoices(
             quiz.quiz_choices.reduce((acc, choice) => {
