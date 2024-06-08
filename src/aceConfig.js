@@ -35,3 +35,4 @@ import 'ace-builds/src-noconflict/mode-plain_text';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/theme-xcode';
+import 'ace-builds/src-noconflict/theme-terminal';

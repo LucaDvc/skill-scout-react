@@ -97,6 +97,11 @@ const getTextProblem = async (stepId) => {
   return response.data;
 };
 
+const getCodeChallenge = async (stepId) => {
+  const response = await axiosInstance.get(`${API_URL}/code-challenge-steps/${stepId}/`);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -114,6 +119,7 @@ const learningService = {
   getSortingProblem,
   submitTextProblem,
   getTextProblem,
+  getCodeChallenge,
 };
 
 export default learningService;

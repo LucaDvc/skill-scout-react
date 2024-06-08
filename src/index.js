@@ -6,18 +6,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import ThemeProvider from './themes';
+import { CssBaseline } from '@mui/material';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <ThemeProvider>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
