@@ -52,6 +52,19 @@ export const useCourseChecklist = () => {
 
   const checkCategory = !!course?.category;
 
+  let checkAnyEmptyLessons = false;
+  if (course?.chapters) {
+    for (const chapter of course.chapters) {
+      for (const lesson of chapter?.lessons || []) {
+        if (!lesson.lesson_steps || lesson.lesson_steps.length === 0) {
+          checkAnyEmptyLessons = true;
+          break;
+        }
+      }
+      if (checkAnyEmptyLessons) break;
+    }
+  }
+
   const pointsCheckedNumber =
     (checkTwoModules ? 1 : 0) +
     (lessonsNumber >= 10 ? 1 : 0) +
@@ -60,13 +73,15 @@ export const useCourseChecklist = () => {
     (checkAllVideos ? 1 : 0) +
     (checkLogoUploaded ? 1 : 0) +
     (checkSummary ? 1 : 0) +
-    (checkCategory ? 1 : 0);
+    (checkCategory ? 1 : 0) +
+    (checkAnyEmptyLessons ? 0 : 1);
 
   return {
     atLeastTwoModules: checkTwoModules,
     atLeastTenLessons: lessonsNumber >= 10,
     atLeastTenAssignments: assignmentsNumber >= 10,
     noEmptyModules: checkEmptyModules,
+    noEmptyLessons: !checkAnyEmptyLessons,
     allVideosUploaded: checkAllVideos,
     logoUploaded: checkLogoUploaded,
     summaryMoreThan100: checkSummary,
@@ -74,6 +89,6 @@ export const useCourseChecklist = () => {
     pointsCheckedNumber,
     lessonsNumber,
     assignmentsNumber,
-    courseReady: pointsCheckedNumber === 8,
+    courseReady: pointsCheckedNumber === 9,
   };
 };

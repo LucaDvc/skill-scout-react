@@ -12,6 +12,7 @@ function ChecklistTab() {
     atLeastTenLessons,
     atLeastTenAssignments,
     noEmptyModules,
+    noEmptyLessons,
     allVideosUploaded,
     logoUploaded,
     summaryMoreThan100,
@@ -28,7 +29,7 @@ function ChecklistTab() {
           Checklist
         </Typography>
         <Typography variant='h6' mb={2}>
-          Course is {pointsCheckedNumber}/8 ready
+          Course is {pointsCheckedNumber}/9 ready
         </Typography>
 
         <Typography variant='h5' gutterBottom>
@@ -57,6 +58,12 @@ function ChecklistTab() {
           title='No empty modules'
           description='Each module should have at least one lesson, otherwise the course will seem unfinished. Remove empty modules or add lessons to them.'
           isCompleted={noEmptyModules}
+        />
+
+        <CheckItem
+          title='No empty lessons'
+          description='Each lesson should have at least one lesson step. Remove empty lessons or add lesson steps to them.'
+          isCompleted={noEmptyLessons}
         />
 
         <CheckItem

@@ -131,7 +131,7 @@ function CoursePublicationTab() {
               )}
             </Avatar>
             <Typography variant='h5' sx={{ flexGrow: 1 }}>
-              Course is {pointsCheckedNumber}/8 ready
+              Course is {pointsCheckedNumber}/9 ready
             </Typography>
           </Box>
 

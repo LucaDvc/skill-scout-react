@@ -1,6 +1,5 @@
-// axios.js
 import axios from 'axios';
-import { store } from './app/store'; // Adjust the path to your store
+import { store } from './app/store';
 import { logout, refreshAccessToken } from './features/users/usersSlice';
 
 const axiosInstance = axios.create();
