@@ -37,6 +37,7 @@ function TagsCheckboxList({ tags, setFilters }) {
       const tagsQueryParams = selectedTagNames.filter(Boolean).join(',');
       setFilters((prevState) => ({
         ...prevState,
+        page: 1,
         tags: tagsQueryParams,
       }));
 

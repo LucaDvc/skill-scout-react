@@ -1,10 +1,4 @@
-import {
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -34,7 +28,7 @@ function PriceFilters({ setFilters }) {
     const newSelected = event.target.value;
     setSelected(newSelected);
     setFilters((currentFilters) => {
-      const newFilters = { ...currentFilters };
+      const newFilters = { ...currentFilters, page: 1 };
       switch (newSelected) {
         case 'free':
           newFilters['price__lte'] = '0';

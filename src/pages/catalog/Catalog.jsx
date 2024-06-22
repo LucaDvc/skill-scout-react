@@ -7,11 +7,9 @@ import { reset } from '../../features/catalog/catalogSlice';
 import { getCategories } from '../../features/category/categorySlice';
 import RecommendedCoursesTabs from '../../components/catalog/home/RecommendedCoursesTabs';
 import TopCategoriesCoursesTabs from '../../components/catalog/home/TopCategoriesCoursesTabs';
+import { toast } from 'react-toastify';
 
 function Catalog() {
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-
   // redux
   const {
     categories,
@@ -23,8 +21,7 @@ function Catalog() {
 
   useEffect(() => {
     if (categoryError) {
-      setOpenSnackbar(true);
-      setSnackbarMessage('Failed to retrieve categories');
+      toast.error('Failed to retrieve categories');
     }
   }, [categoryError]);
 
@@ -34,33 +31,8 @@ function Catalog() {
     return () => dispatch(reset());
   }, [dispatch]);
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    if (openSnackbar) {
-      setOpenSnackbar(false);
-    }
-  };
-
   return (
     <>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={categoryError ? 'error' : 'success'}
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-
       <CategoriesMenu categories={categories} loading={categoryLoading} />
 
       <Container component='main' maxWidth='lg'>

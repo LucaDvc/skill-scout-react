@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Rating,
+  Toolbar,
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -47,6 +48,7 @@ function SearchFiltersDrawer({ open, toggle, isXsScreen, filterState, width }) {
   const handleFilterChange = (event) => {
     setFilters((currentFilters) => ({
       ...currentFilters,
+      page: 1,
       [event.target.name]: event.target.value,
     }));
   };
@@ -233,7 +235,16 @@ function SearchFiltersDrawer({ open, toggle, isXsScreen, filterState, width }) {
       )}
     </Box>
   ) : (
-    <Drawer variant='temporary' open={open} anchor='right' onClose={toggle}>
+    <Drawer
+      variant='temporary'
+      open={open}
+      anchor='right'
+      onClose={toggle}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
+    >
+      <Toolbar />
       {filtersList}
     </Drawer>
   );

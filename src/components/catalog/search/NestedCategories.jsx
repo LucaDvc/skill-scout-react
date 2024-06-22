@@ -129,6 +129,7 @@ function NestedCategories({ categories, setFilters }) {
     const categoriesQueryParams = categoryNames.join(',');
     setFilters((prevState) => ({
       ...prevState,
+      page: 1,
       categories: categoriesQueryParams,
     }));
   };

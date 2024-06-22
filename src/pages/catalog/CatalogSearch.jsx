@@ -4,11 +4,13 @@ import {
   Button,
   Container,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
   Stack,
+  TextField,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -17,7 +19,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SearchFiltersDrawer from '../../components/catalog/search/SearchFiltersDrawer';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getCoursesByFilter, getTags } from '../../features/catalog/catalogSlice';
 import { getCategories } from '../../features/category/categorySlice';
 import LoadingLargeCard from '../../components/catalog/cards/LoadingLargeCard';
@@ -25,6 +27,7 @@ import CourseLargeCard from '../../components/catalog/cards/CourseLargeCard';
 import LoadingSmallCard from '../../components/catalog/cards/LoadingSmallCard';
 import CourseSmallCard from '../../components/catalog/cards/CourseSmallCard';
 import { useLayout } from '../../context/LayoutContext';
+import SearchIcon from '@mui/icons-material/Search';
 
 function CatalogSearch() {
   const theme = useTheme();
@@ -38,7 +41,7 @@ function CatalogSearch() {
 
   useEffect(() => {
     setShowNavbar(true);
-    setShowFooter(false);
+    setShowFooter(true);
 
     // Show Navbar and Footer when the component unmounts
     return () => {
@@ -68,6 +71,9 @@ function CatalogSearch() {
 
   // Sorting
   const [sorting, setSorting] = useState(searchParams.get('ordering') || '');
+
+  // Search
+  const [search, setSearch] = useState(searchParams.get('search') || '');
 
   // Filtering
   const [filters, setFilters] = useState({
@@ -174,9 +180,45 @@ function CatalogSearch() {
     setDrawerOpen(!drawerOpen);
   };
 
+  // Handle search trigger
+  const handleSearchEnterPressed = (event) => {
+    if (event.key === 'Enter') {
+      setSearchParams(new URLSearchParams(`search=${search}&page=1`));
+    }
+  };
+
+  const handleSearchButtonClick = () => {
+    setSearchParams(new URLSearchParams(`search=${search}&page=1`));
+  };
+
   return (
-    <Container>
-      <Box my={2}>
+    <Container sx={{ pb: 4 }}>
+      {isXsScreen && (
+        <Box sx={{ my: 2, display: 'flex' }}>
+          <TextField
+            sx={{ flexGrow: 1 }}
+            placeholder='Search courses...'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            onKeyDown={handleSearchEnterPressed}
+          />
+          <Button
+            variant='contained'
+            sx={{ marginLeft: 2, paddingY: 0 }}
+            onClick={handleSearchButtonClick}
+          >
+            Search
+          </Button>
+        </Box>
+      )}
+      <Box sx={{ my: 2, display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
         <Button
           variant='outlined'
           startIcon={<FilterListIcon />}
@@ -211,6 +253,31 @@ function CatalogSearch() {
           >
             Clear Filters
           </Button>
+        )}
+        {!isXsScreen && (
+          <>
+            <TextField
+              sx={{ flexGrow: 1, marginLeft: 2 }}
+              placeholder='Search courses...'
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              onKeyDown={handleSearchEnterPressed}
+            />
+            <Button
+              variant='contained'
+              sx={{ marginLeft: 2, paddingY: 1.75, paddingX: 3 }}
+              onClick={handleSearchButtonClick}
+            >
+              Search
+            </Button>
+          </>
         )}
       </Box>
 
@@ -250,7 +317,7 @@ function CatalogSearch() {
         {/* Filtered courses cards and pagination*/}
         {!isXsScreen
           ? catalogLoading
-            ? Array.from({ length: 3 }).map((_, index) => (
+            ? Array.from({ length: 4 }).map((_, index) => (
                 <LoadingLargeCard key={index} />
               ))
             : filteredCourses &&
