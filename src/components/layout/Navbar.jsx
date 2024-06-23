@@ -18,13 +18,13 @@ import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
-} from './styled/styledSearchComponents';
+} from '../styled/styledSearchComponents';
 import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import AccountMenu from './AccountMenu';
-import LogoutDialog from './LogoutDialog';
-import logo from '../resources/logo.png';
-import { useLayout } from '../context/LayoutContext';
+import LogoutDialog from '../auth/LogoutDialog';
+import logo from '../../resources/logo.png';
+import { useLayout } from '../../context/LayoutContext';
 
 export default function Navbar() {
   const { user, accessToken } = useSelector((state) => state.users);
@@ -60,43 +60,43 @@ export default function Navbar() {
 
   const drawer = (
     <Box
-      onClick={handleDrawerToggle}
       sx={{
         textAlign: 'center',
         width: 250, // Adjust the width as needed
       }}
     >
-      <Avatar src={logo} />
-      <Divider />
-      {user ? (
-        <Avatar src={user?.picture} alt={user?.first_name} />
-      ) : (
-        <>
-          <Link to='/login' className='link-no-style'>
-            <Button color='inherit' fullWidth>
-              Login
-            </Button>
-          </Link>
-          <Link to='/register' className='link-no-style'>
-            <Button color='inherit' fullWidth>
-              Register
-            </Button>
-          </Link>
-        </>
-      )}
+      <Toolbar />
+      <Box sx={{ mt: 1 }}>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder='Search...'
+            inputProps={{ 'aria-label': 'search' }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setMobileOpen(false);
+                navigate(`catalog/search?search=${event.target.value}&page=1`);
+                event.target.value = '';
+              }
+            }}
+          />
+        </Search>
+      </Box>
       <Divider />
       <Link to='/catalog' className='link-no-style'>
-        <Button color='inherit' fullWidth>
+        <Button color='inherit' fullWidth onClick={handleDrawerToggle}>
           Catalog
         </Button>
       </Link>
       <Link to='/learning' className='link-no-style'>
-        <Button color='inherit' fullWidth>
+        <Button color='inherit' fullWidth onClick={handleDrawerToggle}>
           Learning
         </Button>
       </Link>
       <Link to='/teaching' className='link-no-style'>
-        <Button color='inherit' fullWidth>
+        <Button color='inherit' fullWidth onClick={handleDrawerToggle}>
           Teaching
         </Button>
       </Link>
@@ -112,16 +112,70 @@ export default function Navbar() {
     >
       <Toolbar>
         {isMobile ? (
-          <>
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { md: 'none' } }}
-            >
-              <MenuIcon />
-            </IconButton>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Box display='flex'>
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                edge='start'
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { md: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Link
+                to='/'
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Avatar src={logo} sx={{ width: 45, height: 45 }} />
+              </Link>
+            </Box>
+            {accessToken && user ? (
+              <>
+                <Avatar
+                  src={user?.picture}
+                  alt={user?.first_name}
+                  onClick={handleMenuClick}
+                  sx={{ cursor: 'pointer', mx: 1 }}
+                />
+                <AccountMenu
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                  logoutClick={handleLogoutOpen}
+                />
+              </>
+            ) : (
+              <Box sx={{ mx: 1 }}>
+                <Link
+                  to='/login'
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <Button color='inherit' variant='outlined' sx={{ mr: 1 }} size='small'>
+                    Login
+                  </Button>
+                </Link>
+                <Link to='/register' style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Button color='inherit' variant='outlined' size='small'>
+                    Register
+                  </Button>
+                </Link>
+              </Box>
+            )}
             <Drawer
               variant='temporary'
               open={mobileOpen}
@@ -136,7 +190,7 @@ export default function Navbar() {
             >
               {drawer}
             </Drawer>
-          </>
+          </Box>
         ) : (
           <Box
             sx={{
@@ -213,6 +267,7 @@ export default function Navbar() {
                   onKeyDown={(event) => {
                     if (event.key === 'Enter') {
                       navigate(`catalog/search?search=${event.target.value}&page=1`);
+                      event.target.value = '';
                     }
                   }}
                 />

@@ -21,11 +21,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { wishlistCourse } from '../../../features/catalog/catalogSlice';
 import { refreshAuthUser, reset } from '../../../features/users/usersSlice';
 import { LoadingButton } from '@mui/lab';
-import HtmlContent from '../../HtmlContent';
+import HtmlContent from '../../layout/HtmlContent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEnrollCourse } from '../../../hooks/useEnrollCourse';
 import { toast } from 'react-toastify';
-import Spinner from '../../Spinner';
+import Spinner from '../../layout/Spinner';
 import PaymentModal from './PaymentModal';
 
 function MainDetailsContent({ course }) {

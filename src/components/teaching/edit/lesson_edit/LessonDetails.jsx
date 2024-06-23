@@ -22,7 +22,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useTheme } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteLessonDialog from '../prompt/DeleteLessonDialog';
-import Spinner from '../../../Spinner';
+import Spinner from '../../../layout/Spinner';
 import { reset } from '../../../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
 

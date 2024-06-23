@@ -8,7 +8,7 @@ const createCourseCopy = (course) => {
   const copy = {
     ...course,
     title: course.title + ' (Copy)', // append '(Copy)' to the title
-    category: course.category.id, // ensure category is an id
+    category: course.category ? course.category.id : null, // ensure category is an id
     active: false, // set active to false
 
     // Construct chapters, lessons, lesson steps without the unnecesary properties
@@ -17,11 +17,9 @@ const createCourseCopy = (course) => {
       ...chapterRest,
       lessons: chapterRest.lessons.map(({ id, chapter_id, ...lessonRest }) => ({
         ...lessonRest,
-        lesson_steps: lessonRest.lesson_steps.map(
-          ({ id, ...lessonStepRest }) => ({
-            ...lessonStepRest,
-          })
-        ),
+        lesson_steps: lessonRest.lesson_steps.map(({ id, ...lessonStepRest }) => ({
+          ...lessonStepRest,
+        })),
       })),
     })),
   };
@@ -38,9 +36,7 @@ function DuplicateCourseDialog({ open, handleClose, course }) {
   const dispatch = useDispatch();
   const toastId = useRef(null);
 
-  const { isSuccess, isError, message } = useSelector(
-    (state) => state.teaching.create
-  );
+  const { isSuccess, isError, message } = useSelector((state) => state.teaching.create);
 
   const handleDuplicate = () => {
     const courseCopy = createCourseCopy(course);
@@ -79,11 +75,7 @@ function DuplicateCourseDialog({ open, handleClose, course }) {
   }, [isSuccess, isError, message]);
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby='alert-dialog-title'
-    >
+    <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title'>
       <DialogTitle id='alert-dialog-title'>
         {'Are you sure you want to create a copy of this course?'}
       </DialogTitle>
@@ -91,12 +83,7 @@ function DuplicateCourseDialog({ open, handleClose, course }) {
         <Button onClick={handleClose} variant='outlined'>
           Cancel
         </Button>
-        <Button
-          onClick={handleDuplicate}
-          autoFocus
-          variant='outlined'
-          color='secondary'
-        >
+        <Button onClick={handleDuplicate} autoFocus variant='outlined' color='secondary'>
           OK
         </Button>
       </DialogActions>

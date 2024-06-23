@@ -15,7 +15,7 @@ const dummyData = Array.from({ length: 25 }, (_, i) => {
     lesson_step_type: ['text', 'quiz', 'video', 'codechallenge'][
       Math.floor(Math.random() * 4)
     ],
-    average_time_spent: (Math.random() * 15 + 5).toFixed(2), // Random time between 5 and 20 minutes
+    average_time_spent: (Math.random() * 15 * 60 + 5 * 60).toFixed(2), // Random time between 5 and 20 minutes
     learners_count: Math.floor(Math.random() * 100) + 50, // Random count between 50 and 150 learners
     last_accessed: new Date(
       2024,
@@ -110,11 +110,23 @@ function LessonsEngagementChart() {
           title: {
             text: 'Learners Count',
           },
+          labels: {
+            formatter: function (value) {
+              return value.toFixed(0);
+            },
+          },
+          min: 0,
         },
         {
           title: {
             text: 'Average Time Spent (minutes)',
           },
+          labels: {
+            formatter: function (value) {
+              return value.toFixed(0);
+            },
+          },
+          min: 0,
         },
       ],
       fill: {
@@ -131,6 +143,7 @@ function LessonsEngagementChart() {
     const fetchData = async () => {
       try {
         const data = await analyticsService.getLessonsEngagementAnalytics(course.id);
+        const data1 = dummyData;
         const lessonTitles = data.map((item) => item.lesson_title);
         const avgTimeSpent = data.map((item) => parseFloat(item.average_time_spent) / 60); // Convert to minutes
         const learnersCount = data.map((item) => item.learners_count);

@@ -4,6 +4,31 @@ import { useSelector } from 'react-redux';
 import Chart from 'react-apexcharts';
 import analyticsService from '../../../../features/teaching/analyticsService';
 
+function generateDummyData(numDataPoints) {
+  const dummyData = {
+    total_enrollments: numDataPoints,
+    enrollment_data: [],
+  };
+
+  const startDate = new Date(2024, 3, 1); // Starting from April 1, 2024
+
+  for (let i = 0; i < numDataPoints; i++) {
+    const enrollmentDate = new Date(startDate);
+    enrollmentDate.setDate(enrollmentDate.getDate() + i); // Ensure unique dates by incrementing the day
+
+    const enrollmentDataPoint = {
+      enrollment_date: enrollmentDate.toISOString().split('T')[0],
+      count: Math.floor(Math.random() * 100) + 10, // Random count between 1 and 10
+    };
+
+    dummyData.enrollment_data.push(enrollmentDataPoint);
+  }
+
+  return dummyData;
+}
+
+const dummyData = generateDummyData(50);
+
 function EnrollmentsTab() {
   const { course } = useSelector((state) => state.teaching.edit);
   const [enrollmentData, setEnrollmentData] = useState({
@@ -16,7 +41,7 @@ function EnrollmentsTab() {
     const fetchEnrollmentData = async () => {
       try {
         const response = await analyticsService.getEnrollmentAnalytics(course.id);
-        setEnrollmentData(response);
+        setEnrollmentData(dummyData);
       } catch (error) {
         console.error(error);
       }
@@ -80,9 +105,6 @@ function EnrollmentsTab() {
             return Math.floor(val); // Ensure the labels are integers
           },
         },
-      },
-      fill: {
-        opacity: 1, // Ensures bars are filled uniformly
       },
     },
   };

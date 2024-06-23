@@ -138,7 +138,7 @@ function ActiveCoursesTab() {
               </Typography>
               <Button
                 variant='outlined'
-                sx={{ width: 100 }}
+                sx={{ width: 150 }}
                 onClick={() => navigate('/catalog')}
               >
                 Go to Catalog

@@ -96,7 +96,7 @@ function TeachingCoursesOverview() {
   };
 
   return (
-    <Container component='main' maxWidth='md'>
+    <Container component='main' maxWidth='md' sx={{ pb: 4 }}>
       <Typography variant='h3' gutterBottom mt={2}>
         Courses <ArrowDownwardIcon />
       </Typography>

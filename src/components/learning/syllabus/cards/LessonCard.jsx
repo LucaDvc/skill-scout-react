@@ -11,7 +11,7 @@ function LessonCard({ lesson, moduleIndex }) {
 
   return (
     <Link
-      to={`/learning/course/${courseId}/lessons/${lesson.id}`}
+      to={`/learning/course/${courseId}/lessons/${lesson.id}/step/1`}
       style={{ textDecoration: 'none' }}
     >
       <Card

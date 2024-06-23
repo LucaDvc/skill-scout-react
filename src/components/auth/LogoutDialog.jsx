@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { logout } from '../features/users/usersSlice';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../features/users/usersSlice';
 
 function LogoutDialog({ open, handleClose }) {
   const dispatch = useDispatch();
@@ -13,11 +13,7 @@ function LogoutDialog({ open, handleClose }) {
     handleClose();
   };
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby='alert-dialog-title'
-    >
+    <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title'>
       <DialogTitle id='alert-dialog-title'>
         {'Are you sure you want to log out?'}
       </DialogTitle>

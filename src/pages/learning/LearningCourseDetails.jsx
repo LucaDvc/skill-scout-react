@@ -17,7 +17,7 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/learning/learningSlice';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 import { useTheme } from '@emotion/react';
 
 function LearningCourseDetails() {

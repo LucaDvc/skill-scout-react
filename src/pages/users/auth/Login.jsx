@@ -16,7 +16,7 @@ import {
   login,
   reset,
 } from '../../../features/users/usersSlice';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import { Alert, Divider } from '@mui/material';
 
 function Login() {

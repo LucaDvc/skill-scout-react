@@ -75,10 +75,7 @@ function TeachingCourseCard({ course }) {
                 />
               </Box>
               <Box mt={1} ml={1} width='50%'>
-                <Link
-                  to={`/teaching/courses/${course.id}`}
-                  className='link-no-style'
-                >
+                <Link to={`/teaching/courses/${course.id}`} className='link-no-style'>
                   <Typography
                     variant='h6'
                     component='span'
@@ -148,21 +145,18 @@ function TeachingCourseCard({ course }) {
                 open={menuOpen}
                 onClose={handleClose}
               >
-                <MenuItem
-                  onClick={() => navigate(`courses/${course.id}`)}
-                  disableRipple
-                >
+                <MenuItem onClick={() => navigate(`courses/${course.id}`)} disableRipple>
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
                   Edit
                 </MenuItem>
-                <MenuItem onClick={handleDuplicateClick} disableRipple>
+                {/* <MenuItem onClick={handleDuplicateClick} disableRipple>
                   <ListItemIcon>
                     <FileCopyIcon />
                   </ListItemIcon>
                   Duplicate
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleDeleteClick} disableRipple>
                   <ListItemIcon>
                     <DeleteIcon />

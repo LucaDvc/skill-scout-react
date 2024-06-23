@@ -41,7 +41,12 @@ const AssesmentsStackedBarChart = ({ data }) => {
     },
     yaxis: {
       title: {
-        text: 'Attempts',
+        text: 'Success Rate (%) & Total Attempts',
+      },
+      labels: {
+        formatter: function (value) {
+          return value.toFixed(0);
+        },
       },
     },
     plotOptions: {
@@ -51,12 +56,44 @@ const AssesmentsStackedBarChart = ({ data }) => {
         endingShape: 'rounded',
       },
     },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val;
-        },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val, opts) {
+        if (opts.seriesIndex === 1) {
+          return val.toFixed(0);
+        }
+        return val.toFixed(0);
       },
+      style: {
+        fontSize: '12px',
+        colors: ['#fff'],
+      },
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+      y: [
+        {
+          formatter: function (val) {
+            return val;
+          },
+          title: {
+            formatter: function (seriesName) {
+              return 'Attempts: ';
+            },
+          },
+        },
+        {
+          formatter: function (val) {
+            return val.toFixed(0) + '%';
+          },
+          title: {
+            formatter: function (seriesName) {
+              return 'Success Rate: ';
+            },
+          },
+        },
+      ],
       x: {
         show: true,
         formatter: function (val, { dataPointIndex }) {

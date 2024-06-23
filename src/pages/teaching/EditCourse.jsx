@@ -24,7 +24,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseById, reset } from '../../features/teaching/teachingSlice';
 import { toast } from 'react-toastify';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 import { useTheme } from '@emotion/react';
 
 function EditCourse() {

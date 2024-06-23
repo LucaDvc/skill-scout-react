@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { getCourseById } from '../../features/teaching/teachingSlice';
 import { useLayout } from '../../context/LayoutContext';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 import { useTheme } from '@emotion/react';
 import { EditLessonProvider } from '../../context/EditLessonContext';
 

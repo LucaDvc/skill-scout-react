@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import {
   Alert,
   Box,
@@ -12,10 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import {
-  resendConfirmationEmail,
-  reset,
-} from '../../../features/users/usersSlice';
+import { resendConfirmationEmail, reset } from '../../../features/users/usersSlice';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import { useLocation } from 'react-router-dom';
 
@@ -29,8 +26,9 @@ function NotifyConfirmEmail() {
   const location = useLocation();
   const fromPage = location.state?.from;
 
-  const { user, isSuccess, isError, isLoading, accessToken, message } =
-    useSelector((state) => state.users);
+  const { user, isSuccess, isError, isLoading, accessToken, message } = useSelector(
+    (state) => state.users
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -84,8 +82,7 @@ function NotifyConfirmEmail() {
       <Container component='main' maxWidth='md'>
         <Box sx={{ mt: 4 }}>
           <Typography variant='h4' gutterBottom>
-            This email has already been confirmed. You can proceed to the login
-            page.
+            This email has already been confirmed. You can proceed to the login page.
           </Typography>
         </Box>
       </Container>

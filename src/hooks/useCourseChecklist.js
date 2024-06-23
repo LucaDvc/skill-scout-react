@@ -46,7 +46,7 @@ export const useCourseChecklist = () => {
 
   const checkLogoUploaded =
     course?.image !==
-    'https://courses-platform-bucket.s3.amazonaws.com/courses/images/default.jpg';
+    'https://courses-platform-bucket.s3.eu-north-1.amazonaws.com/courses/images/default.jpg';
 
   const checkSummary = course?.intro?.length > 100;
 

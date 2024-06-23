@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createCourse } from '../../features/teaching/teachingSlice';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 
 function NewCourse() {
   const [courseName, setCourseName] = useState('');
@@ -66,11 +66,7 @@ function NewCourse() {
           helperText='Max. 100 characters'
         />
 
-        <Button
-          variant='contained'
-          type='submit'
-          sx={{ marginTop: 4, padding: 1.75 }}
-        >
+        <Button variant='contained' type='submit' sx={{ marginTop: 4, padding: 1.75 }}>
           Create Course
         </Button>
 

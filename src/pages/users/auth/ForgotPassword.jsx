@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import {
   Alert,
   Box,
@@ -18,9 +18,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const { isSuccess, isError, isLoading, message } = useSelector(
-    (state) => state.users
-  );
+  const { isSuccess, isError, isLoading, message } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from '../../../components/Copyright';
+import Copyright from '../../../components/layout/Copyright';
 import { Alert } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +18,7 @@ import {
   register,
   reset,
 } from '../../../features/users/usersSlice';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -77,7 +77,7 @@ function Register() {
   return (
     <>
       {isLoading && <Spinner />}
-      <Container component='main' maxWidth='xs'>
+      <Container component='main' maxWidth='xs' sx={{ pb: 4 }}>
         <Box
           sx={{
             marginTop: 8,
@@ -97,10 +97,7 @@ function Register() {
               {/* Form validation errors */}
               {isFormInvalid && (
                 <Grid item xs={12}>
-                  <Alert
-                    severity='error'
-                    onClose={() => setIsFormInvalid(false)}
-                  >
+                  <Alert severity='error' onClose={() => setIsFormInvalid(false)}>
                     {formErrorMessage}
                   </Alert>
                 </Grid>
@@ -122,9 +119,7 @@ function Register() {
                     <Grid item xs={12}>
                       <Alert
                         severity='error'
-                        onClose={() =>
-                          dispatch(clearSpecificErrorMessage(key, idx))
-                        }
+                        onClose={() => dispatch(clearSpecificErrorMessage(key, idx))}
                         key={key + idx}
                       >
                         {errMessage}
@@ -197,19 +192,12 @@ function Register() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={
-                    <Checkbox value='allowExtraEmails' color='primary' />
-                  }
+                  control={<Checkbox value='allowExtraEmails' color='primary' />}
                   label='I want to receive inspiration, marketing promotions and updates via email.'
                 />
               </Grid>
             </Grid>
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent='center'>

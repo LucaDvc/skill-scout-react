@@ -4,6 +4,8 @@ import {
   Button,
   Chip,
   FormControl,
+  FormHelperText,
+  Grid,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -72,6 +74,7 @@ function InformationTab() {
     level: '',
     totalHours: '',
     tags: [],
+    price: '',
   });
 
   useEffect(() => {
@@ -82,11 +85,12 @@ function InformationTab() {
         level: course.level ? course.level : '',
         totalHours: course.total_hours ? course.total_hours : 0,
         tags: course.tags,
+        price: course.price ? course.price : 0,
       });
     }
   }, [course]);
 
-  const { title, intro, level, totalHours, tags } = formData;
+  const { title, intro, level, totalHours, tags, price } = formData;
 
   const descriptionEditorRef = useRef(null);
   const requirementsEditorRef = useRef(null);
@@ -106,6 +110,23 @@ function InformationTab() {
       setFormData((prevFormData) => ({
         ...prevFormData,
         totalHours: value,
+      }));
+      setIsDirty(true);
+    }
+  };
+
+  const handlePriceChange = (event) => {
+    const value = event.target.value;
+    // Allow decimal between 0 and 1000 inclusive, including just "0"
+    // If the first number is 0, only allow "0" or "0.xx"
+    if (
+      ((/^0(\.\d{0,2})?$/.test(value) || /^(?!0)\d{0,4}?$/.test(value)) &&
+        parseInt(value) <= 1000) ||
+      value === ''
+    ) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        price: value,
       }));
       setIsDirty(true);
     }
@@ -155,6 +176,7 @@ function InformationTab() {
     form.append('requirements', requirementsEditorRef.current.getContent());
     const tagsJsonString = JSON.stringify(formData.tags);
     form.append('tags', tagsJsonString);
+    form.append('price', formData.price);
     // Append the image file if it has been selected
     if (imageFile) {
       form.append('image', imageFile);
@@ -268,45 +290,65 @@ function InformationTab() {
           placeholder='Displayed at the search and promo pages right below the title of the course.'
         />
 
-        <Box
+        <Grid
+          container
+          spacing={2}
           sx={{
             marginTop: STD_MARGIN_TOP,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
           }}
         >
+          {/* Price */}
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              value={price}
+              onChange={handlePriceChange}
+              name='price'
+              label='Price'
+              variant='outlined'
+              InputProps={{
+                startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+              }}
+              sx={{ width: 225 }}
+              helperText='Max. $1000, $0 for free courses'
+            />
+          </Grid>
+
           {/* Completion time */}
-          <TextField
-            value={totalHours}
-            onChange={handleTotalHoursChange}
-            name='totalHours'
-            label='Expected Time to Complete'
-            variant='outlined'
-            InputProps={{
-              endAdornment: <InputAdornment position='end'>hours</InputAdornment>,
-            }}
-            sx={{ width: 225 }}
-            helperText='Max. 200 hours'
-          />
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              value={totalHours}
+              onChange={handleTotalHoursChange}
+              name='totalHours'
+              label='Expected Time to Complete'
+              variant='outlined'
+              InputProps={{
+                endAdornment: <InputAdornment position='end'>hours</InputAdornment>,
+              }}
+              sx={{ width: 225 }}
+              helperText='Max. 200 hours'
+            />
+          </Grid>
 
           {/* Level */}
-          <FormControl sx={{ minWidth: 155 }}>
-            <InputLabel id='level'>Level</InputLabel>
-            <Select
-              name='level'
-              labelId='level'
-              id='level-select'
-              label='Level'
-              value={level}
-              onChange={handleFormChange}
-            >
-              <MenuItem value='1'>Beginner</MenuItem>
-              <MenuItem value='2'>Intermediate</MenuItem>
-              <MenuItem value='3'>Advanced</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+          <Grid item xs={12} sm={6} md={4}>
+            <FormControl sx={{ minWidth: 225 }}>
+              <InputLabel id='level'>Level</InputLabel>
+              <Select
+                name='level'
+                labelId='level'
+                id='level-select'
+                label='Level'
+                value={level}
+                onChange={handleFormChange}
+              >
+                <MenuItem value='1'>Beginner</MenuItem>
+                <MenuItem value='2'>Intermediate</MenuItem>
+                <MenuItem value='3'>Advanced</MenuItem>
+              </Select>
+              <FormHelperText>&nbsp;</FormHelperText>
+            </FormControl>
+          </Grid>
+        </Grid>
 
         {/* Description */}
         <Box sx={{ marginTop: STD_MARGIN_TOP }}>

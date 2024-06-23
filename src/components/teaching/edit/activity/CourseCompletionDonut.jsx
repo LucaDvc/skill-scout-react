@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const dummyData = {
-  learners_completed: 5,
-  learners_in_progress: 1,
+  learners_completed: 52,
+  learners_in_progress: 103,
 };
 
 function CourseCompletionDonut() {
@@ -26,7 +26,7 @@ function CourseCompletionDonut() {
     const fetchCompletionData = async () => {
       try {
         const data = await analyticsService.getCourseCompletionAnalytics(course.id);
-        setData(data);
+        setData(dummyData);
         setRefresh(!refresh);
       } catch (error) {
         console.error(error);

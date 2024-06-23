@@ -17,7 +17,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SignalCellularAlt1BarRoundedIcon from '@mui/icons-material/SignalCellularAlt1BarRounded';
 import SignalCellularAlt2BarRoundedIcon from '@mui/icons-material/SignalCellularAlt2BarRounded';
 import SignalCellularAltRoundedIcon from '@mui/icons-material/SignalCellularAltRounded';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 import MainDetailsContent from '../../components/catalog/course-details/MainDetailsContent';
 
 function CourseDetails() {

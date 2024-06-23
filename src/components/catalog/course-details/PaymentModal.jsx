@@ -15,7 +15,7 @@ import { refreshAuthUser } from '../../../features/users/usersSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Spinner from '../../Spinner';
+import Spinner from '../../layout/Spinner';
 
 const FormGrid = styled('div')(() => ({
   display: 'flex',

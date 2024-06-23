@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { getCourseById } from '../../features/learning/learningSlice';
 import { useLayout } from '../../context/LayoutContext';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/layout/Spinner';
 import { useTheme } from '@emotion/react';
 import StepsList from '../../components/learning/lesson/StepsList';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -42,7 +42,7 @@ function LearningLessonPage() {
   useEffect(() => {
     setShowFooter(false);
     setNavbarFixed(true);
-    if (!course) {
+    if (!course || course.id !== courseId) {
       dispatch(getCourseById(courseId));
     }
 
@@ -58,6 +58,7 @@ function LearningLessonPage() {
         .map((chapter) => chapter.lessons)
         .flat()
         .find((lesson) => lesson.id === lessonId);
+      console.log(lesson);
 
       if (lesson) {
         const chapterIndex = course.chapters.findIndex(
@@ -72,6 +73,8 @@ function LearningLessonPage() {
         setStepsCompleted(stepsCompleted);
         setSteps([...lesson.lesson_steps]);
         setLesson({ ...lesson, index: `${chapterIndex + 1}.${lessonIndex + 1}` });
+      } else {
+        navigate('/not-found');
       }
     }
   }, [course, lessonId]);

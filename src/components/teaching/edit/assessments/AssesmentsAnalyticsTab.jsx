@@ -6,7 +6,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import analyticsService from '../../../../features/teaching/analyticsService';
 import { toast } from 'react-toastify';
-import Spinner from '../../../Spinner';
+import Spinner from '../../../layout/Spinner';
 
 const dummyData = {
   quiz_statistics: [

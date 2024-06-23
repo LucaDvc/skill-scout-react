@@ -21,7 +21,7 @@ function ReviewForm({ userReview, courseId }) {
     setFormData({ ...formData, comment: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (rating === 0) {
       toast.error('Please select a rating.');
@@ -30,12 +30,10 @@ function ReviewForm({ userReview, courseId }) {
 
     if (userReview) {
       try {
-        const response = learningService.updateReview(userReview.id, formData);
+        const response = await learningService.updateReview(userReview.id, formData);
         if (response) {
           toast.success('Review updated successfully.');
-          setTimeout(() => {
-            navigate('../reviews', { replace: true });
-          }, 750);
+          navigate('../reviews', { replace: true });
         }
       } catch (error) {
         toast.error(error.response.data.detail);
@@ -43,12 +41,10 @@ function ReviewForm({ userReview, courseId }) {
       }
     } else {
       try {
-        const response = learningService.postReview(courseId, formData);
+        const response = await learningService.postReview(courseId, formData);
         if (response) {
           toast.success('Review submitted successfully.');
-          setTimeout(() => {
-            navigate('../reviews', { replace: true });
-          }, 750);
+          navigate('../reviews', { replace: true });
         }
       } catch (error) {
         toast.error(error.response.data.detail);

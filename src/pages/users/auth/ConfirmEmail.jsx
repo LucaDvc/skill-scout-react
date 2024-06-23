@@ -6,7 +6,7 @@ import {
   resendConfirmationEmail,
   reset,
 } from '../../../features/users/usersSlice';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import {
   Alert,
   Box,
@@ -23,9 +23,7 @@ function ConfirmEmail() {
   const [confirmationState, setConfirmationState] = useState('pending'); // 'pending', 'success', 'error'
   const [resendEmailSuccess, setResendEmailSuccess] = useState(false);
 
-  const { isSuccess, isError, isLoading, message } = useSelector(
-    (state) => state.users
-  );
+  const { isSuccess, isError, isLoading, message } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -121,12 +119,7 @@ function ConfirmEmail() {
                 onChange={(e) => setEmail(e.target.value)}
                 autoFocus
               />
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Resend Confirmation Email
               </Button>
             </Box>

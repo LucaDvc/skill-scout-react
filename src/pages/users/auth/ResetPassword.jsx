@@ -7,7 +7,7 @@ import {
   reset,
   resetPassword,
 } from '../../../features/users/usersSlice';
-import Spinner from '../../../components/Spinner';
+import Spinner from '../../../components/layout/Spinner';
 import {
   Alert,
   Box,
@@ -88,11 +88,7 @@ function ResetPassword() {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity='success'
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
           {message}
         </Alert>
       </Snackbar>
@@ -116,10 +112,7 @@ function ResetPassword() {
 
           {/* Backend response errors */}
           {isError && message && (
-            <Alert
-              severity='error'
-              onClose={() => dispatch(clearGeneralErrorMessage())}
-            >
+            <Alert severity='error' onClose={() => dispatch(clearGeneralErrorMessage())}>
               {message}
             </Alert>
           )}
@@ -188,12 +181,7 @@ function ResetPassword() {
             }}
           />
 
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             Save
           </Button>
         </Box>

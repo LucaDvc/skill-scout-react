@@ -11,8 +11,9 @@ import learningService from '../../features/learning/learningService';
 function LearningLessonStep() {
   const { stepOrder } = useParams();
   const { steps } = useOutletContext();
-  const [intervalId, setIntervalId] = useState(null);
   const selectedStep = steps.find((step) => step.order === parseInt(stepOrder, 10));
+
+  const [intervalId, setIntervalId] = useState(null);
   const timeSpentRef = useRef(0);
 
   useEffect(() => {
@@ -32,17 +33,21 @@ function LearningLessonStep() {
     // Save the interval ID to state
     setIntervalId(newIntervalId);
 
-    return () => {
+    const sendEngagementData = async () => {
       // Send the data to the server if the user spent more than 5 seconds on the step
       if (timeSpentRef.current >= 5) {
         try {
-          learningService.sendEngagementData(selectedStep.id, timeSpentRef.current);
+          await learningService.sendEngagementData(selectedStep.id, timeSpentRef.current);
         } catch (error) {
           console.error('Failed to send engagement data', error);
         }
       }
       // Cleanup the interval on unmount or when the step changes
       clearInterval(newIntervalId);
+    };
+
+    return () => {
+      sendEngagementData();
     };
   }, [selectedStep]);
 

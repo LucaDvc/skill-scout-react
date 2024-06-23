@@ -4,7 +4,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './index.css';
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
 import {
   Routes,
   Route,
@@ -26,13 +26,13 @@ import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';
 import CourseDetails from './pages/catalog/CourseDetails';
 import TeachingCoursesOverview from './pages/teaching/TeachingCoursesOverview';
-import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/auth/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
 import NewCourse from './pages/teaching/NewCourse';
 import EditCourse from './pages/teaching/EditCourse';
 import { Box } from '@mui/material';
 import { LayoutProvider } from './context/LayoutContext';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import { SyllabusProvider } from './context/SyllabusContext';
 import SyllabusTab from './components/teaching/edit/syllabus/SyllabusTab';
 import InformationTab from './components/teaching/edit/information/InformationTab';
@@ -56,6 +56,8 @@ import LearningReviewsTab from './components/learning/reviews/ReviewsTab';
 import LearnerReview from './components/learning/reviews/LearnerReview';
 import LearningLessonPage from './pages/learning/LearningLessonPage';
 import LearningLessonStep from './pages/learning/LearningLessonStep';
+import NotFound from './pages/NotFound';
+import InternalServerError from './pages/InternalServerError';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -134,6 +136,9 @@ function Root() {
             <Route path='step/:stepOrder' element={<LearningLessonStep />} />
           </Route>
         </Route>
+
+        <Route path='*' element={<NotFound />} />
+        <Route path='/500' element={<InternalServerError />} />
       </Route>
     </Routes>
   );

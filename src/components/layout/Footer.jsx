@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 import Copyright from './Copyright';
-import { useLayout } from '../context/LayoutContext';
+import { useLayout } from '../../context/LayoutContext';
 
 function Footer() {
   const { showFooter } = useLayout();
@@ -22,9 +22,6 @@ function Footer() {
       }}
     >
       <Container maxWidth='sm'>
-        <Typography variant='body1'>
-          My sticky footer can be found here.
-        </Typography>
         <Copyright />
       </Container>
     </Box>

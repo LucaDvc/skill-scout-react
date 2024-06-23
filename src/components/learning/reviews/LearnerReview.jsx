@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ReviewForm from './ReviewForm';
 import learningService from '../../../features/learning/learningService';
-import Spinner from '../../Spinner';
+import Spinner from '../../layout/Spinner';
 
 function LearnerReview() {
   const [userReview, setUserReview] = useState(null);

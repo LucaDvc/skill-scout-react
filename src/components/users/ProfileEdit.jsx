@@ -10,14 +10,15 @@ import {
   InputAdornment,
   Alert,
   Snackbar,
+  Container,
 } from '@mui/material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useDispatch, useSelector } from 'react-redux';
-import { reset, updateUserProfile } from '../features/users/usersSlice';
-import Spinner from './Spinner';
+import { reset, updateUserProfile } from '../../features/users/usersSlice';
+import Spinner from '../layout/Spinner';
 import CityField from './CityField';
 
 const ProfileEdit = () => {
@@ -115,7 +116,7 @@ const ProfileEdit = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 600, mx: 'auto', my: 2 }}>
+    <Container maxWidth='sm' sx={{ my: 2 }}>
       <Snackbar
         open={openSnackbar}
         autoHideDuration={5000}
@@ -141,6 +142,7 @@ const ProfileEdit = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          maxWidth: 'md',
         }}
         component='form'
         encType='multipart/form-data'
@@ -314,7 +316,7 @@ const ProfileEdit = () => {
           Save changes
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
