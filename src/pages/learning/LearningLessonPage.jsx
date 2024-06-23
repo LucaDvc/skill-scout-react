@@ -58,7 +58,6 @@ function LearningLessonPage() {
         .map((chapter) => chapter.lessons)
         .flat()
         .find((lesson) => lesson.id === lessonId);
-      console.log(lesson);
 
       if (lesson) {
         const chapterIndex = course.chapters.findIndex(

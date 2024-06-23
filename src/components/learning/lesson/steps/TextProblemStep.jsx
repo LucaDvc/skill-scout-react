@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import HtmlContent from '../../../HtmlContent';
+import HtmlContent from '../../../layout/HtmlContent';
 import { useDispatch } from 'react-redux';
 import ReplayIcon from '@mui/icons-material/Replay';
 import CancelIcon from '@mui/icons-material/Cancel';

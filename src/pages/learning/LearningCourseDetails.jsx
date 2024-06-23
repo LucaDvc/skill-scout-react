@@ -44,14 +44,16 @@ function LearningCourseDetails() {
   }, [dispatch, courseId]);
 
   useEffect(() => {
-    // if (isError) {
-    //   toast.error(message);
-    // }
-
-    if (isSuccess) {
-      dispatch(reset());
+    if (isError && message === 'Not found') {
+      navigate('/not-found');
     }
   }, [isError, message, isSuccess, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
 
   const handleListItemClick = (content) => {
     navigate(`/learning/courses/${courseId}/${content}`);

@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import HtmlContent from '../../../HtmlContent';
+
 import globalConstants from '../../../../utils/globalConstants';
 import AceEditor from 'react-ace';
 import { useCodeChallenge } from '../../../../hooks/useCodeChallenge';
@@ -19,6 +19,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { LoadingButton } from '@mui/lab';
 import learningService from '../../../../features/learning/learningService';
+import HtmlContent from '../../../layout/HtmlContent';
 
 function CodeChallengeStep({ step }) {
   const language = globalConstants.programmingLanguages.find(

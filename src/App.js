@@ -20,7 +20,7 @@ import NotifyConfirmEmail from './pages/users/auth/NotifyConfirmEmail';
 import ConfirmEmail from './pages/users/auth/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, refreshAccessToken } from './features/users/usersSlice';
-import ProfileEdit from './components/ProfileEdit';
+import ProfileEdit from './components/users/ProfileEdit';
 import ForgotPassword from './pages/users/auth/ForgotPassword';
 import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';

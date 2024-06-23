@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import HtmlContent from '../../../HtmlContent';
+import HtmlContent from '../../../layout/HtmlContent';
 import learningService from '../../../../features/learning/learningService';
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';

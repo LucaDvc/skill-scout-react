@@ -57,11 +57,9 @@ function LearningCourseCard({ course, action }) {
   const handleLearnClick = (event) => {
     // navigate to last stopped course step
     event.stopPropagation();
-    console.log('this', course.chapters[0].lessons[0].id);
     let lastStoppedLessonId = course.learner_progress.last_stopped_lesson
       ? course.learner_progress.last_stopped_lesson
       : course.chapters[0].lessons[0].id;
-    console.log(lastStoppedLessonId);
     navigate(`/learning/course/${course.id}/lessons/${lastStoppedLessonId}/step/1`);
   };
 

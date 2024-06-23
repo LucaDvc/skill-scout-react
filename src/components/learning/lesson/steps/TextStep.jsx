@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import HtmlContent from '../../../HtmlContent';
+import HtmlContent from '../../../layout/HtmlContent';
 import { useDispatch } from 'react-redux';
 import { completeLessonStep } from '../../../../features/learning/learningSlice';
 

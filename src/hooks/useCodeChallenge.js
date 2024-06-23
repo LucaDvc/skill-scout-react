@@ -72,7 +72,6 @@ export const useCodeChallenge = (lessonStepId, languageId, firstTestCase) => {
             const testWithError = submission.test_results.find(
               (test) => test.compile_err || test.stderr
             );
-            console.log(testWithError);
             setFailedTestCase(testWithError);
             const errorMessageBase64 = testWithError.compile_err || testWithError.stderr;
             const errorMessage = atob(errorMessageBase64);
@@ -114,7 +113,6 @@ export const useCodeChallenge = (lessonStepId, languageId, firstTestCase) => {
       );
 
       if (response.status.description === 'Accepted') {
-        console.log('hello');
         setTestResult({
           passed: true,
           message: `Test case passed.\n\nInput: ${atob(

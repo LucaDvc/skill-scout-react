@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import HtmlContent from '../../../HtmlContent';
+import HtmlContent from '../../../layout/HtmlContent';
 import {
   DndContext,
   closestCenter,
