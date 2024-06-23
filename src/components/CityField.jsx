@@ -50,11 +50,11 @@ const CityField = ({ city, setCity }) => {
             />
           )}
           renderOption={(props, option) => {
-            const suggestion = suggestions.find(
-              (sug) => sug.description === option
-            );
+            const suggestion = suggestions.find((sug) => sug.description === option);
             return (
-              <li {...getSuggestionItemProps(suggestion, props)}>{option}</li>
+              <li key={option} {...getSuggestionItemProps(suggestion, props)}>
+                {option}
+              </li>
             );
           }}
         />
