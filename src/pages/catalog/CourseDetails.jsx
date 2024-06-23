@@ -44,7 +44,7 @@ function CourseDetails() {
   }
 
   return (
-    <>
+    <Box pb={4}>
       {/* Course Header Card */}
       <Container
         maxWidth={false}
@@ -191,7 +191,7 @@ function CourseDetails() {
       </Container>
 
       <MainDetailsContent course={course} />
-    </>
+    </Box>
   );
 }
 

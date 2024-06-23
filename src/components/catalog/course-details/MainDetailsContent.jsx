@@ -23,6 +23,10 @@ import { refreshAuthUser, reset } from '../../../features/users/usersSlice';
 import { LoadingButton } from '@mui/lab';
 import HtmlContent from '../../HtmlContent';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEnrollCourse } from '../../../hooks/useEnrollCourse';
+import { toast } from 'react-toastify';
+import Spinner from '../../Spinner';
+import PaymentModal from './PaymentModal';
 
 function MainDetailsContent({ course }) {
   const theme = useTheme();
@@ -35,8 +39,8 @@ function MainDetailsContent({ course }) {
   const [isWishlisted, setIsWishlisted] = useState(
     user?.wishlist?.some((wishlistedCourse) => wishlistedCourse.id === course.id)
   );
-  const isEnrolled = useMemo(() =>
-    user?.enrolledCourses?.some((enrolledCourse) => enrolledCourse.id === course.id)
+  const isEnrolled = user?.enrolled_courses?.some(
+    (enrolledCourse) => enrolledCourse.id === course.id
   );
 
   const navigate = useNavigate();
@@ -56,8 +60,36 @@ function MainDetailsContent({ course }) {
     [theme]
   );
 
-  // TODO: handle buy button click
-  const handleBuyButtonClick = () => {};
+  const { loading, error, success, handleEnroll } = useEnrollCourse();
+
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const handleClosePaymentModal = () => setPaymentModalOpen(false);
+
+  const handleBuyButtonClick = () => {
+    if (accessToken) {
+      if (course.price == 0) {
+        handleEnroll(course.id);
+      } else {
+        setPaymentModalOpen(true);
+      }
+      setTimeout(() => {
+        dispatch(refreshAuthUser());
+      }, 1500);
+    } else {
+      navigate('/login', { state: { from: location.pathname } });
+    }
+  };
+
+  useEffect(() => {
+    if (success) {
+      navigate(`/learning/courses/${course.id}/syllabus`);
+      toast.success('You have successfully joined the course');
+    }
+
+    if (error) {
+      toast.error('An error occurred. Please try again later.');
+    }
+  }, [success, error, navigate]);
 
   const handleWishlistButtonClick = () => {
     if (accessToken) {
@@ -79,6 +111,13 @@ function MainDetailsContent({ course }) {
 
   return (
     <Container maxWidth='lg'>
+      <PaymentModal
+        open={paymentModalOpen}
+        handleClose={handleClosePaymentModal}
+        price={course.price}
+        courseId={course.id}
+      />
+      {loading && <Spinner />}
       <Grid container spacing={3}>
         {/* Main content */}
         <Grid item xs={12} lg={8} xl={9}>
@@ -108,7 +147,7 @@ function MainDetailsContent({ course }) {
               spacing={2}
               mt={2}
               flexDirection='row'
-              justifyContent='center'
+              justifyContent='flex-start'
               alignItems='flex-start'
               useFlexGap
             >
@@ -180,21 +219,29 @@ function MainDetailsContent({ course }) {
               {course.price == 0 ? 'Free' : `$${course.price}`}
             </Typography>
 
-            <Button
-              variant='contained'
-              color='primary'
-              fullWidth
-              sx={{ my: 1 }}
-              onAbort={handleBuyButtonClick}
-            >
-              {isEnrolled ? (
+            {isEnrolled ? (
+              <Button
+                variant='contained'
+                color='primary'
+                fullWidth
+                sx={{ my: 1 }}
+                onClick={() => navigate(`/learning/courses/${course.id}/syllabus`)}
+              >
                 <Typography variant='h5'>Go to course</Typography>
-              ) : (
+              </Button>
+            ) : (
+              <Button
+                variant='contained'
+                color='primary'
+                fullWidth
+                sx={{ my: 1 }}
+                onClick={handleBuyButtonClick}
+              >
                 <Typography variant='h5'>
                   {course.price == 0 ? 'Join this course' : 'Buy'}
                 </Typography>
-              )}
-            </Button>
+              </Button>
+            )}
 
             <LoadingButton
               variant='outlined'

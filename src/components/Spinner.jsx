@@ -1,9 +1,9 @@
 import { Backdrop, CircularProgress } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function Spinner() {
   return (
-    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
+    <Backdrop sx={{ color: '#fff', zIndex: 2000 }} open>
       <CircularProgress color='inherit' />
     </Backdrop>
   );

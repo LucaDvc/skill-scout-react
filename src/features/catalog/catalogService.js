@@ -54,6 +54,11 @@ const getWishlist = async () => {
   return response.data;
 };
 
+const courseEnroll = async (courseId) => {
+  const response = await axiosInstance.post(`${API_URL}/courses/${courseId}/enroll/`);
+  return response.data;
+};
+
 const catalogService = {
   getHighestRatedCourses,
   getPopularCourses,
@@ -63,6 +68,7 @@ const catalogService = {
   wishlistCourse,
   getCourseReviews,
   getWishlist,
+  courseEnroll,
 };
 
 export default catalogService;
