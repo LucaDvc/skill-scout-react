@@ -59,6 +59,14 @@ function LearningCourseDetails() {
     navigate(`/learning/courses/${courseId}/${content}`);
   };
 
+  const handleLearnClick = (event) => {
+    // navigate to last stopped course step
+    let lastStoppedLessonId = course.learner_progress.last_stopped_lesson
+      ? course.learner_progress.last_stopped_lesson
+      : course.chapters[0].lessons[0].id;
+    navigate(`/learning/course/${course.id}/lessons/${lastStoppedLessonId}/step/1`);
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -122,7 +130,7 @@ function LearningCourseDetails() {
                   sx={{ padding: 1, paddingX: 4, display: 'block', my: 2 }}
                   variant='outlined'
                   color='secondary'
-                  onClick={() => handleListItemClick('publication')}
+                  onClick={handleLearnClick}
                 >
                   <Typography variant='subtitle1'>Learn</Typography>
                 </Button>

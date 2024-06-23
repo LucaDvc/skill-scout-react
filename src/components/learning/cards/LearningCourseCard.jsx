@@ -19,11 +19,13 @@ import {
   removeCourseFromFavourites,
 } from '../../../features/learning/learningSlice';
 import { useDispatch } from 'react-redux';
+import DropCourseDialog from '../dialogs/DropCourseDialog';
 
 function LearningCourseCard({ course, action }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
+  const [dropDialogOpen, setDropDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -49,8 +51,13 @@ function LearningCourseCard({ course, action }) {
     handleClose();
   };
 
-  const handleDropCourse = () => {
-    // Drop course logic
+  const handleDialogClose = () => {
+    setDropDialogOpen(false);
+  };
+
+  const handleDropCourse = (event) => {
+    event.stopPropagation();
+    setDropDialogOpen(true);
     handleClose();
   };
 
@@ -64,136 +71,143 @@ function LearningCourseCard({ course, action }) {
   };
 
   return (
-    <Card
-      sx={{
-        maxWidth: '100%',
-        borderRadius: 2,
-        boxShadow: 3,
-        position: 'relative',
-        overflow: 'hidden',
-        transition: '0.3s',
-        '&:hover': {
-          boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12)',
-          transform: 'scale(1.02)',
-          cursor: 'pointer',
-        },
-      }}
-      onClick={() => navigate(`/learning/courses/${course.id}/syllabus`)}
-    >
-      <CardContent>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', flex: 1 }}>
-            <Box sx={{ margin: 1 }}>
-              <Avatar
-                src={course.image}
-                alt='Course Thumbnail'
-                variant='rounded'
-                sx={{ width: 75, height: 75 }}
-              />
-            </Box>
-            <Box mt={1} ml={1}>
-              <Link
-                to={`/learning/courses/${course.id}/syllabus`}
-                className='link-no-style'
-                onClick={(event) => event.stopPropagation()}
-              >
-                <Typography
-                  variant='h6'
-                  component='span'
-                  sx={{
-                    '&:hover': { textDecoration: 'underline' },
-                    maxWidth: '50%',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {course.title}
-                </Typography>
-              </Link>
-
-              <Box>
+    <>
+      <DropCourseDialog
+        open={dropDialogOpen}
+        handleClose={handleDialogClose}
+        courseId={course.id}
+      />
+      <Card
+        sx={{
+          maxWidth: '100%',
+          borderRadius: 2,
+          boxShadow: 3,
+          position: 'relative',
+          overflow: 'hidden',
+          transition: '0.3s',
+          '&:hover': {
+            boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12)',
+            transform: 'scale(1.02)',
+            cursor: 'pointer',
+          },
+        }}
+        onClick={() => navigate(`/learning/courses/${course.id}/syllabus`)}
+      >
+        <CardContent>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', flex: 1 }}>
+              <Box sx={{ margin: 1 }}>
+                <Avatar
+                  src={course.image}
+                  alt='Course Thumbnail'
+                  variant='rounded'
+                  sx={{ width: 75, height: 75 }}
+                />
+              </Box>
+              <Box mt={1} ml={1}>
                 <Link
-                  to={`/users/${course.instructor.id}`}
+                  to={`/learning/courses/${course.id}/syllabus`}
                   className='link-no-style'
                   onClick={(event) => event.stopPropagation()}
                 >
                   <Typography
-                    variant='body2'
+                    variant='h6'
                     component='span'
                     sx={{
                       '&:hover': { textDecoration: 'underline' },
-                      color: 'text.secondary',
+                      maxWidth: '50%',
+                      textOverflow: 'ellipsis',
                     }}
                   >
-                    {`${course.instructor.first_name} ${course.instructor.last_name}`}
+                    {course.title}
                   </Typography>
                 </Link>
-              </Box>
 
-              <Box display='flex' mt={1}>
-                {course.learner_progress.completion_ratio === 100.0 ? (
-                  <CheckCircleOutlinedIcon
-                    fontSize='small'
-                    sx={{ color: 'success.main' }}
-                  />
-                ) : (
-                  <CircleOutlinedIcon fontSize='small' sx={{ color: 'success.main' }} />
-                )}
-                <Typography variant='body2' component='span'>
-                  {`${course.learner_progress.completed_lessons.length}/${course.lessons_count}`}
-                </Typography>
+                <Box>
+                  <Link
+                    to={`/users/${course.instructor.id}`}
+                    className='link-no-style'
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    <Typography
+                      variant='body2'
+                      component='span'
+                      sx={{
+                        '&:hover': { textDecoration: 'underline' },
+                        color: 'text.secondary',
+                      }}
+                    >
+                      {`${course.instructor.first_name} ${course.instructor.last_name}`}
+                    </Typography>
+                  </Link>
+                </Box>
+
+                <Box display='flex' mt={1}>
+                  {course.learner_progress.completion_ratio === 100.0 ? (
+                    <CheckCircleOutlinedIcon
+                      fontSize='small'
+                      sx={{ color: 'success.main' }}
+                    />
+                  ) : (
+                    <CircleOutlinedIcon fontSize='small' sx={{ color: 'success.main' }} />
+                  )}
+                  <Typography variant='body2' component='span'>
+                    {`${course.learner_progress.completed_lessons.length}/${course.lessons_count}`}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
-          <Box
-            mt={1}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-            }}
-          >
-            <IconButton
-              aria-label='more'
-              id='course-actions-button'
-              aria-controls={menuOpen ? 'course-actions-menu' : undefined}
-              aria-expanded={menuOpen ? 'true' : undefined}
-              aria-haspopup='true'
-              onClick={handleMenuClick}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id='course-actions-menu'
-              MenuListProps={{
-                'aria-labelledby': 'course-actions-button',
+            <Box
+              mt={1}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
               }}
-              anchorEl={anchorEl}
-              open={menuOpen}
-              onClose={handleClose}
             >
-              <MenuItem
-                onClick={
-                  action === 'add'
-                    ? handleAddCourseToFavourites
-                    : handleRemoveCourseFromFavourites
-                }
-                disableRipple
+              <IconButton
+                aria-label='more'
+                id='course-actions-button'
+                aria-controls={menuOpen ? 'course-actions-menu' : undefined}
+                aria-expanded={menuOpen ? 'true' : undefined}
+                aria-haspopup='true'
+                onClick={handleMenuClick}
               >
-                {action === 'add' ? 'Add to Favourites' : 'Remove from Favourites'}
-              </MenuItem>
-              <MenuItem onClick={handleDropCourse} disableRipple>
-                Drop
-              </MenuItem>
-            </Menu>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id='course-actions-menu'
+                MenuListProps={{
+                  'aria-labelledby': 'course-actions-button',
+                }}
+                anchorEl={anchorEl}
+                open={menuOpen}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  onClick={
+                    action === 'add'
+                      ? handleAddCourseToFavourites
+                      : handleRemoveCourseFromFavourites
+                  }
+                  disableRipple
+                >
+                  {action === 'add' ? 'Add to Favourites' : 'Remove from Favourites'}
+                </MenuItem>
+                <MenuItem onClick={handleDropCourse} disableRipple>
+                  Drop
+                </MenuItem>
+              </Menu>
 
-            <Button variant='outlined' onClick={handleLearnClick}>
-              Learn
-            </Button>
+              <Button variant='outlined' onClick={handleLearnClick}>
+                Learn
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </>
   );
 }
 

@@ -102,6 +102,11 @@ const getCodeChallenge = async (stepId) => {
   return response.data;
 };
 
+const dropCourse = async (courseId) => {
+  const response = await axiosInstance.post(`${API_URL}/courses/${courseId}/drop/`);
+  return response.data;
+};
+
 const learningService = {
   getCourseReviews,
   getCourses,
@@ -120,6 +125,7 @@ const learningService = {
   submitTextProblem,
   getTextProblem,
   getCodeChallenge,
+  dropCourse,
 };
 
 export default learningService;

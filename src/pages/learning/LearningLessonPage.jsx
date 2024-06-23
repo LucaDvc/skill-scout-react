@@ -53,7 +53,7 @@ function LearningLessonPage() {
   }, [dispatch, courseId]);
 
   useEffect(() => {
-    if (course) {
+    if (course && course.id === courseId) {
       const lesson = course.chapters
         .map((chapter) => chapter.lessons)
         .flat()

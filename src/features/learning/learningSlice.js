@@ -24,6 +24,12 @@ const initialState = {
     isError: false,
     message: '',
   },
+  drop: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: '',
+  },
 };
 
 export const getCourses = createAsyncThunk('learning/getCourses', async (_, thunkAPI) => {
@@ -121,6 +127,19 @@ export const completeLessonStep = createAsyncThunk(
   }
 );
 
+export const dropCourse = createAsyncThunk(
+  'learning/dropCourse',
+  async (courseId, thunkAPI) => {
+    try {
+      await learningService.dropCourse(courseId);
+      return courseId;
+    } catch (error) {
+      let message = error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const learningSlice = createSlice({
   name: 'learning',
   initialState,
@@ -130,7 +149,6 @@ export const learningSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.message = '';
-      state.isWishlistUpdating = false;
       state.courses = [];
     },
     statusesReset: (state) => {
@@ -264,6 +282,23 @@ export const learningSlice = createSlice({
       .addCase(completeLessonStep.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(dropCourse.pending, (state) => {
+        state.drop.isLoading = true;
+        state.drop.isSuccess = false;
+        state.drop.isError = false;
+      })
+      .addCase(dropCourse.fulfilled, (state, action) => {
+        state.courses = state.courses.filter((course) => course.id !== action.payload);
+        state.favourites.courses = state.favourites.courses.filter(
+          (course) => course.id !== action.payload
+        );
+        state.drop.isLoading = false;
+        state.drop.isSuccess = true;
+      })
+      .addCase(dropCourse.rejected, (state, action) => {
+        state.drop.isError = true;
+        state.drop.message = action.payload;
       });
   },
 });
