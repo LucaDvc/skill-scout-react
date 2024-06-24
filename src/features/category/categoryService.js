@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = '/api/catalog';
+const BASE_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${BASE_URL}/api/catalog`;
 
 // Get category list
 const getCategories = async () => {
@@ -9,8 +10,7 @@ const getCategories = async () => {
 };
 
 const categoryService = {
-    getCategories,
-  };
-  
-  export default categoryService;
-  
+  getCategories,
+};
+
+export default categoryService;

@@ -1,7 +1,6 @@
 {
   "name": "courses_project",
   "version": "0.1.0",
-  "proxy": "http://167.172.99.206",
   "private": true,
   "dependencies": {
     "@dnd-kit/sortable": "^8.0.0",
