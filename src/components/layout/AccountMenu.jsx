@@ -1,11 +1,15 @@
 import { Logout, Settings } from '@mui/icons-material';
 import { Divider, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function AccountMenu({ anchorEl, handleClose, logoutClick }) {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.users);
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -42,15 +46,9 @@ function AccountMenu({ anchorEl, handleClose, logoutClick }) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-      <MenuItem onClick={() => navigate('/my-account')}>My account</MenuItem>
+      <MenuItem onClick={() => navigate(`/users/${user.id}`)}>Profile</MenuItem>
+      <MenuItem onClick={() => navigate('/profile-edit')}>My account</MenuItem>
       <Divider />
-      <MenuItem onClick={() => navigate('/settings')}>
-        <ListItemIcon>
-          <Settings fontSize='small' />
-        </ListItemIcon>
-        Settings
-      </MenuItem>
       <MenuItem onClick={logoutClick}>
         <ListItemIcon>
           <Logout fontSize='small' />

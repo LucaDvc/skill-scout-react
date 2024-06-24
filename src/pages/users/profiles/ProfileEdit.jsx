@@ -17,9 +17,9 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useDispatch, useSelector } from 'react-redux';
-import { reset, updateUserProfile } from '../../features/users/usersSlice';
-import Spinner from '../layout/Spinner';
-import CityField from './CityField';
+import { reset, updateUserProfile } from '../../../features/users/usersSlice';
+import Spinner from '../../../components/layout/Spinner';
+import CityField from '../../../components/users/CityField';
 
 const ProfileEdit = () => {
   const [profile, setProfile] = useState({

@@ -20,7 +20,7 @@ import NotifyConfirmEmail from './pages/users/auth/NotifyConfirmEmail';
 import ConfirmEmail from './pages/users/auth/ConfirmEmail';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, refreshAccessToken } from './features/users/usersSlice';
-import ProfileEdit from './components/users/ProfileEdit';
+import ProfileEdit from './pages/users/profiles/ProfileEdit';
 import ForgotPassword from './pages/users/auth/ForgotPassword';
 import ResetPassword from './pages/users/auth/ResetPassword';
 import CatalogSearch from './pages/catalog/CatalogSearch';
@@ -58,6 +58,7 @@ import LearningLessonPage from './pages/learning/LearningLessonPage';
 import LearningLessonStep from './pages/learning/LearningLessonStep';
 import NotFound from './pages/NotFound';
 import InternalServerError from './pages/InternalServerError';
+import ProfileView from './pages/users/profiles/ProfileView';
 
 const router = createBrowserRouter([{ path: '*', Component: Root }]);
 
@@ -78,7 +79,8 @@ function Root() {
         <Route path='/confirm-email' element={<ConfirmEmail />} />
 
         {/* Users */}
-        <Route path='/profile' element={<ProfileEdit />} />
+        <Route path='/profile-edit' element={<ProfileEdit />} />
+        <Route path='/users/:userId' element={<ProfileView />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
 

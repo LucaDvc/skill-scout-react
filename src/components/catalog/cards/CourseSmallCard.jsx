@@ -1,5 +1,13 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Rating, CardMedia } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Rating,
+  CardMedia,
+  Avatar,
+} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { Link } from 'react-router-dom';
@@ -25,38 +33,57 @@ function CourseSmallCard({ course }) {
         <CardContent
           sx={{
             paddingBottom: '16px',
-            paddingRight: '90px',
-            minHeight: 140,
+            minHeight: 200,
           }}
         >
-          <Link to={`/catalog/courses/${course.id}`} className='link-no-style'>
-            <Typography
-              gutterBottom
-              variant='h6'
-              component='div'
-              sx={{ '&:hover': { textDecoration: 'underline' } }}
-            >
-              {course.title}
-            </Typography>
-          </Link>
-
-          <Link to={`/users/${course.instructor.id}`} className='link-no-style'>
-            <Typography
-              variant='body2'
-              component='span'
-              color='text.secondary'
-              sx={{ '&:hover': { textDecoration: 'underline' } }}
-            >
-              {course.instructor.first_name + ' ' + course.instructor.last_name}
-            </Typography>
-          </Link>
-
           <Box
             sx={{
-              mt: 8,
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box>
+              <Link to={`/catalog/courses/${course.id}`} className='link-no-style'>
+                <Typography
+                  gutterBottom
+                  variant='h6'
+                  component='div'
+                  sx={{ '&:hover': { textDecoration: 'underline' } }}
+                >
+                  {course.title}
+                </Typography>
+              </Link>
+
+              {course.instructor && (
+                <Link to={`/users/${course.instructor?.id}`} className='link-no-style'>
+                  <Typography
+                    variant='body2'
+                    component='span'
+                    color='text.secondary'
+                    sx={{ '&:hover': { textDecoration: 'underline' } }}
+                  >
+                    {course.instructor?.first_name + ' ' + course?.instructor?.last_name}
+                  </Typography>
+                </Link>
+              )}
+            </Box>
+            <Avatar
+              src={course.image}
+              variant='rounded'
+              alt='Course Thumbnail'
+              sx={{
+                width: 90,
+                height: 90,
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: 4,
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               alignItems: 'center',
             }}
           >
@@ -79,7 +106,7 @@ function CourseSmallCard({ course }) {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mx: 1 }}>
               <PeopleAltIcon color='action' fontSize='small' />
               <Typography variant='body2' color='text.secondary' component='span'>
                 {course.enrolled_learners}
@@ -103,27 +130,6 @@ function CourseSmallCard({ course }) {
             {course.price == 0 ? 'Free' : `$${course.price}`}
           </Typography>
         </CardContent>
-        {/* <CardActions
-        disableSpacing
-        sx={{ position: 'absolute', top: -8, right: -8, zIndex: 1 }}
-      >
-        <IconButton aria-label='add to favorites' onClick={handleFavoriteClick}>
-          <FavoriteBorderIcon color={isFavorite ? 'primary' : 'action'} />
-        </IconButton>
-      </CardActions> */}
-        <CardMedia
-          component='img'
-          image={course.image}
-          alt='Course Thumbnail'
-          sx={{
-            width: '90px',
-            height: '90px',
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            borderRadius: 1,
-          }}
-        />
       </Card>
     </Link>
   );

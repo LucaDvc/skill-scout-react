@@ -87,19 +87,18 @@ const resetPassword = async (token, uidb64, password) => {
   return response.data;
 };
 
-const getUserById = async (userId, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axiosInstance.get(`${API_URL}/${userId}/`, config);
+const getCurrentUser = async (userId) => {
+  const response = await axiosInstance.get(`${API_URL}/${userId}/`);
 
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
 
+  return response.data;
+};
+
+const getUserById = async (userId) => {
+  const response = await axios.get(`${API_URL}/${userId}/`);
   return response.data;
 };
 
@@ -113,6 +112,7 @@ const usersService = {
   updateProfile,
   sendForgotPasswordEmail,
   resetPassword,
+  getCurrentUser,
   getUserById,
 };
 

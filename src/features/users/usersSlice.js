@@ -16,26 +16,23 @@ const initialState = {
   errors: {},
 };
 
-export const register = createAsyncThunk(
-  'users/register',
-  async (user, thunkAPI) => {
-    try {
-      return await usersService.register(user);
-    } catch (error) {
-      let message = error.message || error.toString();
+export const register = createAsyncThunk('users/register', async (user, thunkAPI) => {
+  try {
+    return await usersService.register(user);
+  } catch (error) {
+    let message = error.message || error.toString();
 
-      if (
-        error.response &&
-        error.response.data &&
-        typeof error.response.data === 'object'
-      ) {
-        message = error.response.data;
-      }
-
-      return thunkAPI.rejectWithValue(message);
+    if (
+      error.response &&
+      error.response.data &&
+      typeof error.response.data === 'object'
+    ) {
+      message = error.response.data;
     }
+
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 export const login = createAsyncThunk('users/login', async (user, thunkAPI) => {
   try {
@@ -168,7 +165,7 @@ export const refreshAuthUser = createAsyncThunk(
     try {
       const userId = thunkAPI.getState().users.user.id;
       const token = thunkAPI.getState().users.accessToken;
-      return await usersService.getUserById(userId, token);
+      return await usersService.getCurrentUser(userId, token);
     } catch (error) {
       let message = error.message || error.toString();
 
