@@ -1,8 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../../axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL;
-const API_URL = `${BASE_URL}/api/learning`;
+const API_URL = `/api/learning`;
 
 const JUDGE0_API_URL = process.env.REACT_APP_JUDGE0_HOST;
 const JUDGE0_AUTH_TOKEN = process.env.REACT_APP_JUDGE0_AUTH_TOKEN;

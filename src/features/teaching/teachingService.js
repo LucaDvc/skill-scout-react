@@ -1,7 +1,6 @@
 import axiosInstance from '../../axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL;
-const API_URL = `${BASE_URL}/api/teaching`;
+const API_URL = `/api/teaching`;
 
 const getCourses = async (token) => {
   const response = await axiosInstance.get(`${API_URL}/courses/`, {
