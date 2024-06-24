@@ -12,6 +12,7 @@ import {
 } from '@vidstack/react/player/layouts/default';
 import LessonStepHeader from './utils/LessonStepHeader';
 import VisuallyHiddenInput from './utils/VisuallyHiddenInput';
+import { toast } from 'react-toastify';
 
 const getVideoType = (url) => {
   const extension = url.split('.').pop().toLowerCase();
@@ -50,6 +51,16 @@ function VideoStepEdit() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const fileSize = file.size; // file size in bytes
+      const fileSizeInMB = fileSize / (1024 * 1024); // convert to megabytes
+
+      const maxSizeInMB = 100;
+
+      if (fileSizeInMB > maxSizeInMB) {
+        toast.error(`File size exceeds ${maxSizeInMB} MB. Please upload a smaller file.`);
+        return;
+      }
+
       const url = URL.createObjectURL(file);
       const fileType = file.type;
       setSelectedStep({ ...selectedStep, video_file: url, fileType });
