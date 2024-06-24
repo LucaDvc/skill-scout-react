@@ -158,6 +158,11 @@ function InformationTab() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    if (descriptionEditorRef.current.getContent().length < 100) {
+      toast.error('Description must be at least 100 characters long.');
+      return;
+    }
+
     setLoading(true);
     toastId.current = toast.loading('Saving changes...', {
       autoClose: false,
