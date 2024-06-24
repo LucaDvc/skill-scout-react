@@ -3,7 +3,7 @@ import axiosInstance from '../../axios';
 
 const API_URL = `/api/learning`;
 
-const JUDGE0_API_URL = process.env.REACT_APP_JUDGE0_HOST;
+const JUDGE0_API_URL = '/judge0';
 const JUDGE0_AUTH_TOKEN = process.env.REACT_APP_JUDGE0_AUTH_TOKEN;
 
 const submitCodeChallenge = async (codeChallengeId, code) => {
