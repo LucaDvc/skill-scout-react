@@ -1,7 +1,8 @@
 import axios from 'axios';
 import axiosInstance from '../../axios';
 
-const API_URL = '/api/catalog';
+const BASE_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${BASE_URL}/api/catalog`;
 
 const getHighestRatedCourses = async () => {
   const response = await axios.get(`${API_URL}/web/courses/?page=1&ordering=-avg_rating`);
