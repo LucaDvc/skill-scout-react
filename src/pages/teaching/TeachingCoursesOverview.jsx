@@ -11,6 +11,7 @@ import {
   Paper,
   Select,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -20,11 +21,15 @@ import TeachingCourseCard from '../../components/teaching/cards/TeachingCourseCa
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourses, reset } from '../../features/teaching/teachingSlice';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
 
 function TeachingCoursesOverview() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [filteredCourses, setFilteredCourses] = useState([]);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const navigate = useNavigate();
 
@@ -32,8 +37,6 @@ function TeachingCoursesOverview() {
     courses,
     isLoading,
     isSuccess,
-    isError,
-    message,
     delete: { isSuccess: deleteSuccess },
     create: { isSuccess: createSuccess },
   } = useSelector((state) => state.teaching);
@@ -101,59 +104,118 @@ function TeachingCoursesOverview() {
         Courses <ArrowDownwardIcon />
       </Typography>
       <Divider />
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 4,
-        }}
-      >
-        <FormControl sx={{ minWidth: 155 }}>
-          <InputLabel id='filter'>Filter</InputLabel>
-          <Select
-            labelId='filter'
-            id='filter-select'
-            label='Filter'
-            value={filter}
-            onChange={handleFilterChange}
+      {isMobile ? (
+        <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 4,
+            }}
           >
-            <MenuItem value='all'>All Courses</MenuItem>
-            <MenuItem value='drafted'>Drafted</MenuItem>
-            <MenuItem value='active'>Active</MenuItem>
-            <MenuItem value='inactive'>Inactive</MenuItem>
-          </Select>
-        </FormControl>
-        <Paper
+            <FormControl sx={{ minWidth: 155 }}>
+              <InputLabel id='filter'>Filter</InputLabel>
+              <Select
+                labelId='filter'
+                id='filter-select'
+                label='Filter'
+                value={filter}
+                onChange={handleFilterChange}
+              >
+                <MenuItem value='all'>All Courses</MenuItem>
+                <MenuItem value='drafted'>Drafted</MenuItem>
+                <MenuItem value='active'>Active</MenuItem>
+                <MenuItem value='inactive'>Inactive</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              startIcon={<AddIcon fontSize='large' />}
+              p={4}
+              variant='outlined'
+              color='secondary'
+              onClick={() => navigate('/teaching/courses/new')}
+            >
+              <Typography variant='subtitle'>New Course</Typography>
+            </Button>
+          </Box>
+          <Paper
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+              maxWidth: 'sm',
+              boxShadow: 3,
+              mt: 2,
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder='Search your courses...'
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                handleSearch(event.target.value);
+              }}
+            />
+            <SearchIcon />
+          </Paper>
+        </Box>
+      ) : (
+        <Box
           sx={{
-            p: '2px 4px',
             display: 'flex',
             alignItems: 'center',
-            width: 400,
-            boxShadow: 3,
+            justifyContent: 'space-between',
+            marginTop: 4,
           }}
         >
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder='Search your courses...'
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-              handleSearch(event.target.value);
+          <FormControl sx={{ minWidth: 155 }}>
+            <InputLabel id='filter'>Filter</InputLabel>
+            <Select
+              labelId='filter'
+              id='filter-select'
+              label='Filter'
+              value={filter}
+              onChange={handleFilterChange}
+            >
+              <MenuItem value='all'>All Courses</MenuItem>
+              <MenuItem value='drafted'>Drafted</MenuItem>
+              <MenuItem value='active'>Active</MenuItem>
+              <MenuItem value='inactive'>Inactive</MenuItem>
+            </Select>
+          </FormControl>
+          <Paper
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+              width: 400,
+              boxShadow: 3,
             }}
-          />
-          <SearchIcon />
-        </Paper>
-        <Button
-          startIcon={<AddIcon fontSize='large' />}
-          p={4}
-          variant='outlined'
-          color='secondary'
-          onClick={() => navigate('/teaching/courses/new')}
-        >
-          <Typography variant='subtitle'>New Course</Typography>
-        </Button>
-      </Box>
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder='Search your courses...'
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                handleSearch(event.target.value);
+              }}
+            />
+            <SearchIcon />
+          </Paper>
+          <Button
+            startIcon={<AddIcon fontSize='large' />}
+            p={4}
+            variant='outlined'
+            color='secondary'
+            onClick={() => navigate('/teaching/courses/new')}
+          >
+            <Typography variant='subtitle'>New Course</Typography>
+          </Button>
+        </Box>
+      )}
       {isLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
           <CircularProgress color='inherit' />
