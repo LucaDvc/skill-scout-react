@@ -13,7 +13,7 @@ function GenericStepEdit() {
 
   // Save the previous step when the selected step changes
   useEffect(() => {
-    if (prevStepRef.current?.id !== selectedStep.id) {
+    if (prevStepRef.current && prevStepRef.current?.id !== selectedStep?.id) {
       saveStep(prevStepRef.current);
     }
 
