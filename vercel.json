@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "http://167.172.99.206/api/:path*"
+      "source": "/api/(.*)",
+      "destination": "http://167.172.99.206/api/$1"
     },
     {
-      "source": "/judge0/:path*",
-      "destination": "http://206.189.62.229:2358/:path*"
+      "source": "/judge0/(.*)",
+      "destination": "http://206.189.62.229:2358/$1"
     }
   ]
 }
