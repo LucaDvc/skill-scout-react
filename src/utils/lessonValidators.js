@@ -78,6 +78,8 @@ const validateSteps = async (steps, pyodide) => {
           isValid = false;
         }
         break;
+      case 'video':
+        break;
       default:
         console.error(`Unknown step type: ${step.type}`);
         isValid = false;
