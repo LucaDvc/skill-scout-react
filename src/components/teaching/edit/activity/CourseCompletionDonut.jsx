@@ -26,7 +26,7 @@ function CourseCompletionDonut() {
     const fetchCompletionData = async () => {
       try {
         const data = await analyticsService.getCourseCompletionAnalytics(course.id);
-        setData(dummyData);
+        setData(data);
         setRefresh(!refresh);
       } catch (error) {
         console.error(error);

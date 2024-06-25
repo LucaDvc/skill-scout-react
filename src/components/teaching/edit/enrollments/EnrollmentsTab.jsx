@@ -41,7 +41,7 @@ function EnrollmentsTab() {
     const fetchEnrollmentData = async () => {
       try {
         const response = await analyticsService.getEnrollmentAnalytics(course.id);
-        setEnrollmentData(dummyData);
+        setEnrollmentData(response);
       } catch (error) {
         console.error(error);
       }

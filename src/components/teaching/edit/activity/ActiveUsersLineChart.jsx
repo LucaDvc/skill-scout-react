@@ -157,7 +157,7 @@ function ActiveUsersLineChart() {
     const fetchActiveUsersData = async () => {
       try {
         const response = await analyticsService.getActiveUsersAnalytics(course.id);
-        setData(allData);
+        setData(response);
       } catch (error) {
         console.error(error);
         toast.error('Failed to fetch active users data');

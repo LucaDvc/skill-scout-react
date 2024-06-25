@@ -44,7 +44,7 @@ function TeachingCoursesOverview() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!courses || courses.length === 0) dispatch(getCourses());
+    dispatch(getCourses());
   }, [dispatch]);
 
   useEffect(() => {
