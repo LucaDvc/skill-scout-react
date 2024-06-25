@@ -41,7 +41,7 @@ function CatalogSearch() {
 
   useEffect(() => {
     setShowNavbar(true);
-    setShowFooter(true);
+    setShowFooter(false);
 
     // Show Navbar and Footer when the component unmounts
     return () => {
