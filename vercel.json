@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "http://167.172.99.206/api/$1"
+      "destination": "http://209.38.233.134/api/$1"
     },
     {
       "source": "/judge0/(.*)",
-      "destination": "http://206.189.62.229:2358/$1"
+      "destination": "http://209.38.233.134:2358/$1"
     }
   ]
 }
